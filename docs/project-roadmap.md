@@ -262,6 +262,30 @@ Every blueprint section mapped to its feature number. No gaps, no extras.
 
 ---
 
+## Post-Framework Showcase Projects
+
+> These are applications built WITH the completed framework — not part of the framework itself.
+> Do not start until Phases 1–5 are complete.
+
+| Project | Description | Depends On |
+|---|---|---|
+| **RGo Docs App** | Documentation platform that parses and renders Markdown files, with admin panel for editing. Serves as the official RGo documentation site and proves the framework works end-to-end. | All Phases 1–5 |
+
+### RGo Docs App — Planned Capabilities
+
+- Markdown parsing and HTML rendering (via `goldmark`)
+- YAML frontmatter extraction for metadata
+- Auto-generated navigation from folder structure
+- Full-text search across all docs
+- Syntax-highlighted code blocks
+- Version switching for docs across releases
+- Admin panel with auth-protected CRUD editor for `.md` files
+- SSR rendered via RGo's own Views & Templates system
+
+**Reference inspiration**: VitePress (DX), Docusaurus (features), Stripe Docs (API docs UX).
+
+---
+
 ## Notes
 
 - **Feature numbering is final** — do not renumber. If a feature is added later, append it with the next available number.
