@@ -224,12 +224,17 @@ Every feature flows through **6 stages plus a mandatory Review Gate**. Each stag
 | Create `XX-feature-testplan.md` | Define test cases and acceptance criteria |
 | Create `XX-feature-api.md` | If feature has endpoints — define full contracts |
 | Create `XX-feature-changelog.md` | Empty — ready for build phase logging |
-| Commit all docs | Commit the complete doc set to the feature branch |
+| Create docs branch | `docs/XX-feature-name` from `main` |
+| Commit all docs | Commit the complete doc set to the docs branch |
+| Push docs branch | Push `docs/XX-feature-name` to remote |
+| Merge to main | Merge docs branch into `main`, push `main` |
+| Keep docs branch | Never delete — docs branches are historical records |
 
 **Anti-patterns to avoid**:
 - Vague tasks like "implement feature" — be specific
 - Missing checkpoints between phases
 - Not defining the test plan before building
+- Committing docs directly to `main` without a branch
 
 ---
 
@@ -248,11 +253,11 @@ Every feature flows through **6 stages plus a mandatory Review Gate**. Each stag
 | User says "continue" | Only then move to Stage 4 — Build |
 
 **What happens at the gate**:
-1. All 5-6 docs are created and committed
+1. All 5-6 docs are created on `docs/XX-feature-name` branch, pushed, and merged to `main`
 2. A summary is presented: scope, approach, file structure, task count, test count
 3. **Execution pauses** — the user reviews the docs at their own pace
 4. The user may request changes to docs before approving
-5. When the user says "continue" (or equivalent), implementation begins
+5. When the user says "continue" (or equivalent), implementation begins on `feature/XX-feature-name` branch
 
 **Anti-patterns to avoid**:
 - Skipping the gate and jumping straight to implementation
@@ -1035,35 +1040,58 @@ Create tasks doc → `XX-feature-name-tasks.md`
 ## 🌿 Git Branching Strategy
 
 ```
-main ─────●────●────●────●────●────●────●──────▶
-           \       ↗  \       ↗  \       ↗
-            ●─●─●─●    ●─●─●─●    ●─●─●─●
-           feature/     feature/    feature/
-           01-name      02-name     03-name
-           (kept)       (kept)      (kept)
+main ──●────●────●─────●────●─────●────●──────▶
+        \   ↗    \    ↗     \    ↗     \    ↗
+         ●─●      ●─●─●      ●─●        ●─●─●
+        docs/    feature/    docs/      feature/
+        01-name  01-name     02-name    02-name
+        (kept)   (kept)      (kept)     (kept)
 ```
+
+Every feature produces **two branches**: one for documentation, one for implementation.
 
 ### Branch Rules
 
 | Rule | Detail |
 |---|---|
-| **`main`** | Always deployable. Only receives merges from feature branches. |
-| **`feature/XX-name`** | Created from latest `main`. One branch per feature. |
-| **Never delete** | Feature branches are kept forever as historical reference. |
-| **One at a time** | Finish and merge before starting the next (unless truly independent). |
+| **`main`** | Always deployable. Only receives merges from docs and feature branches. |
+| **`docs/XX-name`** | Created from latest `main`. Contains the feature's documentation set. Merged before implementation begins. |
+| **`feature/XX-name`** | Created from latest `main` after docs approved at Review Gate. Contains implementation code. |
+| **Never delete** | Both docs and feature branches are kept forever as historical records. |
+| **One feature at a time** | Finish docs + implementation before starting the next. |
 
 ### Branch Naming
 
 | Pattern | Example | When |
 |---|---|---|
-| `feature/XX-feature-name` | `feature/02-auth-system` | Standard feature work |
+| `docs/XX-feature-name` | `docs/04-error-handling` | Documentation set (discussion, architecture, tasks, testplan, changelog) |
+| `feature/XX-feature-name` | `feature/04-error-handling` | Implementation code (after docs approved) |
 | `fix/XX-description` | `fix/03-login-redirect-loop` | Bug fix on a shipped feature |
 | `documentation` | `documentation` | Docs-only changes (no feature code) |
 
 ### Git Commands — Feature Workflow
 
 ```bash
-# Start a new feature
+# ─── DOCUMENTATION PHASE ─────────────────────────────────
+# Create docs branch
+git checkout main
+git pull origin main
+git checkout -b docs/XX-feature-name
+
+# Write all docs, commit
+git add docs/features/XX-*
+git commit -m "docs(scope): create Feature #XX documentation set"
+
+# Push docs branch, merge to main
+git push origin docs/XX-feature-name
+git checkout main
+git merge docs/XX-feature-name
+git push origin main
+
+# ─── 🚦 REVIEW GATE — wait for user approval ─────────────
+
+# ─── IMPLEMENTATION PHASE ────────────────────────────────
+# Create feature branch (after docs approved)
 git checkout main
 git pull origin main
 git checkout -b feature/XX-feature-name
@@ -1072,17 +1100,14 @@ git checkout -b feature/XX-feature-name
 git add .
 git commit -m "feat(scope): description"
 
-# Push branch to remote
+# Push feature branch, merge to main
 git push origin feature/XX-feature-name
-
-# Merge to main (when feature is DONE — all criteria met)
 git checkout main
 git pull origin main
 git merge feature/XX-feature-name
 git push origin main
 
-# Return to feature branch (if revisiting)
-git checkout feature/XX-feature-name
+# Both branches are KEPT — never delete
 ```
 
 ### Rules of Thumb
@@ -1221,27 +1246,32 @@ Before merging any feature, verify:
 ```
  ─── DOCUMENTATION PHASE ───────────────────────────────────────────────
  1.  Check project-roadmap.md → identify next feature number
- 2.  Create  docs/features/XX-feature-discussion.md      (discuss)
- 3.  Discuss until fully understood → mark COMPLETE
- 4.  Create  docs/features/XX-feature-architecture.md     (design)
- 5.  Finalize architecture → mark FINALIZED
- 6.  Create  docs/features/XX-feature-tasks.md            (plan)
- 7.  Create  docs/features/XX-feature-testplan.md         (define done)
- 8.  Create  docs/features/XX-feature-api.md              (if has API)
- 9.  Create  docs/features/XX-feature-changelog.md        (empty, ready)
-10.  Commit all docs to feature branch                    (checkpoint)
+ 2.  Create  git branch: docs/XX-feature-name             (from main)
+ 3.  Create  docs/features/XX-feature-discussion.md       (discuss)
+ 4.  Discuss until fully understood → mark COMPLETE
+ 5.  Create  docs/features/XX-feature-architecture.md     (design)
+ 6.  Finalize architecture → mark FINALIZED
+ 7.  Create  docs/features/XX-feature-tasks.md            (plan)
+ 8.  Create  docs/features/XX-feature-testplan.md         (define done)
+ 9.  Create  docs/features/XX-feature-api.md              (if has API)
+10.  Create  docs/features/XX-feature-changelog.md        (empty, ready)
+11.  Commit all docs to docs branch                       (checkpoint)
+12.  Push docs branch to remote                           (push)
+13.  Merge docs branch to main, push main                 (merge)
+14.  Keep docs branch — do not delete                     (preserve)
 
  ─── 🚦 REVIEW GATE ── MANDATORY STOP ─────────────────────────────────
-11.  Present doc summary to user for review               (gate)
-12.  ⏸️  WAIT for user to review and say "continue"        (gate)
+15.  Present doc summary to user for review               (gate)
+16.  ⏸️  WAIT for user to review and say "continue"        (gate)
 
  ─── IMPLEMENTATION PHASE ──────────────────────────────────────────────
-13.  Create  git branch: feature/XX-feature-name          (build)
-14.  Execute tasks, log in changelog                      (build)
-15.  Run test plan                                        (verify)
-16.  Merge to main, keep branch                           (ship)
-17.  Create  docs/features/XX-feature-review.md           (reflect)
-18.  Update  project-roadmap.md progress tracker          (track)
+17.  Create  git branch: feature/XX-feature-name          (from main)
+18.  Execute tasks, log in changelog                      (build)
+19.  Run test plan                                        (verify)
+20.  Push feature branch, merge to main, push main        (ship)
+21.  Keep feature branch — do not delete                  (preserve)
+22.  Create  docs/features/XX-feature-review.md           (reflect)
+23.  Update  project-roadmap.md progress tracker          (track)
 ```
 
 ### Document Quick Reference
@@ -1265,7 +1295,7 @@ Before merging any feature, verify:
 ```
 DISCUSS  ──▶  Discussion doc marked COMPLETE?        Yes ──▶  DESIGN
 DESIGN   ──▶  Architecture doc FINALIZED?            Yes ──▶  PLAN
-PLAN     ──▶  Tasks + testplan + changelog created?  Yes ──▶  🚦 REVIEW GATE
+PLAN     ──▶  Docs committed, pushed, merged?        Yes ──▶  🚦 REVIEW GATE
 🚦 GATE  ──▶  User reviewed docs and said continue?  Yes ──▶  BUILD
 BUILD    ──▶  All tasks checked, all tests pass?     Yes ──▶  SHIP
 SHIP     ──▶  Merged to main, pushed, branch kept?   Yes ──▶  REFLECT
