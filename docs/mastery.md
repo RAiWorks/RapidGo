@@ -1,0 +1,1235 @@
+# 🏛️ MASTERY — Development Process Framework
+
+> **A disciplined, structured approach to building software — from idea to production.**
+> Every feature starts as a discussion, gets designed, becomes a plan, and ships as clean, tested code.
+> No cowboy coding. No improvised architectures. No untested merges.
+
+---
+
+## 📋 Table of Contents
+
+- [Philosophy](#-philosophy)
+- [Document Ecosystem](#-document-ecosystem)
+- [The Workflow — Feature Lifecycle](#-the-workflow--feature-lifecycle)
+- [Document Naming Convention](#-document-naming-convention)
+- [Definition of Done](#-definition-of-done)
+- [Document Templates](#-document-templates)
+  - [Discussion Doc](#1-discussion-document)
+  - [Architecture Doc](#2-architecture-document)
+  - [Tasks Doc](#3-tasks-document)
+  - [Test Plan Doc](#4-test-plan-document)
+  - [API Spec Doc](#5-api-spec-document)
+  - [Changelog Doc](#6-changelog-document)
+  - [Review Doc](#7-review-document)
+- [Git Branching Strategy](#-git-branching-strategy)
+- [Commit Message Convention](#-commit-message-convention)
+- [Go Development Standards](#-go-development-standards)
+- [Quick Reference](#-quick-reference)
+
+---
+
+## 💡 Philosophy
+
+### Core Principles
+
+1. **Think before you type.** No code is written until the discussion is complete.
+2. **Design before you build.** Architecture decisions are documented, not improvised.
+3. **Plan before you execute.** Every task is written down and checkable.
+4. **Test before you ship.** Every feature has a test plan with clear acceptance criteria.
+5. **Document as you go.** Changes are logged in real time, not reconstructed from memory.
+6. **Review when you're done.** Reflect, learn, carry lessons forward.
+
+### Why This Framework Exists
+
+Most projects fail not because of bad code, but because of:
+
+- Features built without understanding the full picture
+- Architecture decisions made on the fly and forgotten
+- Tasks that live in someone's head instead of a checklist
+- Bugs shipped because no one defined what "working" means
+- The same mistakes repeated because no one wrote them down
+- Scope creep from features that were never properly scoped
+
+**Mastery** solves this by making the process as important as the product. The framework is tool-agnostic, language-agnostic, and scales from solo development to full teams.
+
+### The Golden Rule
+
+> **If it's not written down, it doesn't exist.**
+
+Verbal decisions evaporate. Slack messages get buried. Only docs persist.
+
+---
+
+## 📂 Document Ecosystem
+
+Every project using Mastery has this documentation structure:
+
+```
+docs/
+├── mastery.md                  # 🏛️ THIS — The process framework
+├── project-context.md          # 🎯 Project identity, stack, architecture, scope
+├── project-roadmap.md          # 🗺️ Feature list, priorities, dependencies, progress
+│
+├── features/                   # 📁 Per-feature working docs (one set per feature)
+│   ├── XX-feature-discussion.md
+│   ├── XX-feature-architecture.md
+│   ├── XX-feature-tasks.md
+│   ├── XX-feature-testplan.md
+│   ├── XX-feature-api.md          # (only for features with API endpoints)
+│   ├── XX-feature-changelog.md
+│   └── XX-feature-review.md
+│
+└── framework/                  # 📁 Framework reference documentation
+    ├── README.md               # Navigation hub for all framework docs
+    ├── architecture/           # Architecture overview, diagrams, design principles
+    ├── core/                   # Service container, providers, config, logging
+    ├── http/                   # Routing, controllers, middleware, views
+    ├── data/                   # Database, models, migrations, pagination
+    ├── security/               # Auth, sessions, CSRF, CORS, rate limiting
+    ├── infrastructure/         # Caching, mail, events, storage, i18n
+    ├── cli/                    # CLI commands, code generation
+    ├── guides/                 # Getting started, tutorials, walkthroughs
+    ├── testing/                # Test strategy, unit tests, integration tests
+    ├── deployment/             # Docker, health checks, build & run
+    ├── reference/              # Env vars, helpers, middleware quick reference
+    └── appendix/               # Glossary, roadmap, naming
+```
+
+### Document Roles
+
+| Document | Scope | Purpose | When Created |
+|---|---|---|---|
+| **mastery.md** | Universal | Process framework — HOW you work | Once (project init) |
+| **project-context.md** | Project | Project identity — WHAT you're building | Once (project init) |
+| **project-roadmap.md** | Project | Feature plan — WHEN you build it | Once, updated continuously |
+| **discussion.md** | Feature | Requirements & design conversation | Start of every feature |
+| **architecture.md** | Feature | Technical design & file structure | After discussion, before coding |
+| **tasks.md** | Feature | Phased implementation checklist | After architecture is designed |
+| **testplan.md** | Feature | Test cases & acceptance criteria | Alongside or after tasks |
+| **api.md** | Feature | API contracts (routes, payloads, status codes) | When feature has API endpoints |
+| **changelog.md** | Feature | Running log of changes during implementation | During build phase |
+| **review.md** | Feature | Post-implementation retrospective | After merge to main |
+
+### Which Docs Are Required vs Optional?
+
+| Document | Required? | Skip When... |
+|---|---|---|
+| **discussion** | ✅ Always | Never skip — this is the foundation |
+| **architecture** | ✅ Always | Never skip — even simple features need file structure planning |
+| **tasks** | ✅ Always | Never skip — this is your execution plan |
+| **testplan** | ✅ Always | Never skip — define "done" before you start |
+| **api** | ⚡ Conditional | Feature has no HTTP/API endpoints |
+| **changelog** | ✅ Always | Never skip — tracks what actually happened vs what was planned |
+| **review** | ✅ Always | Never skip — learning compounds over time |
+
+---
+
+## 🔄 The Workflow — Feature Lifecycle
+
+Every feature flows through **6 stages**. Each stage has a clear entry condition and exit condition. No stage may be skipped.
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          FEATURE LIFECYCLE                                   │
+│                                                                             │
+│  ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌─────────┐  │
+│  │    1.    │   │    2.    │   │    3.    │   │    4.    │   │   5.    │  │
+│  │ DISCUSS  │──▶│ DESIGN   │──▶│  PLAN    │──▶│  BUILD   │──▶│  SHIP   │  │
+│  │          │   │          │   │          │   │          │   │         │  │
+│  └──────────┘   └──────────┘   └──────────┘   └──────────┘   └─────────┘  │
+│       │              │              │              │              │         │
+│   discussion    architecture      tasks        changelog      review       │
+│   doc created   doc created     doc created    updated        doc created  │
+│                                 testplan                                   │
+│                                 doc created                                │
+│                                 api doc                                    │
+│                                 (if needed)                                │
+│                                                                            │
+│                          ┌──────────┐                                      │
+│                          │    6.    │                                       │
+│                          │ REFLECT  │                                       │
+│                          └──────────┘                                       │
+│                           review doc                                        │
+│                           completed                                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Stage 1 — Discuss 💬
+
+> **Entry**: Feature identified in roadmap
+> **Exit**: Discussion doc marked COMPLETE with summary
+
+**Purpose**: Fully understand the feature before any design work begins. Surface ambiguity, edge cases, and dependencies early — when changes are free, not expensive.
+
+| Action | Detail |
+|---|---|
+| Create `XX-feature-discussion.md` | Use the discussion template |
+| Define WHAT the feature does | Functional requirements, user stories, acceptance criteria |
+| Understand current state | Reference existing code, prior art, or "greenfield" |
+| Identify the approach | High-level "how" — not detailed architecture yet |
+| Surface edge cases | What can go wrong? What's tricky? What's ambiguous? |
+| List dependencies | What must exist before this feature can be built? |
+| Resolve open questions | Discuss iteratively until all questions are answered |
+| Mark COMPLETE | Add summary at top, note the date |
+
+**Anti-patterns to avoid**:
+- Rushing to design before understanding the problem
+- Leaving open questions unresolved
+- Skipping dependency analysis
+
+### Stage 2 — Design 🏗️
+
+> **Entry**: Discussion marked COMPLETE
+> **Exit**: Architecture doc reviewed and finalized
+
+**Purpose**: Translate understanding into a technical blueprint. Every file, interface, data model, and data flow is defined before any code is written.
+
+| Action | Detail |
+|---|---|
+| Create `XX-feature-architecture.md` | Use the architecture template |
+| Define file structure | Every file to create/modify, with full paths |
+| Design data models | Schema, relationships, constraints, migrations |
+| Design interfaces | Function signatures, struct definitions, interface contracts |
+| Draw data flow | How data moves through the system (request → response) |
+| Document trade-offs | Why this approach over alternatives, with pros/cons |
+| Define config changes | Environment variables, settings, feature flags |
+| Identify security surface | Auth, validation, encryption — what applies? |
+
+**Anti-patterns to avoid**:
+- Designing in code instead of in documentation
+- Skipping trade-off analysis
+- Underspecifying interfaces
+
+### Stage 3 — Plan 📋
+
+> **Entry**: Architecture doc finalized
+> **Exit**: Tasks doc + test plan + API spec (if needed) created
+
+**Purpose**: Break the architecture into granular, checkable tasks organized by phase. No task should be ambiguous — if you can't check it off definitively, break it down further.
+
+| Action | Detail |
+|---|---|
+| Create `XX-feature-tasks.md` | Break architecture into atomic, checkable tasks |
+| Organize into phases | Group by layer: data → logic → HTTP → UI → test → docs |
+| Add checkpoints | Verification points between phases |
+| Create `XX-feature-testplan.md` | Define test cases and acceptance criteria |
+| Create `XX-feature-api.md` | If feature has endpoints — define full contracts |
+| Create `XX-feature-changelog.md` | Empty — ready for build phase logging |
+| Create feature branch | `feature/XX-feature-name` from `main` |
+
+**Anti-patterns to avoid**:
+- Vague tasks like "implement feature" — be specific
+- Missing checkpoints between phases
+- Not defining the test plan before building
+
+### Stage 4 — Build 🔨
+
+> **Entry**: Branch created, all planning docs complete
+> **Exit**: All task checkboxes checked, all tests pass
+
+**Purpose**: Execute the plan methodically. Check off tasks as you go. Log everything that deviates from the plan. Commit frequently with clear messages.
+
+| Action | Detail |
+|---|---|
+| Execute tasks phase by phase | Check off items as you complete them |
+| Log changes in changelog | What was built, what deviated, decisions made |
+| Commit frequently | Clear messages following the commit convention |
+| Run tests at checkpoints | Verify each phase before moving to the next |
+| Push to feature branch | Keep remote in sync — don't accumulate local commits |
+
+**Anti-patterns to avoid**:
+- Working without checking off tasks
+- Forgetting to log deviations from the plan
+- Large, infrequent commits
+
+### Stage 5 — Ship 🚀
+
+> **Entry**: All tasks complete, all tests pass
+> **Exit**: Feature merged to main, pushed to remote
+
+**Purpose**: Final quality gate. Self-review every change, run the full test plan one last time, then merge with confidence.
+
+| Action | Detail |
+|---|---|
+| Self-review all changes | Read your own diff — would you approve this PR? |
+| Final test pass | Full test plan execution one last time |
+| Merge to main | PR or direct merge (based on team workflow) |
+| Push main | Trigger CI/CD pipeline if configured |
+| Keep the feature branch | Never delete — branches are historical records |
+
+**Anti-patterns to avoid**:
+- Merging without self-review
+- Skipping the final test pass
+- Deleting feature branches
+
+### Stage 6 — Reflect 🪞
+
+> **Entry**: Feature merged to main
+> **Exit**: Review doc completed, roadmap updated
+
+**Purpose**: Learning compounds over time. Every shipped feature teaches you something — but only if you write it down.
+
+| Action | Detail |
+|---|---|
+| Create/complete `XX-feature-review.md` | Use the review template |
+| What went well? | Patterns to repeat in future features |
+| What went wrong? | Blockers, time sinks, bugs, surprises |
+| What was learned? | New knowledge, techniques, insights |
+| What to change next time? | Concrete, actionable improvements |
+| Update roadmap | Mark feature as complete in `project-roadmap.md` |
+
+**Anti-patterns to avoid**:
+- Skipping reflection because "it went fine"
+- Writing vague lessons like "be more careful"
+- Not updating the roadmap
+
+---
+
+## 📛 Document Naming Convention
+
+### Feature Documents
+
+All feature documents live in `docs/features/`:
+
+```
+docs/features/
+├── 01-project-setup-discussion.md
+├── 01-project-setup-architecture.md
+├── 01-project-setup-tasks.md
+├── 01-project-setup-testplan.md
+├── 01-project-setup-changelog.md
+├── 01-project-setup-review.md
+├── 02-auth-system-discussion.md
+├── 02-auth-system-architecture.md
+├── 02-auth-system-tasks.md
+├── 02-auth-system-testplan.md
+├── 02-auth-system-api.md
+├── 02-auth-system-changelog.md
+├── 02-auth-system-review.md
+└── ...
+```
+
+### Naming Rules
+
+| Element | Format | Example |
+|---|---|---|
+| **Sequence** | 2-digit zero-padded | `01`, `02`, `10` |
+| **Feature name** | lowercase, hyphen-separated | `auth-system`, `user-dashboard` |
+| **Doc type** | suffix before `.md` | `-discussion`, `-architecture`, `-tasks`, `-testplan`, `-api`, `-changelog`, `-review` |
+| **Branch name** | `feature/XX-feature-name` | `feature/02-auth-system` |
+
+### Sequence Assignment Principle
+
+Features are numbered in **dependency order** — what must exist first gets a lower number. Define the sequence in `project-roadmap.md` based on the project's dependency graph.
+
+General ordering logic:
+
+1. **Foundation** — project setup, module init, configuration, directory structure
+2. **Core infrastructure** — service container, providers, error handling, logging
+3. **Data layer** — database, models, migrations, seeders
+4. **HTTP layer** — routing, controllers, middleware, request/response
+5. **Security** — authentication, sessions, CSRF, CORS, rate limiting
+6. **Business logic** — services, events, caching, mail
+7. **Presentation** — views, templates, static assets
+8. **Developer experience** — CLI, code generation, helpers
+9. **Testing** — test infrastructure, integration tests
+10. **Deployment** — Docker, CI/CD, health checks, monitoring
+
+---
+
+## ✅ Definition of Done
+
+A feature is **DONE** when ALL of the following are true:
+
+| # | Criterion | Verified By |
+|---|---|---|
+| 1 | Discussion doc is marked COMPLETE | Summary present, date noted |
+| 2 | Architecture doc is FINALIZED | All sections filled, trade-offs documented |
+| 3 | All tasks in tasks doc are checked off | Every `[ ]` is `[x]` |
+| 4 | All test plan test cases pass | Test summary table filled |
+| 5 | No known bugs remain | Or documented as accepted/deferred |
+| 6 | Changelog reflects actual implementation | Deviations logged with reasons |
+| 7 | Code is self-reviewed | Diff read, code is clean |
+| 8 | Feature branch merged to main | Fast-forward or merge commit |
+| 9 | Main pushed to remote | CI/CD green (if configured) |
+| 10 | Feature branch preserved | Not deleted |
+| 11 | Review doc completed | Lessons captured |
+| 12 | Roadmap updated | Feature marked complete |
+
+If any criterion is not met, the feature is **NOT DONE** — regardless of whether the code works.
+
+---
+
+## 📝 Document Templates
+
+Below are the templates for every document type. Copy the relevant template when starting a new document.
+
+---
+
+### 1. Discussion Document
+
+**Filename**: `XX-feature-name-discussion.md`
+**Purpose**: Understand the feature completely through structured conversation before any design or code.
+
+````markdown
+# 💬 Discussion: [Feature Name]
+
+> **Feature**: `XX` — [Feature Name]
+> **Status**: 🟡 IN PROGRESS | 🟢 COMPLETE
+> **Branch**: `feature/XX-feature-name`
+> **Depends On**: #XX, #XX (list prerequisite feature numbers)
+> **Date Started**: YYYY-MM-DD
+> **Date Completed**: —
+
+---
+
+## Summary
+
+<!-- One paragraph: What does this feature do and why does it matter? -->
+
+---
+
+## Functional Requirements
+
+<!-- What should this feature do from the user's / developer's perspective? -->
+
+- As a [role], I want [action] so that [outcome]
+- ...
+
+## Current State / Reference
+
+<!-- How does this work today? Existing code? Starting from scratch? -->
+
+### What Exists
+<!-- Describe current implementation or "Nothing — greenfield feature" -->
+
+### What Works Well
+<!-- Patterns to keep or replicate -->
+
+### What Needs Improvement
+<!-- What should be redesigned, removed, or rethought? -->
+
+## Proposed Approach
+
+<!-- High-level description of how we'll implement this -->
+<!-- NOT detailed architecture — that comes in the architecture doc -->
+
+## Edge Cases & Risks
+
+<!-- What can go wrong? What's non-obvious? -->
+
+- [ ] [Edge case or risk 1]
+- [ ] [Edge case or risk 2]
+
+## Dependencies
+
+<!-- What must exist before this feature can be built? -->
+
+| Dependency | Type | Status |
+|---|---|---|
+| Feature #XX — [Name] | Feature | ✅ Done / 🔴 Not started |
+| [Package/Library] | External | ✅ Available / 🔴 Needs install |
+| [Service/API] | Infrastructure | ✅ Ready / 🔴 Needs setup |
+
+## Open Questions
+
+<!-- Things we're unsure about — ALL must be resolved before marking COMPLETE -->
+
+- [ ] Question 1?
+- [ ] Question 2?
+
+## Decisions Made
+
+<!-- Running log — add entries as decisions happen -->
+
+| Date | Decision | Rationale |
+|---|---|---|
+| YYYY-MM-DD | [Decision] | [Why] |
+
+## Discussion Complete ✅
+
+<!-- Fill this section when ALL open questions are resolved -->
+
+**Summary**: [One-sentence final summary of what was agreed]
+**Completed**: YYYY-MM-DD
+**Next**: Create architecture doc → `XX-feature-name-architecture.md`
+````
+
+---
+
+### 2. Architecture Document
+
+**Filename**: `XX-feature-name-architecture.md`
+**Purpose**: Technical design — file structure, data models, interfaces, data flow, and trade-offs.
+
+````markdown
+# 🏗️ Architecture: [Feature Name]
+
+> **Feature**: `XX` — [Feature Name]
+> **Discussion**: [`XX-feature-name-discussion.md`](XX-feature-name-discussion.md)
+> **Status**: 🟡 DRAFT | 🟢 FINALIZED
+> **Date**: YYYY-MM-DD
+
+---
+
+## Overview
+
+<!-- One paragraph: Technical summary of the approach -->
+
+## File Structure
+
+<!-- Every file to create or modify, with full paths from project root -->
+
+```
+path/to/
+├── new-file-1.go           # Purpose
+├── new-file-2.go           # Purpose
+├── new-file_test.go        # Tests for new-file
+└── existing-file.go        # MODIFY — what changes
+```
+
+## Data Model
+
+<!-- Database tables, schemas, relationships -->
+
+### [Table/Entity Name]
+
+| Field | Type | Constraints | Description |
+|---|---|---|---|
+| id | uint | PK, auto | Unique identifier |
+| ... | ... | ... | ... |
+
+### Relationships
+<!-- Foreign keys, references, associations -->
+
+## Component Design
+
+<!-- Structs, interfaces, functions — the building blocks -->
+
+### [Component Name]
+
+**Responsibility**: [What this component does]
+**Package**: `path/to/package`
+**File**: `path/to/file.go`
+
+```
+Exported API:
+├── NewComponent(deps) → *Component             # Constructor
+├── (c *Component) Method(params) → (result, error)  # Description
+└── (c *Component) Method(params) → error            # Description
+```
+
+### Interfaces
+
+```go
+type InterfaceName interface {
+    Method(params) (returnType, error)
+}
+```
+
+## Data Flow
+
+<!-- How data moves through the system for this feature -->
+
+```
+[Trigger] → [Entry Point] → [Processing] → [Storage] → [Response]
+```
+
+<!-- Describe each step -->
+
+## Configuration
+
+<!-- Environment variables, config files -->
+
+| Key | Type | Default | Description |
+|---|---|---|---|
+| `ENV_VAR_NAME` | string | `""` | What it configures |
+
+## Security Considerations
+
+<!-- Auth, authorization, input validation, encryption, rate limiting -->
+
+## Trade-offs & Alternatives
+
+<!-- Why this approach? What else was considered? -->
+
+| Approach | Pros | Cons | Verdict |
+|---|---|---|---|
+| Chosen approach | ... | ... | ✅ Selected |
+| Alternative A | ... | ... | ❌ Reason |
+
+## Next
+
+Create tasks doc → `XX-feature-name-tasks.md`
+````
+
+---
+
+### 3. Tasks Document
+
+**Filename**: `XX-feature-name-tasks.md`
+**Purpose**: Phased implementation checklist with checkpoints between phases.
+
+````markdown
+# ✅ Tasks: [Feature Name]
+
+> **Feature**: `XX` — [Feature Name]
+> **Architecture**: [`XX-feature-name-architecture.md`](XX-feature-name-architecture.md)
+> **Branch**: `feature/XX-feature-name`
+> **Status**: 🔴 NOT STARTED | 🟡 IN PROGRESS | 🟢 COMPLETE
+> **Progress**: 0/XX tasks complete
+
+---
+
+## Pre-Flight Checklist
+
+- [ ] Discussion doc is marked COMPLETE
+- [ ] Architecture doc is FINALIZED
+- [ ] Feature branch created from latest `main`
+- [ ] Dependent features are merged to `main`
+- [ ] Test plan doc created
+- [ ] Changelog doc created (empty)
+
+---
+
+## Phase A — Data Layer
+
+> Database schema, migrations, models, seeds.
+
+- [ ] **A.1** — [Specific task description]
+  - [ ] Sub-step if needed
+  - [ ] Sub-step if needed
+- [ ] **A.2** — [Specific task description]
+- [ ] 📍 **Checkpoint A** — Migrations run, models instantiate, seed data loads
+
+---
+
+## Phase B — Core Logic
+
+> Business logic, services, helpers, internal packages.
+
+- [ ] **B.1** — [Specific task description]
+- [ ] **B.2** — [Specific task description]
+- [ ] 📍 **Checkpoint B** — Core logic works independently (unit tests pass)
+
+---
+
+## Phase C — HTTP / API Layer
+
+> Routes, controllers, middleware, request/response handling.
+
+- [ ] **C.1** — [Specific task description]
+- [ ] **C.2** — [Specific task description]
+- [ ] 📍 **Checkpoint C** — All endpoints respond correctly, middleware applied
+
+---
+
+## Phase D — Presentation
+
+> Views, templates, components, static assets, client-side logic.
+
+- [ ] **D.1** — [Specific task description]
+- [ ] **D.2** — [Specific task description]
+- [ ] 📍 **Checkpoint D** — Visual review complete, responsive, accessible
+
+---
+
+## Phase E — Testing
+
+> Execute the test plan, verify all acceptance criteria.
+
+- [ ] **E.1** — Run test plan: happy path test cases
+- [ ] **E.2** — Run test plan: error cases
+- [ ] **E.3** — Run test plan: edge cases
+- [ ] **E.4** — Run test plan: security tests
+- [ ] 📍 **Checkpoint E** — All acceptance criteria met, test summary filled
+
+---
+
+## Phase F — Documentation & Cleanup
+
+> Code comments, doc updates, self-review.
+
+- [ ] **F.1** — Add inline comments where logic is non-obvious
+- [ ] **F.2** — Update changelog doc with final summary
+- [ ] **F.3** — Update project roadmap progress
+- [ ] **F.4** — Self-review all diffs
+- [ ] 📍 **Checkpoint F** — Clean code, complete docs, ready to ship
+
+---
+
+## Ship 🚀
+
+- [ ] All phases complete
+- [ ] All checkpoints verified
+- [ ] Final commit with descriptive message
+- [ ] Push to feature branch
+- [ ] Merge to `main`
+- [ ] Push `main`
+- [ ] **Keep the feature branch** — do not delete
+- [ ] Create review doc → `XX-feature-name-review.md`
+````
+
+---
+
+### 4. Test Plan Document
+
+**Filename**: `XX-feature-name-testplan.md`
+**Purpose**: Define exactly what "working" means — test cases, acceptance criteria, edge cases.
+
+````markdown
+# 🧪 Test Plan: [Feature Name]
+
+> **Feature**: `XX` — [Feature Name]
+> **Tasks**: [`XX-feature-name-tasks.md`](XX-feature-name-tasks.md)
+> **Date**: YYYY-MM-DD
+
+---
+
+## Acceptance Criteria
+
+<!-- The feature is DONE when ALL of these are true -->
+
+- [ ] [Criterion 1 — specific, measurable, verifiable]
+- [ ] [Criterion 2]
+- [ ] [Criterion 3]
+
+---
+
+## Test Cases
+
+### TC-01: [Test Case Name]
+
+| Property | Value |
+|---|---|
+| **Category** | Happy Path / Error / Edge Case / Security / Performance |
+| **Precondition** | [What must be true before this test] |
+| **Steps** | 1. [Step] → 2. [Step] → 3. [Step] |
+| **Expected Result** | [What should happen] |
+| **Status** | ⬜ Not Run / ✅ Pass / ❌ Fail |
+| **Notes** | — |
+
+### TC-02: [Test Case Name]
+
+| Property | Value |
+|---|---|
+| **Category** | ... |
+| **Precondition** | ... |
+| **Steps** | ... |
+| **Expected Result** | ... |
+| **Status** | ⬜ Not Run |
+| **Notes** | — |
+
+<!-- Add more test cases as needed -->
+
+---
+
+## Edge Cases
+
+| # | Scenario | Expected Behavior |
+|---|---|---|
+| 1 | [Edge case description] | [How system should handle it] |
+| 2 | ... | ... |
+
+## Security Tests
+
+| # | Test | Expected |
+|---|---|---|
+| 1 | [Unauthorized access attempt] | [Rejected with proper status code] |
+| 2 | [Malicious input / injection] | [Sanitized / rejected] |
+
+## Performance Considerations
+
+| Metric | Target | Actual |
+|---|---|---|
+| Response time (p95) | < Xms | — |
+| Memory usage | < XMB | — |
+| Throughput | > X req/s | — |
+
+---
+
+## Test Summary
+
+<!-- Fill AFTER running all tests -->
+
+| Category | Total | Pass | Fail | Skip |
+|---|---|---|---|---|
+| Happy Path | — | — | — | — |
+| Error Cases | — | — | — | — |
+| Edge Cases | — | — | — | — |
+| Security | — | — | — | — |
+| Performance | — | — | — | — |
+| **Total** | — | — | — | — |
+
+**Result**: ⬜ NOT RUN | ✅ ALL PASS | ❌ HAS FAILURES
+````
+
+---
+
+### 5. API Spec Document
+
+**Filename**: `XX-feature-name-api.md`
+**Purpose**: HTTP API contracts — endpoints, payloads, status codes, auth requirements.
+
+> **Only create this doc when the feature includes HTTP/API endpoints.**
+
+````markdown
+# 🔌 API Spec: [Feature Name]
+
+> **Feature**: `XX` — [Feature Name]
+> **Base Path**: `/api/v1/...`
+> **Auth Required**: Yes / No / Mixed
+> **Date**: YYYY-MM-DD
+
+---
+
+## Endpoints Overview
+
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| `GET` | `/resource` | 🔒 Yes | List resources |
+| `POST` | `/resource` | 🔒 Yes | Create resource |
+| `GET` | `/resource/:id` | 🔒 Yes | Get single resource |
+| `PUT` | `/resource/:id` | 🔒 Yes | Update resource |
+| `DELETE` | `/resource/:id` | 🔒 Yes | Delete resource |
+
+---
+
+## Endpoint Details
+
+### `GET /resource`
+
+**Description**: [What this endpoint does]
+**Auth**: [Required / Optional / None]
+
+**Query Parameters**:
+
+| Param | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `page` | int | No | 1 | Page number |
+| `limit` | int | No | 20 | Items per page |
+| `sort` | string | No | `id` | Sort field |
+| `order` | string | No | `asc` | Sort direction (`asc` / `desc`) |
+
+**Success Response** (`200`):
+
+```json
+{
+  "status": "success",
+  "data": [],
+  "meta": {
+    "page": 1,
+    "limit": 20,
+    "total": 0
+  }
+}
+```
+
+**Error Responses**:
+
+| Status | Body | When |
+|---|---|---|
+| `401` | `{ "status": "error", "message": "Unauthorized" }` | Missing or invalid auth token |
+| `403` | `{ "status": "error", "message": "Forbidden" }` | Insufficient permissions |
+| `500` | `{ "status": "error", "message": "Internal error" }` | Server error |
+
+---
+
+### `POST /resource`
+
+**Description**: [What this endpoint does]
+**Auth**: Required
+**Content-Type**: `application/json`
+
+**Request Body**:
+
+```json
+{
+  "field1": "string (required)",
+  "field2": 0
+}
+```
+
+**Validation Rules**:
+
+| Field | Rules |
+|---|---|
+| `field1` | Required, string, min 1, max 255 |
+| `field2` | Optional, integer, min 0 |
+
+**Success Response** (`201`):
+
+```json
+{
+  "status": "success",
+  "data": { "id": 1, "field1": "value", "field2": 0 }
+}
+```
+
+**Error Responses**:
+
+| Status | Body | When |
+|---|---|---|
+| `400` | `{ "status": "error", "errors": {...} }` | Validation failure |
+| `401` | `{ "status": "error", "message": "Unauthorized" }` | No auth |
+| `409` | `{ "status": "error", "message": "Already exists" }` | Duplicate resource |
+| `422` | `{ "status": "error", "message": "Unprocessable" }` | Semantic error |
+
+<!-- Repeat for each endpoint -->
+````
+
+---
+
+### 6. Changelog Document
+
+**Filename**: `XX-feature-name-changelog.md`
+**Purpose**: Running log of what actually happened during implementation — changes, deviations, and decisions made during the build phase.
+
+````markdown
+# 📝 Changelog: [Feature Name]
+
+> **Feature**: `XX` — [Feature Name]
+> **Branch**: `feature/XX-feature-name`
+> **Started**: YYYY-MM-DD
+> **Completed**: —
+
+---
+
+## Log
+
+<!-- Add entries as you work. Most recent first. -->
+
+### YYYY-MM-DD
+
+- **[Added/Changed/Fixed/Removed]**: [Description of what happened]
+  - Detail or context if needed
+  - Related file: `path/to/file`
+
+### YYYY-MM-DD
+
+- **[Added]**: [Description]
+
+---
+
+## Deviations from Plan
+
+<!-- Things that went differently than the architecture/tasks docs planned -->
+
+| What Changed | Original Plan | What Actually Happened | Why |
+|---|---|---|---|
+| [Component] | [Planned approach] | [Actual approach] | [Reason for deviation] |
+
+## Key Decisions Made During Build
+
+<!-- Runtime decisions NOT in the discussion/architecture docs -->
+
+| Decision | Context | Date |
+|---|---|---|
+| [Decision] | [Why it came up and what was chosen] | YYYY-MM-DD |
+````
+
+---
+
+### 7. Review Document
+
+**Filename**: `XX-feature-name-review.md`
+**Purpose**: Post-implementation retrospective — capture what happened, what was learned, and what to do differently.
+
+````markdown
+# 🪞 Review: [Feature Name]
+
+> **Feature**: `XX` — [Feature Name]
+> **Branch**: `feature/XX-feature-name`
+> **Merged**: YYYY-MM-DD
+> **Duration**: [Start date] → [End date]
+
+---
+
+## Result
+
+**Status**: ✅ Shipped | ⚠️ Shipped with known issues | ❌ Abandoned
+
+**Summary**: [One paragraph — what was built and delivered]
+
+---
+
+## What Went Well ✅
+
+- [Pattern, approach, or decision that worked great]
+- [Something to repeat in future features]
+
+## What Went Wrong ❌
+
+- [Problem] — [Impact] — [Resolution]
+- [Problem] — [Impact] — [Resolution]
+
+## What Was Learned 📚
+
+- [Concrete lesson or insight gained]
+- [New technique or approach discovered]
+
+## What To Do Differently Next Time 🔄
+
+- [Specific, actionable change for future features]
+- [Process improvement to apply]
+
+## Metrics
+
+| Metric | Value |
+|---|---|
+| Tasks planned | XX |
+| Tasks completed | XX |
+| Tests planned | XX |
+| Tests passed | XX |
+| Deviations from plan | XX |
+| Commits on branch | XX |
+
+## Follow-ups
+
+<!-- Anything spawned from this feature that needs future attention -->
+
+- [ ] [Follow-up item — file as future roadmap entry if significant]
+- [ ] [Follow-up item]
+````
+
+---
+
+## 🌿 Git Branching Strategy
+
+```
+main ─────●────●────●────●────●────●────●──────▶
+           \       ↗  \       ↗  \       ↗
+            ●─●─●─●    ●─●─●─●    ●─●─●─●
+           feature/     feature/    feature/
+           01-name      02-name     03-name
+           (kept)       (kept)      (kept)
+```
+
+### Branch Rules
+
+| Rule | Detail |
+|---|---|
+| **`main`** | Always deployable. Only receives merges from feature branches. |
+| **`feature/XX-name`** | Created from latest `main`. One branch per feature. |
+| **Never delete** | Feature branches are kept forever as historical reference. |
+| **One at a time** | Finish and merge before starting the next (unless truly independent). |
+
+### Branch Naming
+
+| Pattern | Example | When |
+|---|---|---|
+| `feature/XX-feature-name` | `feature/02-auth-system` | Standard feature work |
+| `fix/XX-description` | `fix/03-login-redirect-loop` | Bug fix on a shipped feature |
+| `documentation` | `documentation` | Docs-only changes (no feature code) |
+
+### Git Commands — Feature Workflow
+
+```bash
+# Start a new feature
+git checkout main
+git pull origin main
+git checkout -b feature/XX-feature-name
+
+# Work on feature (repeat as needed)
+git add .
+git commit -m "feat(scope): description"
+
+# Push branch to remote
+git push origin feature/XX-feature-name
+
+# Merge to main (when feature is DONE — all criteria met)
+git checkout main
+git pull origin main
+git merge feature/XX-feature-name
+git push origin main
+
+# Return to feature branch (if revisiting)
+git checkout feature/XX-feature-name
+```
+
+### Rules of Thumb
+
+- **Commit early, commit often** — small commits tell a better story
+- **Push before you stop working** — never leave unpushed work overnight
+- **Pull before you merge** — always merge into a fresh `main`
+- **Never force push `main`** — history is sacred on the default branch
+
+---
+
+## 📝 Commit Message Convention
+
+### Format
+
+```
+type(scope): short description
+
+[optional body — explain WHY, not WHAT]
+[optional footer — references, breaking changes]
+```
+
+### Types
+
+| Type | When to Use |
+|---|---|
+| `feat` | New feature or functionality |
+| `fix` | Bug fix |
+| `docs` | Documentation changes only |
+| `style` | Formatting, whitespace — no logic change |
+| `refactor` | Code restructure — no behavior change |
+| `test` | Adding or updating tests |
+| `chore` | Build, config, tooling, dependencies |
+| `perf` | Performance improvement |
+
+### Scope
+
+The scope identifies which module or feature is affected. Use short, consistent names.
+
+| Scope | Area |
+|---|---|
+| `core` | Service container, providers, config |
+| `http` | Routing, controllers, middleware |
+| `data` | Database, models, migrations |
+| `auth` | Authentication, sessions, JWT |
+| `security` | CSRF, CORS, rate limiting, crypto |
+| `infra` | Caching, mail, events, storage, i18n |
+| `cli` | CLI commands, code generation |
+| `deploy` | Docker, health checks, build |
+| `docs` | Any documentation change |
+
+### Examples
+
+```
+feat(http): add route group middleware chaining
+fix(auth): resolve session expiry race condition
+docs(security): add Cookie session store documentation
+refactor(core): extract provider registration into helper
+test(data): add pagination edge case coverage
+chore(deps): update GORM to v2.x
+perf(http): cache compiled route patterns
+```
+
+### Commit Message Quality Checklist
+
+- ✅ Imperative mood ("add", "fix", "update" — not "added", "fixed", "updated")
+- ✅ Lowercase after the colon
+- ✅ No period at the end
+- ✅ Under 72 characters for the subject line
+- ✅ Body explains WHY, not WHAT (the diff shows what)
+
+---
+
+## 🔧 Go Development Standards
+
+### Project Layout
+
+Follow the standard Go project layout conventions:
+
+```
+├── cmd/                    # Application entry points
+│   └── app/
+│       └── main.go
+├── internal/               # Private packages (not importable externally)
+│   ├── core/
+│   ├── http/
+│   └── ...
+├── pkg/                    # Public packages (importable by other projects)
+├── configs/                # Configuration files
+├── migrations/             # Database migrations
+├── docs/                   # Documentation (this directory)
+├── tests/                  # Integration / E2E tests
+├── go.mod
+├── go.sum
+└── Makefile
+```
+
+### Code Quality Gates
+
+Before merging any feature, verify:
+
+| Gate | Command | Must Pass |
+|---|---|---|
+| **Compile** | `go build ./...` | ✅ Zero errors |
+| **Tests** | `go test ./...` | ✅ All pass |
+| **Race detector** | `go test -race ./...` | ✅ No races |
+| **Vet** | `go vet ./...` | ✅ No issues |
+| **Lint** | `golangci-lint run` | ✅ Clean |
+| **Format** | `gofmt -l .` | ✅ No output |
+
+### Testing Conventions
+
+| Convention | Detail |
+|---|---|
+| **Test file location** | Same package, `_test.go` suffix |
+| **Test function naming** | `TestXxx`, `TestXxx_SubCase` |
+| **Table-driven tests** | Preferred for functions with multiple input scenarios |
+| **Test helpers** | Use `t.Helper()` for shared setup functions |
+| **Benchmarks** | `BenchmarkXxx` for performance-sensitive code |
+
+### Error Handling
+
+| Principle | Detail |
+|---|---|
+| **Always handle errors** | Never use `_` for error returns unless justified with a comment |
+| **Wrap with context** | `fmt.Errorf("doing X: %w", err)` |
+| **Sentinel errors** | Define package-level `var ErrXxx = errors.New("...")` |
+| **Don't panic** | Reserve `panic` for truly unrecoverable situations |
+
+---
+
+## ⚡ Quick Reference
+
+### Starting a New Feature — Step by Step
+
+```
+ 1.  Check project-roadmap.md → identify next feature number
+ 2.  Create  docs/features/XX-feature-discussion.md      (discuss)
+ 3.  Discuss until fully understood → mark COMPLETE
+ 4.  Create  docs/features/XX-feature-architecture.md     (design)
+ 5.  Finalize architecture → mark FINALIZED
+ 6.  Create  docs/features/XX-feature-tasks.md            (plan)
+ 7.  Create  docs/features/XX-feature-testplan.md         (define done)
+ 8.  Create  docs/features/XX-feature-api.md              (if has API)
+ 9.  Create  docs/features/XX-feature-changelog.md        (empty, ready)
+10.  Create  git branch: feature/XX-feature-name          (build)
+11.  Execute tasks, log in changelog                      (build)
+12.  Run test plan                                        (verify)
+13.  Merge to main, keep branch                           (ship)
+14.  Create  docs/features/XX-feature-review.md           (reflect)
+15.  Update  project-roadmap.md progress tracker          (track)
+```
+
+### Document Quick Reference
+
+| Need to... | Open this doc |
+|---|---|
+| Understand the process | `docs/mastery.md` (this file) |
+| See what we're building | `docs/project-context.md` |
+| See what's next | `docs/project-roadmap.md` |
+| Start a feature | `docs/features/XX-feature-discussion.md` |
+| Design a feature | `docs/features/XX-feature-architecture.md` |
+| Plan implementation | `docs/features/XX-feature-tasks.md` |
+| Define test cases | `docs/features/XX-feature-testplan.md` |
+| Spec an API | `docs/features/XX-feature-api.md` |
+| Log build progress | `docs/features/XX-feature-changelog.md` |
+| Reflect on delivery | `docs/features/XX-feature-review.md` |
+| Browse framework docs | `docs/framework/README.md` |
+
+### Stage Gate Summary
+
+```
+DISCUSS  ──▶  Discussion doc marked COMPLETE?        Yes ──▶  DESIGN
+DESIGN   ──▶  Architecture doc FINALIZED?            Yes ──▶  PLAN
+PLAN     ──▶  Tasks + testplan + changelog created?  Yes ──▶  BUILD
+BUILD    ──▶  All tasks checked, all tests pass?     Yes ──▶  SHIP
+SHIP     ──▶  Merged to main, pushed, branch kept?   Yes ──▶  REFLECT
+REFLECT  ──▶  Review doc completed, roadmap updated?  Yes ──▶  DONE ✅
+```
+
+---
+
+> *"Think. Design. Plan. Build. Ship. Reflect. Repeat."*
+
+---
+
+*Mastery Framework v1.0*
+*Works for any project. Any language. Any stack. Any team.*
