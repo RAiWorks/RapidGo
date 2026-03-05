@@ -3,7 +3,7 @@
 > **Feature**: `01` — Project Setup & Structure
 > **Architecture**: [`01-project-setup-architecture.md`](01-project-setup-architecture.md)
 > **Branch**: `feature/01-project-setup`
-> **Status**: � COMPLETE
+> **Status**: 🟢 COMPLETE
 > **Progress**: 30/30 tasks complete
 
 ---
