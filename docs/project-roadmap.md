@@ -33,7 +33,7 @@ Every feature follows the [Mastery lifecycle](mastery.md): Discuss → Design �
 | 01 | Project Setup & Structure | ✅ | — | Suggested Project Structure |
 | 02 | Configuration System | ✅ | #01 | Configuration System |
 | 03 | Logging | ✅ | #01, #02 | Logging |
-| 04 | Error Handling | ⬜ | #01, #03 | Error Handling |
+| 04 | Error Handling | ✅ | #01, #03 | Error Handling |
 | 05 | Service Container | ⬜ | #01 | Service Container & Providers |
 | 06 | Service Providers | ⬜ | #05 | Service Container & Providers |
 | 07 | Router & Routing | ⬜ | #01, #05 | Router Layer (routes, groups, resource routes, named routes, route model binding) |
@@ -252,13 +252,13 @@ Every blueprint section mapped to its feature number. No gaps, no extras.
 
 | Phase | Features | Complete | Remaining | Status |
 |---|---|---|---|---|
-| Phase 1 — Core Skeleton | 01–10 | 3/10 | 7 | 🟡 In progress |
+| Phase 1 — Core Skeleton | 01–10 | 4/10 | 6 | 🟡 In progress |
 | Phase 2 — MVC + Auth | 11–22 | 0/12 | 12 | ⬜ Not started |
 | Phase 3 — Web Essentials | 23–31 | 0/9 | 9 | ⬜ Not started |
 | Phase 4 — Caching + Events | 32–35 | 0/4 | 4 | ⬜ Not started |
 | Phase 5 — Deploy + Testing + DX | 36–41 | 0/6 | 6 | ⬜ Not started |
 | Phase 6 — Advanced (Future) | 42–54 | 0/13 | 13 | 🔮 Future |
-| **Total (Current Scope)** | **01–41** | **3/41** | **38** | **🟡 In progress** |
+| **Total (Current Scope)** | **01–41** | **4/41** | **37** | **🟡 In progress** |
 
 ---
 

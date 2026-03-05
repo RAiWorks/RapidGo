@@ -3,8 +3,8 @@
 > **Feature**: `04` — Error Handling
 > **Architecture**: [`04-error-handling-architecture.md`](04-error-handling-architecture.md)
 > **Branch**: `feature/04-error-handling`
-> **Status**: 🔴 NOT STARTED
-> **Progress**: 0/14 tasks complete
+> **Status**: � COMPLETE
+> **Progress**: 14/14 tasks complete
 
 ---
 
@@ -12,7 +12,7 @@
 
 - [x] Discussion doc is marked COMPLETE
 - [x] Architecture doc is FINALIZED
-- [ ] Feature branch created from latest `main`
+- [x] Feature branch created from latest `main`
 - [x] Dependent features are merged to `main`
 - [x] Test plan doc created
 - [x] Changelog doc created (empty)
@@ -23,11 +23,11 @@
 
 > AppError struct, error/Unwrap interface compliance.
 
-- [ ] **A.1** — Create `core/errors/errors.go` with package declaration and imports
-- [ ] **A.2** — Define `AppError` struct with `Code int`, `Message string`, `Err error` fields
-- [ ] **A.3** — Implement `Error() string` method returning `Message`
-- [ ] **A.4** — Implement `Unwrap() error` method returning `Err` (handles nil)
-- [ ] 📍 **Checkpoint A** — `AppError` compiles, implements `error` interface, `go vet` clean
+- [x] **A.1** — Create `core/errors/errors.go` with package declaration and imports
+- [x] **A.2** — Define `AppError` struct with `Code int`, `Message string`, `Err error` fields
+- [x] **A.3** — Implement `Error() string` method returning `Message`
+- [x] **A.4** — Implement `Unwrap() error` method returning `Err` (handles nil)
+- [x] 📍 **Checkpoint A** — `AppError` compiles, implements `error` interface, `go vet` clean
 
 ---
 
@@ -35,14 +35,14 @@
 
 > Helper functions for common HTTP error scenarios.
 
-- [ ] **B.1** — Implement `NotFound(message string) *AppError` — 404
-- [ ] **B.2** — Implement `BadRequest(message string) *AppError` — 400
-- [ ] **B.3** — Implement `Internal(err error) *AppError` — 500 with wrapped error
-- [ ] **B.4** — Implement `Unauthorized(message string) *AppError` — 401
-- [ ] **B.5** — Implement `Forbidden(message string) *AppError` — 403
-- [ ] **B.6** — Implement `Conflict(message string) *AppError` — 409
-- [ ] **B.7** — Implement `Unprocessable(message string) *AppError` — 422
-- [ ] 📍 **Checkpoint B** — All 7 constructors compile, return correct codes, `go vet` clean
+- [x] **B.1** — Implement `NotFound(message string) *AppError` — 404
+- [x] **B.2** — Implement `BadRequest(message string) *AppError` — 400
+- [x] **B.3** — Implement `Internal(err error) *AppError` — 500 with wrapped error
+- [x] **B.4** — Implement `Unauthorized(message string) *AppError` — 401
+- [x] **B.5** — Implement `Forbidden(message string) *AppError` — 403
+- [x] **B.6** — Implement `Conflict(message string) *AppError` — 409
+- [x] **B.7** — Implement `Unprocessable(message string) *AppError` — 422
+- [x] 📍 **Checkpoint B** — All 7 constructors compile, return correct codes, `go vet` clean
 
 ---
 
@@ -50,8 +50,8 @@
 
 > Debug-aware response formatting.
 
-- [ ] **C.1** — Implement `ErrorResponse() map[string]any` on `*AppError` — returns `{"success": false, "error": message}`, adds `"internal"` key only when `config.IsDebug() && e.Err != nil`
-- [ ] 📍 **Checkpoint C** — `ErrorResponse()` compiles, `go vet` clean
+- [x] **C.1** — Implement `ErrorResponse() map[string]any` on `*AppError` — returns `{"success": false, "error": message}`, adds `"internal"` key only when `config.IsDebug() && e.Err != nil`
+- [x] 📍 **Checkpoint C** — `ErrorResponse()` compiles, `go vet` clean
 
 ---
 
@@ -59,10 +59,10 @@
 
 > Execute the test plan, verify all acceptance criteria.
 
-- [ ] **D.1** — Create `core/errors/errors_test.go` with all test cases from test plan
-- [ ] **D.2** — Run `go test ./core/errors/...` — all tests pass
-- [ ] **D.3** — Run `go vet ./...` — no issues
-- [ ] 📍 **Checkpoint D** — All test cases pass, zero vet warnings
+- [x] **D.1** — Create `core/errors/errors_test.go` with all test cases from test plan
+- [x] **D.2** — Run `go test ./core/errors/...` — all tests pass
+- [x] **D.3** — Run `go vet ./...` — no issues
+- [x] 📍 **Checkpoint D** — All test cases pass, zero vet warnings
 
 ---
 
@@ -70,19 +70,19 @@
 
 > Changelog, roadmap, self-review.
 
-- [ ] **E.1** — Update changelog doc with implementation summary
-- [ ] **E.2** — Self-review all diffs — code is clean, idiomatic Go
-- [ ] 📍 **Checkpoint E** — Clean code, complete docs, ready to ship
+- [x] **E.1** — Update changelog doc with implementation summary
+- [x] **E.2** — Self-review all diffs — code is clean, idiomatic Go
+- [x] 📍 **Checkpoint E** — Clean code, complete docs, ready to ship
 
 ---
 
 ## Ship 🚀
 
-- [ ] All phases complete
-- [ ] All checkpoints verified
-- [ ] Final commit with descriptive message
-- [ ] Merge to `main`
-- [ ] Push `main`
-- [ ] **Keep the feature branch** — do not delete
-- [ ] Update project roadmap progress
-- [ ] Create review doc → `04-error-handling-review.md`
+- [x] All phases complete
+- [x] All checkpoints verified
+- [x] Final commit with descriptive message
+- [x] Merge to `main`
+- [x] Push `main`
+- [x] **Keep the feature branch** — do not delete
+- [x] Update project roadmap progress
+- [x] Create review doc → `04-error-handling-review.md`
