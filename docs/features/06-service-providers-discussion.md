@@ -19,7 +19,7 @@ The blueprint's full set of built-in providers (Database, Session, Cache, Mail, 
 
 ## Functional Requirements
 
-- As a **framework developer**, I want a `ConfigProvider` so that `config.Load()` is called during registration and the config module is available as a container service
+- As a **framework developer**, I want a `ConfigProvider` so that `config.Load()` is called during registration and config values are available via package-level functions
 - As a **framework developer**, I want a `LoggerProvider` so that `logger.Setup()` is called during boot (after config is loaded) and the logger is initialized through the provider lifecycle
 - As a **framework developer**, I want `cmd/main.go` updated to use `app.New()` → `app.Register()` → `app.Boot()` so that the application follows the provider bootstrap pattern from the blueprint
 - As a **framework developer**, I want the `app/providers/` directory to contain real provider implementations so that it serves as the canonical location for all providers going forward
@@ -49,7 +49,7 @@ The blueprint's full set of built-in providers (Database, Session, Cache, Mail, 
 Create two concrete providers and update `main.go`:
 
 1. **`app/providers/config_provider.go`** — `ConfigProvider`
-   - `Register()`: calls `config.Load()`, registers a config accessor as `"config"` instance
+   - `Register()`: calls `config.Load()` — env vars become available via package-level functions
    - `Boot()`: empty — config is fully available after `Load()`
 
 2. **`app/providers/logger_provider.go`** — `LoggerProvider`
