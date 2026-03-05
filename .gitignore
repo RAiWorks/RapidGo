@@ -1,0 +1,48 @@
+# Dependencies
+vendor/
+node_modules/
+
+# Build output
+/server
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary
+*.test
+
+# Go coverage
+*.out
+coverage.html
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Storage (runtime data)
+storage/logs/
+storage/cache/
+storage/sessions/
+storage/uploads/
+
+# Reference docs (architecture design — not shipped)
+reference/
+
+# Temporary files
+tmp/
+*.tmp
