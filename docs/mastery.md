@@ -35,9 +35,10 @@
 1. **Think before you type.** No code is written until the discussion is complete.
 2. **Design before you build.** Architecture decisions are documented, not improvised.
 3. **Plan before you execute.** Every task is written down and checkable.
-4. **Test before you ship.** Every feature has a test plan with clear acceptance criteria.
-5. **Document as you go.** Changes are logged in real time, not reconstructed from memory.
-6. **Review when you're done.** Reflect, learn, carry lessons forward.
+4. **Review before you build.** All docs are reviewed and approved before implementation starts.
+5. **Test before you ship.** Every feature has a test plan with clear acceptance criteria.
+6. **Document as you go.** Changes are logged in real time, not reconstructed from memory.
+7. **Review when you're done.** Reflect, learn, carry lessons forward.
 
 ### Why This Framework Exists
 
@@ -126,32 +127,40 @@ docs/
 
 ## 🔄 The Workflow — Feature Lifecycle
 
-Every feature flows through **6 stages**. Each stage has a clear entry condition and exit condition. No stage may be skipped.
+Every feature flows through **6 stages plus a mandatory Review Gate**. Each stage has a clear entry condition and exit condition. No stage may be skipped. The Review Gate separates documentation from implementation — no code is written until docs are reviewed and approved.
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                          FEATURE LIFECYCLE                                   │
-│                                                                             │
-│  ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌─────────┐  │
-│  │    1.    │   │    2.    │   │    3.    │   │    4.    │   │   5.    │  │
-│  │ DISCUSS  │──▶│ DESIGN   │──▶│  PLAN    │──▶│  BUILD   │──▶│  SHIP   │  │
-│  │          │   │          │   │          │   │          │   │         │  │
-│  └──────────┘   └──────────┘   └──────────┘   └──────────┘   └─────────┘  │
-│       │              │              │              │              │         │
-│   discussion    architecture      tasks        changelog      review       │
-│   doc created   doc created     doc created    updated        doc created  │
-│                                 testplan                                   │
-│                                 doc created                                │
-│                                 api doc                                    │
-│                                 (if needed)                                │
-│                                                                            │
-│                          ┌──────────┐                                      │
-│                          │    6.    │                                       │
-│                          │ REFLECT  │                                       │
-│                          └──────────┘                                       │
-│                           review doc                                        │
-│                           completed                                         │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                             FEATURE LIFECYCLE                                    │
+│                                                                                  │
+│  ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐                      │
+│  │    1.    │   │    2.    │   │    3.    │   │  REVIEW  │                      │
+│  │ DISCUSS  │──▶│ DESIGN   │──▶│  PLAN    │──▶│   GATE   │                      │
+│  │          │   │          │   │          │   │   🚦     │                      │
+│  └──────────┘   └──────────┘   └──────────┘   └────┬─────┘                      │
+│       │              │              │               │                            │
+│   discussion    architecture      tasks         ⏸️ STOP                          │
+│   doc created   doc created     doc created     Present docs                     │
+│                                 testplan        for user review.                 │
+│                                 doc created     Wait for approval               │
+│                                 changelog       before proceeding.              │
+│                                 doc created                                      │
+│                                 api doc              │                           │
+│                                 (if needed)     User says                        │
+│                                                 "continue"                       │
+│                                                      │                           │
+│                                                      ▼                           │
+│                          ┌──────────┐   ┌──────────┐   ┌─────────┐              │
+│                          │    4.    │   │   5.    │   │   6.    │              │
+│                          │  BUILD   │──▶│  SHIP   │──▶│ REFLECT │              │
+│                          │          │   │         │   │         │              │
+│                          └──────────┘   └─────────┘   └─────────┘              │
+│                               │              │              │                    │
+│                           changelog      review doc     review doc               │
+│                           updated        created         completed               │
+│                                                         roadmap                  │
+│                                                         updated                  │
+└──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Stage 1 — Discuss 💬
@@ -203,7 +212,7 @@ Every feature flows through **6 stages**. Each stage has a clear entry condition
 ### Stage 3 — Plan 📋
 
 > **Entry**: Architecture doc finalized
-> **Exit**: Tasks doc + test plan + API spec (if needed) created
+> **Exit**: Tasks doc + test plan + API spec (if needed) created, docs committed
 
 **Purpose**: Break the architecture into granular, checkable tasks organized by phase. No task should be ambiguous — if you can't check it off definitively, break it down further.
 
@@ -215,22 +224,51 @@ Every feature flows through **6 stages**. Each stage has a clear entry condition
 | Create `XX-feature-testplan.md` | Define test cases and acceptance criteria |
 | Create `XX-feature-api.md` | If feature has endpoints — define full contracts |
 | Create `XX-feature-changelog.md` | Empty — ready for build phase logging |
-| Create feature branch | `feature/XX-feature-name` from `main` |
+| Commit all docs | Commit the complete doc set to the feature branch |
 
 **Anti-patterns to avoid**:
 - Vague tasks like "implement feature" — be specific
 - Missing checkpoints between phases
 - Not defining the test plan before building
 
-### Stage 4 — Build 🔨
+---
 
-> **Entry**: Branch created, all planning docs complete
-> **Exit**: All task checkboxes checked, all tests pass
+### 🚦 Review Gate — MANDATORY STOP
 
-**Purpose**: Execute the plan methodically. Check off tasks as you go. Log everything that deviates from the plan. Commit frequently with clear messages.
+> **Entry**: All planning docs (discussion, architecture, tasks, testplan, changelog, api) created and committed
+> **Exit**: User has reviewed docs and explicitly says "continue"
+
+**Purpose**: Ensure the human reviews and approves all documentation before any code is written. This prevents wasted implementation effort if the plan has gaps, scope issues, or misunderstandings. No code is written until the user gives the green light.
 
 | Action | Detail |
 |---|---|
+| Present doc summary | List all created docs with key highlights |
+| Highlight decisions | Surface important trade-offs and approach choices |
+| Wait for user review | **STOP — do not proceed automatically** |
+| User says "continue" | Only then move to Stage 4 — Build |
+
+**What happens at the gate**:
+1. All 5-6 docs are created and committed
+2. A summary is presented: scope, approach, file structure, task count, test count
+3. **Execution pauses** — the user reviews the docs at their own pace
+4. The user may request changes to docs before approving
+5. When the user says "continue" (or equivalent), implementation begins
+
+**Anti-patterns to avoid**:
+- Skipping the gate and jumping straight to implementation
+- Creating docs and building in the same step
+- Treating the gate as optional — it is MANDATORY for every feature
+
+### Stage 4 — Build 🔨
+
+> **Entry**: All planning docs approved by user at Review Gate, feature branch created
+> **Exit**: All task checkboxes checked, all tests pass
+
+**Purpose**: Execute the plan methodically. Check off tasks as you go. Log everything that deviates from the plan. Commit frequently with clear messages. This stage only begins after the user has reviewed all docs and explicitly approved them.
+
+| Action | Detail |
+|---|---|
+| Create feature branch | `feature/XX-feature-name` from `main` |
 | Execute tasks phase by phase | Check off items as you complete them |
 | Log changes in changelog | What was built, what deviated, decisions made |
 | Commit frequently | Clear messages following the commit convention |
@@ -1181,6 +1219,7 @@ Before merging any feature, verify:
 ### Starting a New Feature — Step by Step
 
 ```
+ ─── DOCUMENTATION PHASE ───────────────────────────────────────────────
  1.  Check project-roadmap.md → identify next feature number
  2.  Create  docs/features/XX-feature-discussion.md      (discuss)
  3.  Discuss until fully understood → mark COMPLETE
@@ -1190,12 +1229,19 @@ Before merging any feature, verify:
  7.  Create  docs/features/XX-feature-testplan.md         (define done)
  8.  Create  docs/features/XX-feature-api.md              (if has API)
  9.  Create  docs/features/XX-feature-changelog.md        (empty, ready)
-10.  Create  git branch: feature/XX-feature-name          (build)
-11.  Execute tasks, log in changelog                      (build)
-12.  Run test plan                                        (verify)
-13.  Merge to main, keep branch                           (ship)
-14.  Create  docs/features/XX-feature-review.md           (reflect)
-15.  Update  project-roadmap.md progress tracker          (track)
+10.  Commit all docs to feature branch                    (checkpoint)
+
+ ─── 🚦 REVIEW GATE ── MANDATORY STOP ─────────────────────────────────
+11.  Present doc summary to user for review               (gate)
+12.  ⏸️  WAIT for user to review and say "continue"        (gate)
+
+ ─── IMPLEMENTATION PHASE ──────────────────────────────────────────────
+13.  Create  git branch: feature/XX-feature-name          (build)
+14.  Execute tasks, log in changelog                      (build)
+15.  Run test plan                                        (verify)
+16.  Merge to main, keep branch                           (ship)
+17.  Create  docs/features/XX-feature-review.md           (reflect)
+18.  Update  project-roadmap.md progress tracker          (track)
 ```
 
 ### Document Quick Reference
@@ -1219,7 +1265,8 @@ Before merging any feature, verify:
 ```
 DISCUSS  ──▶  Discussion doc marked COMPLETE?        Yes ──▶  DESIGN
 DESIGN   ──▶  Architecture doc FINALIZED?            Yes ──▶  PLAN
-PLAN     ──▶  Tasks + testplan + changelog created?  Yes ──▶  BUILD
+PLAN     ──▶  Tasks + testplan + changelog created?  Yes ──▶  🚦 REVIEW GATE
+🚦 GATE  ──▶  User reviewed docs and said continue?  Yes ──▶  BUILD
 BUILD    ──▶  All tasks checked, all tests pass?     Yes ──▶  SHIP
 SHIP     ──▶  Merged to main, pushed, branch kept?   Yes ──▶  REFLECT
 REFLECT  ──▶  Review doc completed, roadmap updated?  Yes ──▶  DONE ✅
