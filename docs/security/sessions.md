@@ -14,9 +14,9 @@ supersedes: ""
 ## Abstract
 
 This document covers the session management system — the driver-based
-architecture, all four storage backends (database, Redis, file,
-memory), the session manager, middleware, store factory, and flash
-messages.
+architecture, all five storage backends (database, Redis, file,
+memory, cookie), the session manager, middleware, store factory, and
+flash messages.
 
 ## Table of Contents
 
@@ -28,12 +28,13 @@ messages.
 6. [Redis Store](#6-redis-store)
 7. [File Store](#7-file-store)
 8. [Memory Store](#8-memory-store)
-9. [Store Factory](#9-store-factory)
-10. [Session Manager](#10-session-manager)
-11. [Session Middleware](#11-session-middleware)
-12. [Flash Messages](#12-flash-messages)
-13. [Security Considerations](#13-security-considerations)
-14. [References](#14-references)
+9. [Cookie Store](#9-cookie-store)
+10. [Store Factory](#10-store-factory)
+11. [Session Manager](#11-session-manager)
+12. [Session Middleware](#12-session-middleware)
+13. [Flash Messages](#13-flash-messages)
+14. [Security Considerations](#14-security-considerations)
+15. [References](#15-references)
 
 ## 1. Terminology
 
@@ -59,10 +60,10 @@ Session Manager (cookie handling, ID generation)
        ↓
 Store Interface
        ↓
-┌──────────┬──────────┬──────────┬──────────┐
-│ DBStore  │ Redis    │ File     │ Memory   │
-│          │ Store    │ Store    │ Store    │
-└──────────┴──────────┴──────────┴──────────┘
+┌──────────┬──────────┬──────────┬──────────┬──────────┐
+│ DBStore  │ Redis    │ File     │ Memory   │ Cookie   │
+│          │ Store    │ Store    │ Store    │ Store    │
+└──────────┴──────────┴──────────┴──────────┴──────────┘
 ```
 
 ## 3. Configuration
@@ -97,6 +98,7 @@ SESSION_FILE_PATH=storage/sessions
 | **Redis** | High-performance, distributed | `redis` |
 | **File** | Simple deployments, single server | `file` |
 | **Memory** | Development & testing only | `memory` |
+| **Cookie** | Small payloads, encrypted client-side | `cookie` |
 
 ## 4. Store Interface
 
@@ -191,7 +193,38 @@ type MemoryStore struct {
 }
 ```
 
-## 9. Store Factory
+## 9. Cookie Store
+
+Stores session data encrypted in the client-side cookie itself. Suitable
+for small payloads only — cookie size is limited to ~4 KB by browsers.
+
+The cookie value is encrypted using AES-256-GCM with the `APP_KEY`
+from `.env`, ensuring data cannot be read or tampered with by the
+client.
+
+```go
+type CookieStore struct {
+    Key []byte // 32-byte AES-256 key from APP_KEY
+}
+```
+
+Behavior:
+
+| Method | Description |
+|--------|-------------|
+| `Read(id)` | Decrypt data from the cookie value |
+| `Write(id, data, lifetime)` | Encrypt and store data in the cookie |
+| `Destroy(id)` | Clear the cookie value |
+| `GC(maxLifetime)` | No-op — expiry handled by cookie `MaxAge` |
+
+Limitations:
+
+- Cookie payload **MUST NOT** exceed 4 KB after encryption.
+- Not suitable for storing large session data (use database or
+  Redis instead).
+- Every request sends the full session payload to the server.
+
+## 10. Store Factory
 
 Resolves the correct backend from `SESSION_DRIVER`:
 
@@ -219,13 +252,16 @@ func NewStore(db *gorm.DB) (Store, error) {
         return &RedisStore{Client: client, Prefix: "session:"}, nil
     case "memory":
         return NewMemoryStore(), nil
+    case "cookie":
+        key := []byte(os.Getenv("APP_KEY"))
+        return &CookieStore{Key: key}, nil
     default:
         return nil, fmt.Errorf("unsupported SESSION_DRIVER: %s", driver)
     }
 }
 ```
 
-## 10. Session Manager
+## 11. Session Manager
 
 Ties together the store, cookie handling, and ID generation:
 
@@ -252,7 +288,7 @@ Key methods:
 
 Session IDs are generated using 32 bytes from `crypto/rand`.
 
-## 11. Session Middleware
+## 12. Session Middleware
 
 Automatically loads and saves sessions per request:
 
@@ -289,7 +325,7 @@ data["last_visited"] = time.Now().Format(time.RFC3339)
 c.Set("session", data)
 ```
 
-## 12. Flash Messages
+## 13. Flash Messages
 
 One-time session data used for passing status messages across
 redirects:
@@ -335,7 +371,7 @@ c.HTML(200, "users/create.html", gin.H{
 })
 ```
 
-## 13. Security Considerations
+## 14. Security Considerations
 
 - Session cookies **MUST** use `HttpOnly` and `Secure` flags in
   production.
@@ -350,7 +386,7 @@ c.HTML(200, "users/create.html", gin.H{
 - Redis and database connections for session stores **MUST** use
   authentication in production.
 
-## 14. References
+## 15. References
 
 - [Authentication](authentication.md)
 - [CSRF Protection](csrf.md)
