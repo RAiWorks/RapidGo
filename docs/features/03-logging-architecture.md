@@ -15,9 +15,9 @@ Create the `core/logger` package that configures Go's standard `log/slog` based 
 
 ```
 core/logger/
-├── logger.go           # Setup() — configure slog handler, set default
+├── logger.go           # Setup(), Close() — configure slog handler, set default
 ├── level.go            # parseLevel() — map string to slog.Level
-└── logger_test.go      # Unit tests for Setup() and parseLevel()
+└── logger_test.go      # Unit tests for Setup(), Close(), and parseLevel()
 
 cmd/
 └── main.go             # MODIFY — add logger.Setup() call after config.Load()
@@ -72,6 +72,9 @@ import (
 	"github.com/RAiWorks/RGo/core/config"
 )
 
+// logFile holds the open log file handle (if LOG_OUTPUT=file).
+var logFile *os.File
+
 // Setup initializes the global slog logger based on config values.
 // Reads LOG_LEVEL, LOG_FORMAT, LOG_OUTPUT from environment.
 // Sets slog.SetDefault() so that slog.Info(), slog.Error() etc. work globally.
@@ -92,6 +95,7 @@ func Setup() *slog.Logger {
 				slog.Warn("failed to open log file, falling back to stdout", "err", err)
 				writer = os.Stdout
 			} else {
+				logFile = f
 				writer = f
 			}
 		}
@@ -111,6 +115,15 @@ func Setup() *slog.Logger {
 	logger := slog.New(handler)
 	slog.SetDefault(logger)
 	return logger
+}
+
+// Close closes the log file if one was opened.
+// Should be called on application shutdown.
+func Close() {
+	if logFile != nil {
+		logFile.Close()
+		logFile = nil
+	}
 }
 ```
 
