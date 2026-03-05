@@ -32,11 +32,31 @@ applications, REST APIs, and real-time WebSocket services.
 
 ## Project Status
 
-**Phase:** Architecture & Documentation
+**Phase:** Core Skeleton (Feature #01 complete)
 
-The framework is currently in the architecture design phase.
-Architecture blueprint and documentation strategy are maintained
-locally in `reference/docs/` (not tracked in version control).
+The framework has a fully initialized Go module, complete directory structure, and project scaffold. Features are being built following the [Mastery](docs/mastery.md) development process.
+
+## Documentation
+
+All documentation lives in the [`docs/`](docs/) directory:
+
+- **[Project Context](docs/project-context.md)** — What RGo is, technology stack, architecture
+- **[Project Roadmap](docs/project-roadmap.md)** — Feature plan, dependencies, progress
+- **[Mastery Process](docs/mastery.md)** — Development workflow and standards
+- **[Framework Reference](docs/framework/README.md)** — Complete framework documentation
+
+## Quick Start
+
+```bash
+# Build
+make build
+
+# Run
+make run
+
+# Test
+make test
+```
 
 ## Repository
 

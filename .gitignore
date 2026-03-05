@@ -1,48 +1,41 @@
-# Dependencies
-vendor/
-node_modules/
-
-# Build output
-/server
+# --- Go ---
+bin/
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-
-# Test binary
 *.test
-
-# Go coverage
 *.out
-coverage.html
+vendor/
 
-# Environment
-.env
+# --- Environment ---
 .env.local
 .env.*.local
 
-# IDE
-.vscode/
+# --- IDE ---
 .idea/
+.vscode/
 *.swp
 *.swo
 *~
-
-# OS
 .DS_Store
 Thumbs.db
+
+# --- Storage artifacts ---
+storage/logs/*.log
+storage/cache/*
+storage/sessions/*
+storage/uploads/*
+!storage/**/.gitkeep
+
+# --- OS ---
 desktop.ini
 
-# Storage (runtime data)
-storage/logs/
-storage/cache/
-storage/sessions/
-storage/uploads/
-
-# Reference docs (architecture design — not shipped)
+# --- Reference docs (architecture design — not shipped) ---
 reference/
 
-# Temporary files
+# --- Temporary ---
 tmp/
 *.tmp
+coverage.html

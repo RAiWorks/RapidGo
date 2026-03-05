@@ -122,7 +122,7 @@ rgo/
 | Category | Directories | Purpose |
 |---|---|---|
 | `cmd/` | 1 | Application entry point |
-| `core/` | 16 (1 parent + 15 packages) | Framework internals |
+| `core/` | 17 (1 parent + 16 packages) | Framework internals |
 | `database/` | 5 (1 parent + 4 sub) | Data layer |
 | `app/` | 4 (1 parent + 3 sub) | Application layer |
 | `http/` | 4 (1 parent + 3 sub) | HTTP layer |
@@ -130,7 +130,7 @@ rgo/
 | `resources/` | 4 (1 parent + 3 sub) | Templates, translations, static |
 | `storage/` | 5 (1 parent + 4 sub) | Runtime artifacts |
 | `tests/` | 3 (1 parent + 2 sub) | Test files |
-| **Total** | **43** | |
+| **Total** | **44** | |
 
 ## Data Model
 

@@ -30,7 +30,7 @@ Every feature follows the [Mastery lifecycle](mastery.md): Discuss → Design �
 
 | # | Feature | Status | Depends On | Blueprint Sections |
 |---|---|---|---|---|
-| 01 | Project Setup & Structure | ⬜ | — | Suggested Project Structure |
+| 01 | Project Setup & Structure | ✅ | — | Suggested Project Structure |
 | 02 | Configuration System | ⬜ | #01 | Configuration System |
 | 03 | Logging | ⬜ | #01, #02 | Logging |
 | 04 | Error Handling | ⬜ | #01, #03 | Error Handling |
@@ -252,13 +252,13 @@ Every blueprint section mapped to its feature number. No gaps, no extras.
 
 | Phase | Features | Complete | Remaining | Status |
 |---|---|---|---|---|
-| Phase 1 — Core Skeleton | 01–10 | 0/10 | 10 | ⬜ Not started |
+| Phase 1 — Core Skeleton | 01–10 | 1/10 | 9 | 🟡 In progress |
 | Phase 2 — MVC + Auth | 11–22 | 0/12 | 12 | ⬜ Not started |
 | Phase 3 — Web Essentials | 23–31 | 0/9 | 9 | ⬜ Not started |
 | Phase 4 — Caching + Events | 32–35 | 0/4 | 4 | ⬜ Not started |
 | Phase 5 — Deploy + Testing + DX | 36–41 | 0/6 | 6 | ⬜ Not started |
 | Phase 6 — Advanced (Future) | 42–54 | 0/13 | 13 | 🔮 Future |
-| **Total (Current Scope)** | **01–41** | **0/41** | **41** | **⬜ Not started** |
+| **Total (Current Scope)** | **01–41** | **1/41** | **40** | **🟡 In progress** |
 
 ---
 
