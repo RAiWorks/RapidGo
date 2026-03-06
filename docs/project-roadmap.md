@@ -67,7 +67,7 @@ Every feature follows the [Mastery lifecycle](mastery.md): Discuss → Design �
 | 12 | Database Migrations | ✅ | #09, #10 | CLI Tools (migrate commands) |
 | 13 | Database Seeding | ✅ | #09, #10, #11 | Database Seeding |
 | 14 | Database Transactions | ✅ | #09, #11 | Database Transactions |
-| 15 | Controllers | ⬜ | #07, #08 | MVC Controller Example |
+| 15 | Controllers | ✅ | #07, #08 | MVC Controller Example |
 | 16 | Response Helpers | ⬜ | #07 | Response Helpers |
 | 17 | Views & Templates | ⬜ | #07, #15 | View / Template Engine |
 | 18 | Services Layer | ⬜ | #05, #11 | Services Layer |
