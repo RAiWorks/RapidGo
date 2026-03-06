@@ -5,8 +5,10 @@ import (
 	"path/filepath"
 
 	"github.com/RAiWorks/RGo/core/container"
+	"github.com/RAiWorks/RGo/core/health"
 	"github.com/RAiWorks/RGo/core/router"
 	"github.com/RAiWorks/RGo/routes"
+	"gorm.io/gorm"
 )
 
 // RouterProvider creates the router and registers route definitions.
@@ -39,4 +41,11 @@ func (p *RouterProvider) Boot(c *container.Container) {
 	// Route definitions
 	routes.RegisterWeb(r)
 	routes.RegisterAPI(r)
+
+	// Health check endpoints (only when database is registered)
+	if c.Has("db") {
+		health.Routes(r, func() *gorm.DB {
+			return container.MustMake[*gorm.DB](c, "db")
+		})
+	}
 }
