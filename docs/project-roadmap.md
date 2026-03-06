@@ -38,8 +38,8 @@ Every feature follows the [Mastery lifecycle](mastery.md): Discuss → Design �
 | 06 | Service Providers | ✅ | #05 | Service Container & Providers |
 | 07 | Router & Routing | ✅ | #01, #05 | Router Layer (routes, groups, resource routes, named routes, route model binding) |
 | 08 | Middleware Pipeline | ✅ | #07 | Middleware (Custom Registration) |
-| 09 | Database Connection | ⬜ | #02, #05 | Database Layer |
-| 10 | CLI Foundation | ⬜ | #01, #02 | CLI Tools (cobra setup, base commands) |
+| 09 | Database Connection | ✅ | #02, #05 | Database Layer |
+| 10 | CLI Foundation | ✅ | #01, #02 | CLI Tools (cobra setup, base commands) |
 
 ### Phase 1 — Blueprint Coverage
 
