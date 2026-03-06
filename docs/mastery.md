@@ -21,6 +21,7 @@
   - [API Spec Doc](#5-api-spec-document)
   - [Changelog Doc](#6-changelog-document)
   - [Review Doc](#7-review-document)
+- [Milestone Audit — Every 5 Features](#-milestone-audit--every-5-features)
 - [Git Branching Strategy](#-git-branching-strategy)
 - [Commit Message Convention](#-commit-message-convention)
 - [Go Development Standards](#-go-development-standards)
@@ -394,7 +395,56 @@ Every feature flows through **6 stages plus two Cross-Checks and a mandatory Rev
 
 ---
 
-## 📛 Document Naming Convention
+## � Milestone Audit — Every 5 Features
+
+> **Trigger**: After every 5th feature is shipped (#25, #30, #35, #41)
+> **Purpose**: Systematic health check of the entire project — catch accumulated gaps, scope creep, missing docs, and stale state before they compound.
+
+Per-feature cross-checks catch issues within a single feature. But some problems only emerge across features: drifting conventions, missing review docs, stale roadmap markers, orphaned code, forgotten deferrals. The Milestone Audit catches these at regular intervals.
+
+### Schedule
+
+| Milestone | After Feature | Covers |
+|-----------|---------------|--------|
+| Audit 1 | #20 | Features #01–#20 ✅ *(completed)* |
+| Audit 2 | #25 | Features #21–#25 (+ verify #01–#20 fixes) |
+| Audit 3 | #30 | Features #26–#30 |
+| Audit 4 | #35 | Features #31–#35 |
+| Audit 5 | #41 | Features #36–#41 (final) |
+
+### Audit Checklist
+
+| # | Check | Detail |
+|---|---|---|
+| 1 | **Doc completeness** | Every shipped feature has all 6 required docs (discussion, architecture, tasks, testplan, changelog, review). List any missing files. |
+| 2 | **Roadmap accuracy** | All shipped features marked ✅ in `project-roadmap.md`. No stale ⬜ or 🟡 markers. |
+| 3 | **Blueprint coverage** | For each feature in the batch, compare implementation against the blueprint section. Identify gaps (missing items) and creep (extra items). |
+| 4 | **Gap classification** | Classify every gap as: (a) intentionally deferred to a named future feature, or (b) actionable now. Fix category (b) items immediately. |
+| 5 | **Scope creep assessment** | For each creep item, decide: justified (keep) or unjustified (remove or document). |
+| 6 | **Test health** | Run full `go test ./... -count=1`. All tests pass. Report total count by package. |
+| 7 | **Dependency audit** | Review `go.mod` direct dependencies. No unnecessary additions. No outdated versions with known issues. |
+| 8 | **Config/security check** | `.env` variables match code references. No secrets in version control. `.gitignore` covers build artifacts. |
+| 9 | **Cross-feature consistency** | Provider boot order, import paths, shared file modifications are all consistent across features. |
+| 10 | **Memory & process update** | Update mastery memory notes with any new lessons. Update process docs if audit reveals process gaps. |
+
+### Output
+
+Each milestone audit produces:
+1. **Audit report** — presented to user with findings table
+2. **Fixes committed** — all actionable items resolved and committed
+3. **Deferred items documented** — gaps tied to specific future features
+4. **Memory updated** — lessons and project state refreshed
+
+### Rules
+
+- **Never skip a milestone audit.** Even if everything seems fine — verify.
+- **Fix before proceeding.** All actionable gaps must be resolved before starting the next feature.
+- **Keep it lightweight.** The audit should take minutes, not hours. Use subagents for parallel investigation.
+- **Audit the batch, not everything.** After Audit 1 (#01–#20), subsequent audits focus on the new batch plus spot-checking prior fixes.
+
+---
+
+## �📛 Document Naming Convention
 
 ### Feature Documents
 
