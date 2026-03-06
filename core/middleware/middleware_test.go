@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/RAiWorks/RGo/core/errors"
+	"github.com/RAiWorks/RGo/core/session"
 	"github.com/gin-gonic/gin"
 )
 
@@ -398,5 +399,43 @@ func TestGenerateUUID_Format(t *testing.T) {
 	// Check uniqueness (at least first two)
 	if ids[0] == ids[1] {
 		t.Fatal("two UUIDs are identical — should be unique")
+	}
+}
+
+// --- Session Middleware ---
+
+func TestSessionMiddleware_SetsSessionData(t *testing.T) {
+	store := session.NewMemoryStore()
+	mgr := &session.Manager{
+		Store:      store,
+		CookieName: "test_session",
+		Lifetime:   120 * 60_000_000_000, // 120 minutes in nanoseconds
+		Path:       "/",
+		HTTPOnly:   true,
+		SameSite:   http.SameSiteLaxMode,
+	}
+
+	e := newTestEngine()
+	e.Use(SessionMiddleware(mgr))
+	e.GET("/test", func(c *gin.Context) {
+		sid, exists := c.Get("session_id")
+		if !exists || sid == "" {
+			c.String(500, "no session_id")
+			return
+		}
+		_, exists = c.Get("session")
+		if !exists {
+			c.String(500, "no session data")
+			return
+		}
+		c.String(200, "ok")
+	})
+
+	w := doRequest(e, "GET", "/test")
+	if w.Code != 200 {
+		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
+	}
+	if w.Body.String() != "ok" {
+		t.Fatalf("expected 'ok', got %q", w.Body.String())
 	}
 }
