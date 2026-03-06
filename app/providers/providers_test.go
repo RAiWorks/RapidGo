@@ -6,6 +6,7 @@ import (
 	"github.com/RAiWorks/RGo/core/app"
 	"github.com/RAiWorks/RGo/core/config"
 	"github.com/RAiWorks/RGo/core/container"
+	"github.com/RAiWorks/RGo/core/router"
 )
 
 // TC-01: ConfigProvider implements Provider interface (compile-time check)
@@ -13,6 +14,9 @@ var _ container.Provider = (*ConfigProvider)(nil)
 
 // TC-02: LoggerProvider implements Provider interface (compile-time check)
 var _ container.Provider = (*LoggerProvider)(nil)
+
+// TC-09: RouterProvider implements Provider interface (compile-time check)
+var _ container.Provider = (*RouterProvider)(nil)
 
 // TC-03: ConfigProvider.Register loads config
 func TestConfigProvider_RegisterLoadsConfig(t *testing.T) {
@@ -96,5 +100,42 @@ func TestProviderOrder_ConfigBeforeLogger(t *testing.T) {
 	logLevel := config.Env("LOG_LEVEL", "")
 	if logLevel != "debug" {
 		t.Fatalf("expected 'debug', got '%s'", logLevel)
+	}
+}
+
+// TC-09: RouterProvider registers router as "router" in container
+func TestRouterProvider_RegistersRouter(t *testing.T) {
+	t.Setenv("APP_ENV", "testing")
+
+	c := container.New()
+	p := &RouterProvider{}
+	p.Register(c)
+
+	r := container.MustMake[*router.Router](c, "router")
+	if r == nil {
+		t.Fatal("expected non-nil *Router from container")
+	}
+	if r.Engine() == nil {
+		t.Fatal("expected non-nil Engine")
+	}
+}
+
+// TC-10: Full App bootstrap with all three providers
+func TestFullAppBootstrap_WithRouter(t *testing.T) {
+	t.Setenv("APP_NAME", "RouterBootstrapTest")
+	t.Setenv("APP_ENV", "testing")
+	t.Setenv("LOG_LEVEL", "info")
+	t.Setenv("LOG_FORMAT", "json")
+	t.Setenv("LOG_OUTPUT", "stdout")
+
+	a := app.New()
+	a.Register(&ConfigProvider{})
+	a.Register(&LoggerProvider{})
+	a.Register(&RouterProvider{})
+	a.Boot()
+
+	r := container.MustMake[*router.Router](a.Container, "router")
+	if r == nil {
+		t.Fatal("expected non-nil *Router after full bootstrap")
 	}
 }
