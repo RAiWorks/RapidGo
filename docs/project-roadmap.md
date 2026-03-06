@@ -69,7 +69,7 @@ Every feature follows the [Mastery lifecycle](mastery.md): Discuss → Design �
 | 14 | Database Transactions | ✅ | #09, #11 | Database Transactions |
 | 15 | Controllers | ✅ | #07, #08 | MVC Controller Example |
 | 16 | Response Helpers | ✅ | #07 | Response Helpers |
-| 17 | Views & Templates | ⬜ | #07, #15 | View / Template Engine |
+| 17 | Views & Templates | ✅ | #07, #15 | View / Template Engine |
 | 18 | Services Layer | ⬜ | #05, #11 | Services Layer |
 | 19 | Helpers | ⬜ | #01 | Helpers, Built-in String & Data Helpers |
 | 20 | Session Management | ⬜ | #02, #08, #09 | Session Management (DB, Redis, file, memory, cookie — all 5 backends) |
