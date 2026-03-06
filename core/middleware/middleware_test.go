@@ -1,0 +1,402 @@
+package middleware
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"regexp"
+	"testing"
+
+	"github.com/RAiWorks/RGo/core/errors"
+	"github.com/gin-gonic/gin"
+)
+
+func init() {
+	gin.SetMode(gin.TestMode)
+}
+
+// newTestEngine creates a Gin engine in test mode with no default middleware.
+func newTestEngine() *gin.Engine {
+	return gin.New()
+}
+
+// doRequest performs a request against a Gin engine and returns the recorder.
+func doRequest(e *gin.Engine, method, path string, headers ...http.Header) *httptest.ResponseRecorder {
+	w := httptest.NewRecorder()
+	req := httptest.NewRequest(method, path, nil)
+	if len(headers) > 0 {
+		req.Header = headers[0]
+	}
+	e.ServeHTTP(w, req)
+	return w
+}
+
+// --- Registry Tests ---
+
+// TC-01: RegisterAlias and Resolve round-trip
+func TestRegisterAlias_AndResolve(t *testing.T) {
+	ResetRegistry()
+	handler := func(c *gin.Context) {}
+	RegisterAlias("test", handler)
+
+	resolved := Resolve("test")
+	if resolved == nil {
+		t.Fatal("Resolve returned nil for registered alias")
+	}
+}
+
+// TC-02: Resolve panics on unknown alias
+func TestResolve_PanicsOnUnknown(t *testing.T) {
+	ResetRegistry()
+
+	defer func() {
+		r := recover()
+		if r == nil {
+			t.Fatal("Resolve did not panic for unknown alias")
+		}
+		msg, ok := r.(string)
+		if !ok || msg != "middleware not found: nonexistent" {
+			t.Fatalf("unexpected panic message: %v", r)
+		}
+	}()
+
+	Resolve("nonexistent")
+}
+
+// TC-03: RegisterGroup and ResolveGroup round-trip
+func TestRegisterGroup_AndResolveGroup(t *testing.T) {
+	ResetRegistry()
+	h1 := func(c *gin.Context) {}
+	h2 := func(c *gin.Context) {}
+	RegisterGroup("web", h1, h2)
+
+	group := ResolveGroup("web")
+	if len(group) != 2 {
+		t.Fatalf("expected group length 2, got %d", len(group))
+	}
+}
+
+// TC-04: ResolveGroup returns nil for unknown group
+func TestResolveGroup_ReturnsNilOnUnknown(t *testing.T) {
+	ResetRegistry()
+
+	group := ResolveGroup("nonexistent")
+	if group != nil {
+		t.Fatalf("expected nil for unknown group, got %v", group)
+	}
+}
+
+// TC-05: ResetRegistry clears all entries
+func TestResetRegistry_ClearsAll(t *testing.T) {
+	handler := func(c *gin.Context) {}
+	RegisterAlias("a", handler)
+	RegisterGroup("g", handler)
+
+	ResetRegistry()
+
+	if ResolveGroup("g") != nil {
+		t.Fatal("group should be nil after reset")
+	}
+
+	defer func() {
+		if recover() == nil {
+			t.Fatal("Resolve should panic after reset")
+		}
+	}()
+	Resolve("a")
+}
+
+// --- Recovery Tests ---
+
+// TC-06: Recovery catches panic and returns 500
+func TestRecovery_CatchesPanic(t *testing.T) {
+	e := newTestEngine()
+	e.Use(Recovery())
+	e.GET("/panic", func(c *gin.Context) {
+		panic("test panic")
+	})
+
+	w := doRequest(e, http.MethodGet, "/panic")
+	if w.Code != http.StatusInternalServerError {
+		t.Fatalf("expected 500, got %d", w.Code)
+	}
+
+	var body map[string]any
+	if err := json.Unmarshal(w.Body.Bytes(), &body); err != nil {
+		t.Fatalf("invalid JSON response: %v", err)
+	}
+	if body["error"] != "internal server error" {
+		t.Fatalf("unexpected error message: %v", body["error"])
+	}
+}
+
+// TC-07: Recovery passes through normal requests
+func TestRecovery_PassesNormalRequest(t *testing.T) {
+	e := newTestEngine()
+	e.Use(Recovery())
+	e.GET("/ok", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+	})
+
+	w := doRequest(e, http.MethodGet, "/ok")
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+}
+
+// --- RequestID Tests ---
+
+// TC-08: RequestID generates UUID when no header present
+func TestRequestID_GeneratesUUID(t *testing.T) {
+	e := newTestEngine()
+	e.Use(RequestID())
+	e.GET("/id", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"id": c.GetString("request_id")})
+	})
+
+	w := doRequest(e, http.MethodGet, "/id")
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+
+	headerID := w.Header().Get("X-Request-ID")
+	if headerID == "" {
+		t.Fatal("X-Request-ID header is empty")
+	}
+
+	// Verify UUID format
+	uuidPattern := regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$`)
+	if !uuidPattern.MatchString(headerID) {
+		t.Fatalf("X-Request-ID is not valid UUID v4: %s", headerID)
+	}
+
+	// Verify body contains same ID
+	var body map[string]any
+	_ = json.Unmarshal(w.Body.Bytes(), &body)
+	if body["id"] != headerID {
+		t.Fatalf("body ID %q != header ID %q", body["id"], headerID)
+	}
+}
+
+// TC-09: RequestID preserves incoming X-Request-ID
+func TestRequestID_PreservesExisting(t *testing.T) {
+	e := newTestEngine()
+	e.Use(RequestID())
+	e.GET("/id", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"id": c.GetString("request_id")})
+	})
+
+	h := http.Header{}
+	h.Set("X-Request-ID", "my-trace-id-123")
+	w := doRequest(e, http.MethodGet, "/id", h)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+
+	headerID := w.Header().Get("X-Request-ID")
+	if headerID != "my-trace-id-123" {
+		t.Fatalf("expected X-Request-ID 'my-trace-id-123', got %q", headerID)
+	}
+
+	var body map[string]any
+	_ = json.Unmarshal(w.Body.Bytes(), &body)
+	if body["id"] != "my-trace-id-123" {
+		t.Fatalf("body ID should be 'my-trace-id-123', got %q", body["id"])
+	}
+}
+
+// --- CORS Tests ---
+
+// TC-10: CORS sets default headers
+func TestCORS_DefaultHeaders(t *testing.T) {
+	e := newTestEngine()
+	e.Use(CORS())
+	e.GET("/test", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"ok": true})
+	})
+
+	w := doRequest(e, http.MethodGet, "/test")
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+
+	origin := w.Header().Get("Access-Control-Allow-Origin")
+	if origin != "*" {
+		t.Fatalf("expected Allow-Origin '*', got %q", origin)
+	}
+
+	methods := w.Header().Get("Access-Control-Allow-Methods")
+	if methods == "" {
+		t.Fatal("Access-Control-Allow-Methods is empty")
+	}
+
+	headers := w.Header().Get("Access-Control-Allow-Headers")
+	if headers == "" {
+		t.Fatal("Access-Control-Allow-Headers is empty")
+	}
+}
+
+// TC-11: CORS handles preflight OPTIONS with 204
+func TestCORS_PreflightOptions(t *testing.T) {
+	e := newTestEngine()
+	e.Use(CORS())
+	e.GET("/test", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"ok": true})
+	})
+
+	w := doRequest(e, http.MethodOptions, "/test")
+	if w.Code != http.StatusNoContent {
+		t.Fatalf("expected 204, got %d", w.Code)
+	}
+
+	origin := w.Header().Get("Access-Control-Allow-Origin")
+	if origin != "*" {
+		t.Fatalf("expected Allow-Origin '*', got %q", origin)
+	}
+}
+
+// TC-12: CORS accepts custom configuration
+func TestCORS_CustomConfig(t *testing.T) {
+	cfg := CORSConfig{
+		AllowOrigins: []string{"https://example.com"},
+		AllowMethods: []string{"GET", "POST"},
+		AllowHeaders: []string{"Content-Type"},
+		MaxAge:       3600,
+	}
+
+	e := newTestEngine()
+	e.Use(CORS(cfg))
+	e.GET("/test", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"ok": true})
+	})
+
+	w := doRequest(e, http.MethodGet, "/test")
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+
+	origin := w.Header().Get("Access-Control-Allow-Origin")
+	if origin != "https://example.com" {
+		t.Fatalf("expected Allow-Origin 'https://example.com', got %q", origin)
+	}
+
+	maxAge := w.Header().Get("Access-Control-Max-Age")
+	if maxAge != "3600" {
+		t.Fatalf("expected Max-Age '3600', got %q", maxAge)
+	}
+}
+
+// --- ErrorHandler Tests ---
+
+// TC-13: ErrorHandler formats AppError as JSON
+func TestErrorHandler_FormatsAppError(t *testing.T) {
+	t.Setenv("APP_ENV", "testing")
+	t.Setenv("APP_DEBUG", "false")
+
+	e := newTestEngine()
+	e.Use(ErrorHandler())
+	e.GET("/err", func(c *gin.Context) {
+		_ = c.Error(errors.NotFound("user not found"))
+		c.Abort()
+	})
+
+	w := doRequest(e, http.MethodGet, "/err")
+	if w.Code != http.StatusNotFound {
+		t.Fatalf("expected 404, got %d", w.Code)
+	}
+
+	var body map[string]any
+	_ = json.Unmarshal(w.Body.Bytes(), &body)
+	if body["error"] != "user not found" {
+		t.Fatalf("unexpected error message: %v", body["error"])
+	}
+}
+
+// TC-14: ErrorHandler wraps generic error as 500
+func TestErrorHandler_WrapsGenericError(t *testing.T) {
+	t.Setenv("APP_ENV", "testing")
+	t.Setenv("APP_DEBUG", "false")
+
+	e := newTestEngine()
+	e.Use(ErrorHandler())
+	e.GET("/err", func(c *gin.Context) {
+		_ = c.Error(fmt.Errorf("something broke"))
+		c.Abort()
+	})
+
+	w := doRequest(e, http.MethodGet, "/err")
+	if w.Code != http.StatusInternalServerError {
+		t.Fatalf("expected 500, got %d", w.Code)
+	}
+
+	var body map[string]any
+	_ = json.Unmarshal(w.Body.Bytes(), &body)
+	if body["error"] != "internal server error" {
+		t.Fatalf("unexpected error message: %v", body["error"])
+	}
+}
+
+// TC-15: ErrorHandler is no-op when no errors
+func TestErrorHandler_NoOpWhenNoErrors(t *testing.T) {
+	e := newTestEngine()
+	e.Use(ErrorHandler())
+	e.GET("/ok", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+	})
+
+	w := doRequest(e, http.MethodGet, "/ok")
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+
+	var body map[string]any
+	_ = json.Unmarshal(w.Body.Bytes(), &body)
+	if body["status"] != "ok" {
+		t.Fatalf("expected status 'ok', got %v", body["status"])
+	}
+}
+
+// --- Integration Tests ---
+
+// TC-18: Middleware chain executes in correct order
+func TestMiddlewareChain_ExecutionOrder(t *testing.T) {
+	e := newTestEngine()
+	e.Use(Recovery())
+	e.Use(RequestID())
+	e.GET("/chain", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"id": c.GetString("request_id")})
+	})
+
+	w := doRequest(e, http.MethodGet, "/chain")
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+
+	headerID := w.Header().Get("X-Request-ID")
+	if headerID == "" {
+		t.Fatal("X-Request-ID header missing in chained middleware")
+	}
+}
+
+// TC-19: UUID format validation
+func TestGenerateUUID_Format(t *testing.T) {
+	uuidPattern := regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$`)
+
+	ids := make([]string, 10)
+	for i := range ids {
+		ids[i] = generateUUID()
+		if len(ids[i]) != 36 {
+			t.Fatalf("UUID length should be 36, got %d: %s", len(ids[i]), ids[i])
+		}
+		if !uuidPattern.MatchString(ids[i]) {
+			t.Fatalf("invalid UUID v4 format: %s", ids[i])
+		}
+	}
+
+	// Check uniqueness (at least first two)
+	if ids[0] == ids[1] {
+		t.Fatal("two UUIDs are identical — should be unique")
+	}
+}

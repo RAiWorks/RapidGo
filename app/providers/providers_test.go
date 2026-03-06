@@ -6,6 +6,7 @@ import (
 	"github.com/RAiWorks/RGo/core/app"
 	"github.com/RAiWorks/RGo/core/config"
 	"github.com/RAiWorks/RGo/core/container"
+	"github.com/RAiWorks/RGo/core/middleware"
 	"github.com/RAiWorks/RGo/core/router"
 )
 
@@ -17,6 +18,9 @@ var _ container.Provider = (*LoggerProvider)(nil)
 
 // TC-09: RouterProvider implements Provider interface (compile-time check)
 var _ container.Provider = (*RouterProvider)(nil)
+
+// TC-16: MiddlewareProvider implements Provider interface (compile-time check)
+var _ container.Provider = (*MiddlewareProvider)(nil)
 
 // TC-03: ConfigProvider.Register loads config
 func TestConfigProvider_RegisterLoadsConfig(t *testing.T) {
@@ -137,5 +141,34 @@ func TestFullAppBootstrap_WithRouter(t *testing.T) {
 	r := container.MustMake[*router.Router](a.Container, "router")
 	if r == nil {
 		t.Fatal("expected non-nil *Router after full bootstrap")
+	}
+}
+
+// TC-17: MiddlewareProvider Boot registers built-in aliases
+func TestMiddlewareProvider_RegistersAliases(t *testing.T) {
+	middleware.ResetRegistry()
+
+	c := container.New()
+	p := &MiddlewareProvider{}
+	p.Boot(c)
+
+	// Verify all 4 built-in aliases resolve without panic
+	if middleware.Resolve("recovery") == nil {
+		t.Fatal("recovery alias not registered")
+	}
+	if middleware.Resolve("requestid") == nil {
+		t.Fatal("requestid alias not registered")
+	}
+	if middleware.Resolve("cors") == nil {
+		t.Fatal("cors alias not registered")
+	}
+	if middleware.Resolve("error_handler") == nil {
+		t.Fatal("error_handler alias not registered")
+	}
+
+	// Verify default group
+	global := middleware.ResolveGroup("global")
+	if len(global) != 2 {
+		t.Fatalf("expected global group length 2, got %d", len(global))
 	}
 }
