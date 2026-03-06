@@ -82,7 +82,7 @@ func Execute() {
 
 // NewApp creates and boots a fully configured RGo application.
 // Used by commands that need the application lifecycle (serve, migrate, etc.).
-func NewApp() *app.Application {
+func NewApp() *app.App {
 	application := app.New()
 	application.Register(&providers.ConfigProvider{})
 	application.Register(&providers.LoggerProvider{})
@@ -187,7 +187,7 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Print the RGo framework version",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("RGo Framework v%s\n", Version)
+		fmt.Fprintf(cmd.OutOrStdout(), "RGo Framework v%s\n", Version)
 	},
 }
 ```
