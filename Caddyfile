@@ -1,0 +1,30 @@
+# RGo Framework — Caddy Reverse Proxy Configuration
+#
+# Usage:
+#   Development: caddy run
+#   Production:  caddy start
+#   Validate:    caddy validate --config Caddyfile
+#
+# Environment variables (with defaults):
+#   CADDY_DOMAIN — domain to serve (default: localhost)
+#   APP_PORT     — Go app port to proxy to (default: 8080)
+
+{$CADDY_DOMAIN:localhost} {
+	reverse_proxy localhost:{$APP_PORT:8080}
+	encode gzip
+
+	# Serve static files directly (bypass Go app)
+	handle_path /static/* {
+		root * ./resources/static
+		file_server
+	}
+
+	handle_path /uploads/* {
+		root * ./storage/uploads
+		file_server
+	}
+
+	log {
+		output stdout
+	}
+}
