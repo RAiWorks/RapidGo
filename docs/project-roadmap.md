@@ -159,7 +159,7 @@ Every feature follows the [Mastery lifecycle](mastery.md): Discuss → Design �
 | 36 | Health Checks | ✅ | #07, #09 | Health Check |
 | 37 | Graceful Shutdown | ✅ | #01 | Build and Run (with Graceful Shutdown) |
 | 38 | Caddy Integration | ✅ | #02 | Caddy Web Server (Optional) |
-| 39 | Docker Deployment | ⬜ | #37 | Docker (Optional) |
+| 39 | Docker Deployment | ✅ | #37 | Docker (Optional) |
 | 40 | Testing Infrastructure | ⬜ | #01, #05 | Testing |
 | 41 | Code Generation (CLI) | ⬜ | #10 | CLI Tools (make:controller, make:model, etc.) |
 
