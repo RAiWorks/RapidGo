@@ -42,6 +42,7 @@ func NewApp() *app.App {
 	application.Register(&providers.ConfigProvider{})
 	application.Register(&providers.LoggerProvider{})
 	application.Register(&providers.DatabaseProvider{})
+	application.Register(&providers.SessionProvider{})
 	application.Register(&providers.MiddlewareProvider{})
 	application.Register(&providers.RouterProvider{})
 	application.Boot()
