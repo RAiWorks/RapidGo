@@ -29,11 +29,12 @@ app/providers/
 |---|---|---|
 | `app/providers/database_provider.go` | `providers` | ~25 |
 
-### Files Modified (2)
+### Files Modified (3)
 | File | Change |
 |---|---|
 | `database/connection.go` | Expand from stub to full implementation: `DBConfig`, `NewDBConfig`, `DSN`, `Connect`, `ConnectWithConfig`, `newDialector` |
 | `cmd/main.go` | Insert `DatabaseProvider` as provider #3 (Middleware → #4, Router → #5) |
+| `.env` | Add commented-out pool tuning variables (`DB_MAX_OPEN_CONNS`, `DB_MAX_IDLE_CONNS`, `DB_CONN_MAX_LIFETIME`, `DB_CONN_MAX_IDLE_TIME`) for discoverability |
 
 ---
 

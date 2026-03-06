@@ -4,7 +4,7 @@
 > **Architecture**: [`09-database-architecture.md`](09-database-architecture.md)
 > **Branch**: `feature/09-database`
 > **Status**: 🔴 NOT STARTED
-> **Progress**: 0/14 tasks complete
+> **Progress**: 0/15 tasks complete
 
 ---
 
@@ -37,6 +37,7 @@
 - [ ] **B.3** — Implement `newDialector()` internal function (switch on driver, return `gorm.Dialector`)
 - [ ] **B.4** — Implement `ConnectWithConfig(cfg DBConfig) (*gorm.DB, error)`
 - [ ] **B.5** — Implement `Connect() (*gorm.DB, error)` wrapper calling `NewDBConfig()` + `ConnectWithConfig()`
+- [ ] **B.6** — Update `.env` — add commented-out pool tuning variables (`DB_MAX_OPEN_CONNS`, `DB_MAX_IDLE_CONNS`, `DB_CONN_MAX_LIFETIME`, `DB_CONN_MAX_IDLE_TIME`)
 - [ ] 📍 **Checkpoint B** — `go build ./database/...` succeeds, `go vet ./database/...` clean
 
 ---
