@@ -7,6 +7,8 @@ import (
 	"github.com/RAiWorks/RGo/app/providers"
 	"github.com/RAiWorks/RGo/core/app"
 	"github.com/RAiWorks/RGo/core/config"
+	"github.com/RAiWorks/RGo/core/container"
+	"github.com/RAiWorks/RGo/core/router"
 )
 
 func main() {
@@ -14,7 +16,8 @@ func main() {
 
 	// Register providers (order matters)
 	application.Register(&providers.ConfigProvider{})  // 1. Config first — loads .env
-	application.Register(&providers.LoggerProvider{})  // 2. Logger — uses config in Boot
+	application.Register(&providers.LoggerProvider{})   // 2. Logger — uses config in Boot
+	application.Register(&providers.RouterProvider{})   // 3. Router — creates Gin engine
 
 	// Boot all providers
 	application.Boot()
@@ -32,9 +35,14 @@ func main() {
 	fmt.Printf("  Debug: %v\n", config.IsDebug())
 	fmt.Println("=================================")
 
-	slog.Info("server initialized",
+	slog.Info("server starting",
 		"app", appName,
 		"port", appPort,
 		"env", appEnv,
 	)
+
+	r := container.MustMake[*router.Router](application.Container, "router")
+	if err := r.Run(":" + appPort); err != nil {
+		slog.Error("server failed to start", "err", err)
+	}
 }
