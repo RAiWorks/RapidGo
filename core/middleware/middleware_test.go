@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/RAiWorks/RGo/core/auth"
@@ -537,5 +538,230 @@ func TestAuthAlias_IsResolvable(t *testing.T) {
 	resolved := Resolve("auth")
 	if resolved == nil {
 		t.Fatal("expected auth alias to resolve to a handler")
+	}
+}
+
+// --- CSRF Middleware ---
+
+// fakeSession injects a session map into the context, simulating SessionMiddleware.
+func fakeSession(data map[string]interface{}) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("session", data)
+		c.Next()
+	}
+}
+
+// TC-15: GET request generates token and sets it in context
+func TestCSRF_GETGeneratesToken(t *testing.T) {
+	sessData := map[string]interface{}{}
+	e := newTestEngine()
+	e.Use(fakeSession(sessData))
+	e.Use(CSRFMiddleware())
+
+	var gotToken string
+	e.GET("/form", func(c *gin.Context) {
+		tok, _ := c.Get("csrf_token")
+		gotToken = tok.(string)
+		c.String(200, "ok")
+	})
+
+	w := doRequest(e, "GET", "/form")
+	if w.Code != 200 {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+	if len(gotToken) != 64 {
+		t.Fatalf("expected 64-char hex token, got %d chars", len(gotToken))
+	}
+}
+
+// TC-16: POST with valid form token passes
+func TestCSRF_POSTValidFormToken(t *testing.T) {
+	sessData := map[string]interface{}{"_csrf_token": "known-token-value"}
+	e := newTestEngine()
+	e.Use(fakeSession(sessData))
+	e.Use(CSRFMiddleware())
+	e.POST("/submit", func(c *gin.Context) {
+		c.String(200, "ok")
+	})
+
+	w := httptest.NewRecorder()
+	body := strings.NewReader("_csrf_token=known-token-value")
+	req := httptest.NewRequest("POST", "/submit", body)
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	e.ServeHTTP(w, req)
+
+	if w.Code != 200 {
+		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
+	}
+}
+
+// TC-17: POST with valid header token passes
+func TestCSRF_POSTValidHeaderToken(t *testing.T) {
+	sessData := map[string]interface{}{"_csrf_token": "header-token-value"}
+	e := newTestEngine()
+	e.Use(fakeSession(sessData))
+	e.Use(CSRFMiddleware())
+	e.POST("/submit", func(c *gin.Context) {
+		c.String(200, "ok")
+	})
+
+	w := httptest.NewRecorder()
+	req := httptest.NewRequest("POST", "/submit", nil)
+	req.Header.Set("X-CSRF-Token", "header-token-value")
+	e.ServeHTTP(w, req)
+
+	if w.Code != 200 {
+		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
+	}
+}
+
+// TC-18: POST with missing token returns 403
+func TestCSRF_POSTMissingToken(t *testing.T) {
+	sessData := map[string]interface{}{"_csrf_token": "some-token"}
+	e := newTestEngine()
+	e.Use(fakeSession(sessData))
+	e.Use(CSRFMiddleware())
+	e.POST("/submit", func(c *gin.Context) {
+		c.String(200, "ok")
+	})
+
+	w := httptest.NewRecorder()
+	req := httptest.NewRequest("POST", "/submit", nil)
+	e.ServeHTTP(w, req)
+
+	if w.Code != 403 {
+		t.Fatalf("expected 403, got %d", w.Code)
+	}
+	var body map[string]interface{}
+	json.Unmarshal(w.Body.Bytes(), &body)
+	if body["error"] != "CSRF token mismatch" {
+		t.Fatalf("expected 'CSRF token mismatch', got %v", body["error"])
+	}
+}
+
+// TC-19: POST with wrong token returns 403
+func TestCSRF_POSTWrongToken(t *testing.T) {
+	sessData := map[string]interface{}{"_csrf_token": "correct-token"}
+	e := newTestEngine()
+	e.Use(fakeSession(sessData))
+	e.Use(CSRFMiddleware())
+	e.POST("/submit", func(c *gin.Context) {
+		c.String(200, "ok")
+	})
+
+	w := httptest.NewRecorder()
+	body := strings.NewReader("_csrf_token=wrong-token")
+	req := httptest.NewRequest("POST", "/submit", body)
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	e.ServeHTTP(w, req)
+
+	if w.Code != 403 {
+		t.Fatalf("expected 403, got %d", w.Code)
+	}
+}
+
+// TC-20: HEAD request skips validation
+func TestCSRF_HEADSkips(t *testing.T) {
+	sessData := map[string]interface{}{"_csrf_token": "some-token"}
+	e := newTestEngine()
+	e.Use(fakeSession(sessData))
+	e.Use(CSRFMiddleware())
+	e.HEAD("/ping", func(c *gin.Context) {
+		c.Status(200)
+	})
+
+	w := doRequest(e, "HEAD", "/ping")
+	if w.Code != 200 {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+}
+
+// TC-21: OPTIONS request skips validation
+func TestCSRF_OPTIONSSkips(t *testing.T) {
+	sessData := map[string]interface{}{"_csrf_token": "some-token"}
+	e := newTestEngine()
+	e.Use(fakeSession(sessData))
+	e.Use(CSRFMiddleware())
+	e.OPTIONS("/ping", func(c *gin.Context) {
+		c.Status(200)
+	})
+
+	w := doRequest(e, "OPTIONS", "/ping")
+	if w.Code != 200 {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+}
+
+// TC-22: PUT with valid token passes
+func TestCSRF_PUTValidToken(t *testing.T) {
+	sessData := map[string]interface{}{"_csrf_token": "put-token"}
+	e := newTestEngine()
+	e.Use(fakeSession(sessData))
+	e.Use(CSRFMiddleware())
+	e.PUT("/update", func(c *gin.Context) {
+		c.String(200, "ok")
+	})
+
+	w := httptest.NewRecorder()
+	req := httptest.NewRequest("PUT", "/update", nil)
+	req.Header.Set("X-CSRF-Token", "put-token")
+	e.ServeHTTP(w, req)
+
+	if w.Code != 200 {
+		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
+	}
+}
+
+// TC-23: DELETE with missing token returns 403
+func TestCSRF_DELETEMissingToken(t *testing.T) {
+	sessData := map[string]interface{}{"_csrf_token": "del-token"}
+	e := newTestEngine()
+	e.Use(fakeSession(sessData))
+	e.Use(CSRFMiddleware())
+	e.DELETE("/remove", func(c *gin.Context) {
+		c.String(200, "ok")
+	})
+
+	w := doRequest(e, "DELETE", "/remove")
+	if w.Code != 403 {
+		t.Fatalf("expected 403, got %d", w.Code)
+	}
+}
+
+// TC-24: Token persists across requests with same session
+func TestCSRF_TokenPersists(t *testing.T) {
+	sessData := map[string]interface{}{}
+	e := newTestEngine()
+	e.Use(fakeSession(sessData))
+	e.Use(CSRFMiddleware())
+
+	var firstToken, secondToken string
+	e.GET("/a", func(c *gin.Context) {
+		tok, _ := c.Get("csrf_token")
+		firstToken = tok.(string)
+		c.String(200, "ok")
+	})
+	e.GET("/b", func(c *gin.Context) {
+		tok, _ := c.Get("csrf_token")
+		secondToken = tok.(string)
+		c.String(200, "ok")
+	})
+
+	doRequest(e, "GET", "/a")
+	doRequest(e, "GET", "/b")
+
+	if firstToken != secondToken {
+		t.Fatalf("expected same token, got %q and %q", firstToken, secondToken)
+	}
+}
+
+// TC-25: "csrf" alias is resolvable
+func TestCSRFAlias_IsResolvable(t *testing.T) {
+	ResetRegistry()
+	RegisterAlias("csrf", CSRFMiddleware())
+
+	resolved := Resolve("csrf")
+	if resolved == nil {
+		t.Fatal("expected csrf alias to resolve to a handler")
 	}
 }

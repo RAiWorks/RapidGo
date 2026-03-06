@@ -18,6 +18,7 @@ func (p *MiddlewareProvider) Boot(c *container.Container) {
 	middleware.RegisterAlias("cors", middleware.CORS())
 	middleware.RegisterAlias("error_handler", middleware.ErrorHandler())
 	middleware.RegisterAlias("auth", middleware.AuthMiddleware())
+	middleware.RegisterAlias("csrf", middleware.CSRFMiddleware())
 
 	middleware.RegisterGroup("global",
 		middleware.Recovery(),
