@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/RAiWorks/RGo/core/router"
-	"github.com/RAiWorks/RGo/http/controllers"
+	"github.com/RAiWorks/RapidGo/core/router"
+	"github.com/RAiWorks/RapidGo/http/controllers"
 )
 
 // RegisterAPI defines API routes under the /api prefix.

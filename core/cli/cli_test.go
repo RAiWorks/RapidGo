@@ -39,7 +39,7 @@ func TestRootCmd_Help(t *testing.T) {
 	}
 
 	output := buf.String()
-	for _, want := range []string{"RGo", "serve", "version"} {
+	for _, want := range []string{"RapidGo", "serve", "version"} {
 		if !bytes.Contains([]byte(output), []byte(want)) {
 			t.Errorf("expected output to contain %q, got %q", want, output)
 		}

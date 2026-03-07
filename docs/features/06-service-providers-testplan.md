@@ -48,9 +48,9 @@
 | Property | Value |
 |---|---|
 | **Category** | Happy Path |
-| **Precondition** | `.env` file exists with `APP_NAME=RGo` |
+| **Precondition** | `.env` file exists with `APP_NAME=RapidGo` |
 | **Steps** | 1. Create container → 2. Call `ConfigProvider.Register(c)` → 3. Read `config.Env("APP_NAME", "")` |
-| **Expected Result** | Returns `"RGo"` — config is loaded |
+| **Expected Result** | Returns `"RapidGo"` — config is loaded |
 | **Status** | ⬜ Not Run |
 | **Notes** | — |
 

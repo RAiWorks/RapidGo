@@ -19,7 +19,7 @@
 
 - [x] **B-01**: Update `cmd/main.go` to import and call `logger.Setup()` after `config.Load()`
 - [x] **B-02**: Add `slog.Info("server initialized", ...)` with app name, port, and env after banner
-- [x] **B-03**: Run `go build -o bin/rgo.exe ./cmd/` — must compile successfully
+- [x] **B-03**: Run `go build -o bin/RapidGo.exe ./cmd/` — must compile successfully
 
 ## Phase C — Tests (4 tasks)
 

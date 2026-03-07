@@ -9,14 +9,14 @@
 
 ## Overview
 
-This feature creates the complete directory scaffold and project files for the RGo framework. No business logic — only structure. The output is a Go module that compiles, runs, and prints a startup banner. Every subsequent feature adds code into this pre-existing structure.
+This feature creates the complete directory scaffold and project files for the RapidGo Framework. No business logic — only structure. The output is a Go module that compiles, runs, and prints a startup banner. Every subsequent feature adds code into this pre-existing structure.
 
 ## File Structure
 
 Every file and directory created by this feature, from the project root:
 
 ```
-rgo/
+RapidGo/
 │
 ├── cmd/
 │   └── main.go                 # Application entry point — minimal, prints startup banner
@@ -151,8 +151,8 @@ import "fmt"
 
 func main() {
     fmt.Println("=================================")
-    fmt.Println("  RGo Framework")
-    fmt.Println("  github.com/RAiWorks/RGo")
+    fmt.Println("  RapidGo Framework")
+    fmt.Println("  github.com/RAiWorks/RapidGo")
     fmt.Println("=================================")
     fmt.Println("Ready. Waiting for features...")
 }
@@ -190,14 +190,14 @@ Placeholder values for every configuration key the framework will eventually use
 
 ```env
 # =============================================================================
-# RGo Framework — Environment Configuration
+# RapidGo Framework — Environment Configuration
 # =============================================================================
 # This file contains DEFAULT / placeholder values for all configuration keys.
 # For local overrides with real secrets, create .env.local (gitignored).
 # =============================================================================
 
 # --- Application ---
-APP_NAME=RGo
+APP_NAME=RapidGo
 APP_ENV=development
 APP_DEBUG=true
 APP_PORT=8080
@@ -237,7 +237,7 @@ MAIL_PORT=1025
 MAIL_USERNAME=
 MAIL_PASSWORD=
 MAIL_FROM_ADDRESS=noreply@localhost
-MAIL_FROM_NAME=RGo
+MAIL_FROM_NAME=RapidGo
 
 # --- Logging ---
 LOG_LEVEL=debug
@@ -264,7 +264,7 @@ SERVER_IDLE_TIMEOUT=120
 
 # Build the application binary
 build:
-	go build -o bin/rgo ./cmd/...
+	go build -o bin/RapidGo ./cmd/...
 
 # Run the application
 run:
@@ -334,7 +334,7 @@ desktop.ini
 A minimal project README that links to the documentation:
 
 ```markdown
-# RGo Framework
+# RapidGo Framework
 
 A full-featured, opinionated Go web framework combining Laravel-style developer experience with Go performance.
 
@@ -342,7 +342,7 @@ A full-featured, opinionated Go web framework combining Laravel-style developer 
 
 All documentation lives in the [`docs/`](docs/) directory:
 
-- **[Project Context](docs/project-context.md)** — What RGo is, technology stack, architecture
+- **[Project Context](docs/project-context.md)** — What RapidGo is, technology stack, architecture
 - **[Project Roadmap](docs/project-roadmap.md)** — Feature plan, dependencies, progress
 - **[Mastery Process](docs/mastery.md)** — Development workflow and standards
 - **[Framework Reference](docs/framework/README.md)** — Complete framework documentation

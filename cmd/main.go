@@ -1,6 +1,6 @@
 package main
 
-import "github.com/RAiWorks/RGo/core/cli"
+import "github.com/RAiWorks/RapidGo/core/cli"
 
 func main() {
 	cli.Execute()

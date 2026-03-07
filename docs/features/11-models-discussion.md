@@ -11,7 +11,7 @@
 
 ## Summary
 
-Define the GORM model layer for the RGo framework. This feature provides a `BaseModel` struct with common fields (ID, timestamps), a `User` model and a `Post` model as concrete examples demonstrating GORM tags, relationships (HasMany, BelongsTo), and JSON serialization. Models live in `database/models/` and embed `BaseModel` for consistent primary key and timestamp behavior.
+Define the GORM model layer for the RapidGo Framework. This feature provides a `BaseModel` struct with common fields (ID, timestamps), a `User` model and a `Post` model as concrete examples demonstrating GORM tags, relationships (HasMany, BelongsTo), and JSON serialization. Models live in `database/models/` and embed `BaseModel` for consistent primary key and timestamp behavior.
 
 ---
 

@@ -100,17 +100,17 @@ These tests run via `go test ./core/config/... -v`.
 
 | Field | Detail |
 |---|---|
-| **Action** | Run `go build -o bin/rgo.exe ./cmd/` |
-| **Expected** | Binary produced at `bin/rgo.exe` with zero errors |
+| **Action** | Run `go build -o bin/RapidGo.exe ./cmd/` |
+| **Expected** | Binary produced at `bin/RapidGo.exe` with zero errors |
 | **Pass Criteria** | Exit code 0, binary exists |
 
 ### TC-11: go run displays banner with config values
 
 | Field | Detail |
 |---|---|
-| **Precondition** | `.env` file has `APP_NAME=RGo`, `APP_PORT=8080`, `APP_ENV=development`, `APP_DEBUG=true` |
+| **Precondition** | `.env` file has `APP_NAME=RapidGo`, `APP_PORT=8080`, `APP_ENV=development`, `APP_DEBUG=true` |
 | **Action** | Run `go run ./cmd/` |
-| **Expected** | Banner shows "RGo Framework", "Environment: development", "Port: 8080", "Debug: true" |
+| **Expected** | Banner shows "RapidGo Framework", "Environment: development", "Port: 8080", "Debug: true" |
 | **Pass Criteria** | All 4 config values appear correctly in output |
 
 ### TC-12: go vet passes

@@ -9,7 +9,7 @@
 
 ## Overview
 
-The error handling package provides structured error types for the RGo framework. It defines an `AppError` struct that carries an HTTP status code, a user-safe message, and an optional wrapped internal error. Constructor helpers create errors for common HTTP scenarios (400, 401, 403, 404, 409, 422, 500). The package is pure Go with no HTTP framework dependency — middleware integration comes in a later feature.
+The error handling package provides structured error types for the RapidGo Framework. It defines an `AppError` struct that carries an HTTP status code, a user-safe message, and an optional wrapped internal error. Constructor helpers create errors for common HTTP scenarios (400, 401, 403, 404, 409, 422, 500). The package is pure Go with no HTTP framework dependency — middleware integration comes in a later feature.
 
 ## File Structure
 
@@ -33,7 +33,7 @@ No existing files are modified. This is a new, standalone package.
 package errors
 
 import (
-	"github.com/RAiWorks/RGo/core/config"
+	"github.com/RAiWorks/RapidGo/core/config"
 )
 
 // AppError represents a structured application error with HTTP status context.

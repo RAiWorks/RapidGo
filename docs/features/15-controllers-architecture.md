@@ -56,7 +56,7 @@ import (
 // Home handles the root route and returns a welcome message.
 func Home(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Welcome to RGo",
+		"message": "Welcome to RapidGo",
 	})
 }
 ```
@@ -128,8 +128,8 @@ func (ctrl *PostController) Destroy(c *gin.Context) {
 package routes
 
 import (
-	"github.com/RAiWorks/RGo/core/router"
-	"github.com/RAiWorks/RGo/http/controllers"
+	"github.com/RAiWorks/RapidGo/core/router"
+	"github.com/RAiWorks/RapidGo/http/controllers"
 )
 
 func RegisterWeb(r *router.Router) {
@@ -143,8 +143,8 @@ func RegisterWeb(r *router.Router) {
 package routes
 
 import (
-	"github.com/RAiWorks/RGo/core/router"
-	"github.com/RAiWorks/RGo/http/controllers"
+	"github.com/RAiWorks/RapidGo/core/router"
+	"github.com/RAiWorks/RapidGo/http/controllers"
 )
 
 func RegisterAPI(r *router.Router) {
@@ -160,7 +160,7 @@ func RegisterAPI(r *router.Router) {
 ### `GET /`
 ```
 Request → Router → controllers.Home(c)
-       → c.JSON(200, {"message": "Welcome to RGo"})
+       → c.JSON(200, {"message": "Welcome to RapidGo"})
        → Response
 ```
 

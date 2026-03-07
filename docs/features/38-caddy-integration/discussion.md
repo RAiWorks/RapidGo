@@ -2,7 +2,7 @@
 
 ## Overview
 
-Provide ready-to-use Caddy web server configuration for reverse-proxying to the RGo app, including automatic HTTPS, gzip, and static file serving.
+Provide ready-to-use Caddy web server configuration for reverse-proxying to the RapidGo app, including automatic HTTPS, gzip, and static file serving.
 
 ## Blueprint Reference
 

@@ -138,7 +138,7 @@ import (
 // Home renders the home page using the home.html template.
 func Home(c *gin.Context) {
 	c.HTML(http.StatusOK, "home.html", gin.H{
-		"title": "Welcome to RGo",
+		"title": "Welcome to RapidGo",
 	})
 }
 ```
@@ -160,7 +160,7 @@ func Home(c *gin.Context) {
 </head>
 <body>
     <h1>{{ .title }}</h1>
-    <p>RGo Framework is running.</p>
+    <p>RapidGo Framework is running.</p>
 </body>
 </html>
 ```
@@ -177,7 +177,7 @@ func Home(c *gin.Context) {
 ### Template Rendering
 ```
 Request GET / → Router → Home controller
-  → c.HTML(200, "home.html", gin.H{"title": "Welcome to RGo"})
+  → c.HTML(200, "home.html", gin.H{"title": "Welcome to RapidGo"})
   → Gin renders html/template with data
   → HTML response to client
 ```

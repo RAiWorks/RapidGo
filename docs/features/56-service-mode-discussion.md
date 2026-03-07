@@ -96,26 +96,26 @@ ConfigProvider ─────────────────────�
 
 ### Service Mode Concept
 
-Add a service mode system controlled by environment variable (`RGO_MODE`) or CLI flag (`--mode`):
+Add a service mode system controlled by environment variable (`RAPIDGO_MODE`) or CLI flag (`--mode`):
 
 ```
-RGO_MODE=all        →  Web + API + WebSocket (monolith — current behavior)
-RGO_MODE=web        →  Web SSR only (templates, static files)
-RGO_MODE=api        →  API only (JSON endpoints)
-RGO_MODE=ws         →  WebSocket only
-RGO_MODE=worker     →  Background job processor only (no HTTP)
-RGO_MODE=api,ws     →  API + WebSocket combined
-RGO_MODE=web,api    →  Web + API (no WebSocket)
+RAPIDGO_MODE=all        →  Web + API + WebSocket (monolith — current behavior)
+RAPIDGO_MODE=web        →  Web SSR only (templates, static files)
+RAPIDGO_MODE=api        →  API only (JSON endpoints)
+RAPIDGO_MODE=ws         →  WebSocket only
+RAPIDGO_MODE=worker     →  Background job processor only (no HTTP)
+RAPIDGO_MODE=api,ws     →  API + WebSocket combined
+RAPIDGO_MODE=web,api    →  Web + API (no WebSocket)
 ```
 
 ### CLI Interface
 
 ```
-rgo serve                     →  starts in RGO_MODE (default: all)
-rgo serve --mode=api          →  API-only service on API_PORT
-rgo serve --mode=web          →  Web-only service on WEB_PORT
-rgo serve --mode=api,ws       →  API + WebSocket on separate ports
-rgo worker                    →  Job processing (no HTTP)
+RapidGo serve                     →  starts in RAPIDGO_MODE (default: all)
+RapidGo serve --mode=api          →  API-only service on API_PORT
+RapidGo serve --mode=web          →  Web-only service on WEB_PORT
+RapidGo serve --mode=api,ws       →  API + WebSocket on separate ports
+RapidGo worker                    →  Job processing (no HTTP)
 ```
 
 ### Implementation Phases
@@ -128,7 +128,7 @@ The work breaks into 5 phases, each independently shippable:
 | **Phase 2** | Service Mode Flag | Enables API-only / Web-only / WS-only | Small |
 | **Phase 3** | Multi-Port Serving | Different services on different ports from one binary | Medium |
 | **Phase 4** | Remove Global State | Multiple services in same process without conflicts | Medium |
-| **Phase 5** | Worker/Queue Mode | Background job processing (`rgo worker`) | Large |
+| **Phase 5** | Worker/Queue Mode | Background job processing (`RapidGo worker`) | Large |
 
 **Phases 1-2** should be done proactively — they're small and unblock the core capability.  
 **Phase 3** is valuable when actually splitting services.  
@@ -148,9 +148,9 @@ All four core capabilities are confirmed possible:
 
 | Scenario | Mode | Description |
 |---|---|---|
-| **A — Monolith** | `RGO_MODE=all` | Everything on one port. MVP, small teams, simple deploys |
-| **B — Split Services** | Separate binaries each with own `RGO_MODE` | API, Web, WS as independent services. Scale independently |
-| **C — Combined Subsets** | `RGO_MODE=web,api` | Flexible grouping based on traffic patterns |
+| **A — Monolith** | `RAPIDGO_MODE=all` | Everything on one port. MVP, small teams, simple deploys |
+| **B — Split Services** | Separate binaries each with own `RAPIDGO_MODE` | API, Web, WS as independent services. Scale independently |
+| **C — Combined Subsets** | `RAPIDGO_MODE=web,api` | Flexible grouping based on traffic patterns |
 | **D — Separate Binaries** | Build tags + mode | Each binary only contains needed code. Smaller images |
 
 ### What the Framework Should NOT Build
@@ -170,15 +170,15 @@ The framework should focus on making the **application code** splittable, not re
 
 ## Edge Cases & Risks
 
-- [ ] **Mode validation** — Invalid mode strings (e.g., `RGO_MODE=invalid`) must fail fast with a clear error, not silently start nothing
+- [ ] **Mode validation** — Invalid mode strings (e.g., `RAPIDGO_MODE=invalid`) must fail fast with a clear error, not silently start nothing
 - [ ] **Provider ordering** — When providers are optional, remaining providers must still boot in correct dependency order
 - [ ] **Session without DB** — If mode=api and API needs sessions (e.g., for auth), but SessionProvider was skipped, this must be a clear error at boot, not a runtime panic
 - [ ] **Health check per mode** — Each service mode should expose its own health endpoint. An API-only service shouldn't report web template status
-- [ ] **Shared state across modes** — When running `RGO_MODE=all`, web and API routes share the same container/DB connection. When split, they don't. Code that assumes shared state will break when split
+- [ ] **Shared state across modes** — When running `RAPIDGO_MODE=all`, web and API routes share the same container/DB connection. When split, they don't. Code that assumes shared state will break when split
 - [ ] **Config conflicts** — `APP_PORT` vs `WEB_PORT` vs `API_PORT` — clear naming needed to avoid confusion
 - [ ] **Graceful shutdown per mode** — Multi-port serving needs graceful shutdown for ALL servers, not just one
 - [ ] **Testing** — Tests currently assume all providers are loaded. Mode-aware tests need thought
-- [ ] **Backward compatibility** — `RGO_MODE` unset must behave exactly as today (all services, single port)
+- [ ] **Backward compatibility** — `RAPIDGO_MODE` unset must behave exactly as today (all services, single port)
 
 ## Dependencies
 
@@ -195,9 +195,9 @@ The framework should focus on making the **application code** splittable, not re
 ## Open Questions
 
 - [ ] **Q1**: Should Phases 1-5 each be separate Mastery features (with their own doc sets), or is this one feature with phased implementation? Recommendation: Phases 1-3 as one feature (#56), Phase 4 as #57, Phase 5 (Worker/Queue) as a separate feature (already listed as #42 in roadmap)
-- [ ] **Q2**: Should the `--mode` flag override `RGO_MODE` env var, or vice versa? Recommendation: CLI flag overrides env var (standard precedence)
+- [ ] **Q2**: Should the `--mode` flag override `RAPIDGO_MODE` env var, or vice versa? Recommendation: CLI flag overrides env var (standard precedence)
 - [ ] **Q3**: For multi-port mode, should each service get its own container instance or share one? Recommendation: Shared container (simpler, same DB pool) with per-service routers
-- [ ] **Q4**: Should we support `RGO_MODE=api` as a build-time optimization (via Go build tags) to exclude web template code from the binary? Or runtime-only? Recommendation: Runtime-only for Phase 2-3, build tags as a future optimization
+- [ ] **Q4**: Should we support `RAPIDGO_MODE=api` as a build-time optimization (via Go build tags) to exclude web template code from the binary? Or runtime-only? Recommendation: Runtime-only for Phase 2-3, build tags as a future optimization
 - [ ] **Q5**: Does Phase 5 (Worker/Queue) overlap with roadmap item #42 (Queue Workers / Background Jobs)? Should they be merged? Recommendation: Yes — Phase 5 IS Feature #42
 - [ ] **Q6**: Should the `routes/` directory split into `routes/web.go`, `routes/api.go`, `routes/ws.go`? It already has `web.go` and `api.go` — do we just add `ws.go`?
 - [ ] **Q7**: When running in `web` mode only, should API middleware (like JSON content-type enforcement) be excluded from the middleware stack entirely?

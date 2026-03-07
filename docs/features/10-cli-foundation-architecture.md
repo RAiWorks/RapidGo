@@ -44,7 +44,7 @@ cmd/
 
 ### Root Command (`core/cli/root.go`)
 
-**Responsibility**: Define the root `rgo` command, register all subcommands, provide `Execute()` entry point, and expose `NewApp()` bootstrap helper for subcommands.
+**Responsibility**: Define the root `RapidGo` command, register all subcommands, provide `Execute()` entry point, and expose `NewApp()` bootstrap helper for subcommands.
 **Package**: `cli`
 
 ```go
@@ -54,8 +54,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/RAiWorks/RGo/app/providers"
-	"github.com/RAiWorks/RGo/core/app"
+	"github.com/RAiWorks/RapidGo/app/providers"
+	"github.com/RAiWorks/RapidGo/core/app"
 	"github.com/spf13/cobra"
 )
 
@@ -63,8 +63,8 @@ import (
 const Version = "0.1.0"
 
 var rootCmd = &cobra.Command{
-	Use:   "rgo",
-	Short: "RGo — A Go web framework with Laravel-style developer experience",
+	Use:   "RapidGo",
+	Short: "RapidGo — A Go web framework with Laravel-style developer experience",
 }
 
 func init() {
@@ -80,7 +80,7 @@ func Execute() {
 	}
 }
 
-// NewApp creates and boots a fully configured RGo application.
+// NewApp creates and boots a fully configured RapidGo application.
 // Used by commands that need the application lifecycle (serve, migrate, etc.).
 func NewApp() *app.App {
 	application := app.New()
@@ -113,9 +113,9 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/RAiWorks/RGo/core/config"
-	"github.com/RAiWorks/RGo/core/container"
-	"github.com/RAiWorks/RGo/core/router"
+	"github.com/RAiWorks/RapidGo/core/config"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/router"
 	"github.com/spf13/cobra"
 )
 
@@ -132,12 +132,12 @@ var serveCmd = &cobra.Command{
 			port = servePort
 		}
 
-		appName := config.Env("APP_NAME", "RGo")
+		appName := config.Env("APP_NAME", "RapidGo")
 		appEnv := config.AppEnv()
 
 		fmt.Println("=================================")
 		fmt.Printf("  %s Framework\n", appName)
-		fmt.Println("  github.com/RAiWorks/RGo")
+		fmt.Println("  github.com/RAiWorks/RapidGo")
 		fmt.Println("=================================")
 		fmt.Printf("  Environment: %s\n", appEnv)
 		fmt.Printf("  Port: %s\n", port)
@@ -185,9 +185,9 @@ import (
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print the RGo framework version",
+	Short: "Print the RapidGo Framework version",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Fprintf(cmd.OutOrStdout(), "RGo Framework v%s\n", Version)
+		fmt.Fprintf(cmd.OutOrStdout(), "RapidGo Framework v%s\n", Version)
 	},
 }
 ```
@@ -204,7 +204,7 @@ var versionCmd = &cobra.Command{
 ```go
 package main
 
-import "github.com/RAiWorks/RGo/core/cli"
+import "github.com/RAiWorks/RapidGo/core/cli"
 
 func main() {
 	cli.Execute()
@@ -214,7 +214,7 @@ func main() {
 **Design notes**:
 - `main()` is intentionally minimal — all logic lives in `core/cli/`
 - Existing `Makefile` targets (`make build`, `make run`) continue to work unchanged
-- Binary is still built as `bin/rgo` — no changes needed
+- Binary is still built as `bin/RapidGo` — no changes needed
 
 ---
 
@@ -223,7 +223,7 @@ func main() {
 | Blueprint | Our Implementation | Reason |
 |---|---|---|
 | Commands defined in `package cmd` | Commands in `package cli` (`core/cli/`) | Go convention: `cmd/` is `package main` only. Library code belongs in named packages for testability. |
-| `framework` as binary name | `rgo` as binary name | Our project is called RGo; `rgo` is shorter and consistent with existing Makefile |
+| `framework` as binary name | `RapidGo` as binary name | Our project is called RapidGo; `RapidGo` is shorter and consistent with existing Makefile |
 | Full `make:*` scaffolding commands | Deferred to later features | Roadmap scopes #10 as "cobra setup, base commands" only. Scaffolding is a separate feature. |
 | No `serve` command shown | Added `serve` command | Blueprint lists `framework serve` in the example commands list. Essential for CLI-based workflow. |
 
@@ -232,7 +232,7 @@ func main() {
 ## Data Flow
 
 ```
-User runs: rgo serve --port 9090
+User runs: RapidGo serve --port 9090
     │
     ▼
 cmd/main.go → cli.Execute()
@@ -257,7 +257,7 @@ serveCmd → print banner → start HTTP server on :9090
 | Area | Impact |
 |---|---|
 | `cmd/main.go` | **Rewritten** — all logic moves to `core/cli/serve.go`. Becomes a 5-line file. |
-| `Makefile` | **No change** — `go build -o bin/rgo ./cmd/...` and `go run ./cmd/...` still work. |
+| `Makefile` | **No change** — `go build -o bin/RapidGo ./cmd/...` and `go run ./cmd/...` still work. |
 | `.env` | **No change** — `APP_PORT` is still read; `--port` flag is optional override. |
 | Provider chain | **Moved** — same providers in same order, now in `cli.NewApp()` instead of `main()`. |
 | Existing tests | **No change** — provider tests don't depend on `main()`. |

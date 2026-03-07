@@ -154,7 +154,7 @@ type Provider interface {
 ```go
 package app
 
-import "github.com/RAiWorks/RGo/core/container"
+import "github.com/RAiWorks/RapidGo/core/container"
 
 // App is the application container that manages providers and services.
 type App struct {

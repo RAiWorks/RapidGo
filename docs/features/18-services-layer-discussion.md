@@ -36,6 +36,6 @@ Feature #18 implements the **UserService example** as the canonical service patt
 |---|---|---|
 | 1 | `UserService` as example pattern | Blueprint showcases it explicitly; users follow the pattern for other services |
 | 2 | `Password` stored as-is (with comment) | Blueprint code has `// hash before saving in real code`; actual hashing belongs to #22 |
-| 3 | Use `github.com/RAiWorks/RGo/database/models` import | Correct module path for the framework's own models package |
+| 3 | Use `github.com/RAiWorks/RapidGo/database/models` import | Correct module path for the framework's own models package |
 | 4 | Tests use SQLite in-memory | Consistent with database test patterns from #09, #11, #14 |
 | 5 | No container registration | Services are instantiated directly with `NewUserService(db)` — blueprint doesn't register them in the container |

@@ -3,11 +3,11 @@ package providers
 import (
 	"testing"
 
-	"github.com/RAiWorks/RGo/core/app"
-	"github.com/RAiWorks/RGo/core/config"
-	"github.com/RAiWorks/RGo/core/container"
-	"github.com/RAiWorks/RGo/core/middleware"
-	"github.com/RAiWorks/RGo/core/router"
+	"github.com/RAiWorks/RapidGo/core/app"
+	"github.com/RAiWorks/RapidGo/core/config"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/middleware"
+	"github.com/RAiWorks/RapidGo/core/router"
 )
 
 // TC-01: ConfigProvider implements Provider interface (compile-time check)

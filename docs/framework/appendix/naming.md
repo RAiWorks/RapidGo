@@ -39,7 +39,7 @@ criteria.
 
 ## Selected Name
 
-**RGo** — selected by RAiWorks.
+**RapidGo** — selected by RAiWorks.
 
 ## References
 

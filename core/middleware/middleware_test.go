@@ -9,9 +9,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/RAiWorks/RGo/core/auth"
-	"github.com/RAiWorks/RGo/core/errors"
-	"github.com/RAiWorks/RGo/core/session"
+	"github.com/RAiWorks/RapidGo/core/auth"
+	"github.com/RAiWorks/RapidGo/core/errors"
+	"github.com/RAiWorks/RapidGo/core/session"
 	"github.com/gin-gonic/gin"
 )
 

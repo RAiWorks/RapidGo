@@ -4,10 +4,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/RAiWorks/RGo/core/container"
-	"github.com/RAiWorks/RGo/core/health"
-	"github.com/RAiWorks/RGo/core/router"
-	"github.com/RAiWorks/RGo/routes"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/health"
+	"github.com/RAiWorks/RapidGo/core/router"
+	"github.com/RAiWorks/RapidGo/routes"
 	"gorm.io/gorm"
 )
 

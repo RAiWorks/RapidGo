@@ -11,7 +11,7 @@
 
 ## Summary
 
-Implement the database connection layer for the RGo framework. This feature provides a multi-driver connection factory supporting PostgreSQL, MySQL, and SQLite via GORM, configurable connection pool settings via environment variables, and a `DatabaseProvider` that registers `*gorm.DB` as a lazy singleton in the service container. The connection is established on first resolution, not at boot time.
+Implement the database connection layer for the RapidGo Framework. This feature provides a multi-driver connection factory supporting PostgreSQL, MySQL, and SQLite via GORM, configurable connection pool settings via environment variables, and a `DatabaseProvider` that registers `*gorm.DB` as a lazy singleton in the service container. The connection is established on first resolution, not at boot time.
 
 ---
 

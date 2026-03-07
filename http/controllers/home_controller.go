@@ -15,8 +15,8 @@ func Home(c *gin.Context) {
 		env = "development"
 	}
 	c.HTML(http.StatusOK, "home.html", gin.H{
-		"title":     "Welcome to RGo",
-		"version":   "0.1.0",
+		"title":     "Welcome to RapidGo",
+		"version":   "0.2.0",
 		"goVersion": runtime.Version(),
 		"env":       env,
 	})

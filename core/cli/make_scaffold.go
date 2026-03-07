@@ -133,7 +133,7 @@ func New{{.Name}}(db *gorm.DB) *{{.Name}} {
 
 var providerTpl = `package providers
 
-import "github.com/RAiWorks/RGo/core/container"
+import "github.com/RAiWorks/RapidGo/core/container"
 
 type {{.Name}} struct{}
 

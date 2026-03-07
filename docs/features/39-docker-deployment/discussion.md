@@ -2,7 +2,7 @@
 
 ## Overview
 
-Provide production-ready Docker configuration for containerized deployment of the RGo app.
+Provide production-ready Docker configuration for containerized deployment of the RapidGo app.
 
 ## Blueprint Reference
 

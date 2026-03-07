@@ -11,7 +11,7 @@
 
 ## Summary
 
-Replace the current `cmd/main.go` direct-execution entrypoint with a Cobra-based CLI framework. This introduces a root command (`rgo`), a `serve` subcommand that starts the HTTP server, and a `version` subcommand for build info. The CLI foundation provides the extensible command tree that all future CLI features (make:*, migrate, db:seed) will attach to.
+Replace the current `cmd/main.go` direct-execution entrypoint with a Cobra-based CLI framework. This introduces a root command (`RapidGo`), a `serve` subcommand that starts the HTTP server, and a `version` subcommand for build info. The CLI foundation provides the extensible command tree that all future CLI features (make:*, migrate, db:seed) will attach to.
 
 ---
 
@@ -20,16 +20,16 @@ Replace the current `cmd/main.go` direct-execution entrypoint with a Cobra-based
 - As a **framework developer**, I want a Cobra root command so that all future subcommands (make:*, migrate, serve) attach to a single command tree
 - As a **framework developer**, I want a `serve` command that boots the application and starts the HTTP server so that server startup moves from `main()` to a structured CLI subcommand
 - As a **framework developer**, I want a `version` command that prints the framework version so that users can verify their installation
-- As a **framework user**, I want to run `rgo serve` to start my application so that the CLI interface is consistent and discoverable
-- As a **framework user**, I want to run `rgo serve --port 9090` to override the default port so that I can choose a port without editing `.env`
-- As a **framework user**, I want to run `rgo version` to see the framework version
-- As a **framework user**, I want `rgo` (no args) to display help text listing all available commands
+- As a **framework user**, I want to run `RapidGo serve` to start my application so that the CLI interface is consistent and discoverable
+- As a **framework user**, I want to run `RapidGo serve --port 9090` to override the default port so that I can choose a port without editing `.env`
+- As a **framework user**, I want to run `RapidGo version` to see the framework version
+- As a **framework user**, I want `RapidGo` (no args) to display help text listing all available commands
 
 ## Current State / Reference
 
 ### What Exists
 - **`cmd/main.go`**: Direct execution — `func main()` creates the application, registers providers, boots, prints banner, and calls `r.Run()`. No CLI framework.
-- **`bin/rgo.exe`**: Built via `go build -o bin/rgo ./cmd/...` — runs main() directly
+- **`bin/RapidGo.exe`**: Built via `go build -o bin/RapidGo ./cmd/...` — runs main() directly
 - **`Makefile`**: `make build`, `make run` targets already work with current `cmd/main.go`
 - **Provider order**: Config(1) → Logger(2) → Database(3) → Middleware(4) → Router(5)
 
@@ -83,7 +83,7 @@ The `cmd/` directory is for the binary entrypoint only (`package main`). CLI com
 ## Edge Cases & Risks
 
 - [x] `--port` flag vs `APP_PORT` env var — flag takes precedence if provided, env var is the fallback
-- [x] Running `rgo` with no args should show help, not start the server
+- [x] Running `RapidGo` with no args should show help, not start the server
 - [x] `serve` command should work identically to current `main.go` when no flags are provided (backward compatible)
 - [x] Cobra adds its own `--help` and `completion` commands — these are fine to keep
 - [x] Future commands (make:*, migrate) must be able to add themselves without modifying root — achieved via `rootCmd.AddCommand()`

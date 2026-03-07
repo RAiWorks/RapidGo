@@ -2,7 +2,7 @@
 
 # Build the application binary
 build:
-	go build -o bin/rgo ./cmd/...
+	go build -o bin/rapidgo ./cmd/...
 
 # Run the application
 run:

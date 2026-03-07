@@ -1,15 +1,15 @@
-# RGo Framework — Service Mode Architecture Discussion
+# RapidGo Framework — Service Mode Architecture Discussion
 
 > **Status**: DISCUSSION / RFC  
 > **Date**: 2026-03-07  
 > **Author**: Architecture Review  
-> **Scope**: Can RGo run as monolith, split microservices, or combined service subsets?
+> **Scope**: Can RapidGo run as monolith, split microservices, or combined service subsets?
 
 ---
 
 ## 1. The Question
 
-Can we build a full application (Web SSR + APIs + WebSocket + Workers) with RGo and later:
+Can we build a full application (Web SSR + APIs + WebSocket + Workers) with RapidGo and later:
 
 1. Run **everything in one binary** (monolith)
 2. Split and run **each as its own service** (microservice)
@@ -17,7 +17,7 @@ Can we build a full application (Web SSR + APIs + WebSocket + Workers) with RGo 
 
 **Answer: YES — but the framework needs targeted changes first.**
 
-The underlying technology (Go, Gin, GORM) fully supports this. The blockers are in RGo's bootstrapping layer, not in the core components.
+The underlying technology (Go, Gin, GORM) fully supports this. The blockers are in RapidGo's bootstrapping layer, not in the core components.
 
 ---
 
@@ -41,7 +41,7 @@ application.Boot() → calls Boot() on all 6 in order
 serve command → extracts "router" → server.ListenAndServe(:8080)
 ```
 
-**Result**: Every `rgo serve` starts the FULL app — Web + API + WebSocket — on ONE port. No way to customize.
+**Result**: Every `RapidGo serve` starts the FULL app — Web + API + WebSocket — on ONE port. No way to customize.
 
 ### Provider dependency graph
 
@@ -73,7 +73,7 @@ ConfigProvider ─────────────────────�
 | 5 | **Global middleware registry** | `core/middleware/registry.go` uses package-level maps | All services in same process share middleware namespace |
 | 6 | **Global named routes** | `core/router/named.go` uses package-level map | Route names collide across services in same process |
 | 7 | **Single serve command** | `core/cli/serve.go` starts one server on one port | Can't run Web on :8080 and API on :3001 simultaneously |
-| 8 | **No worker/queue mode** | No CLI command for background processing | Can't run `rgo worker` for job processing |
+| 8 | **No worker/queue mode** | No CLI command for background processing | Can't run `RapidGo worker` for job processing |
 
 ---
 
@@ -134,33 +134,33 @@ webContainer := container.New()
 
 ### The concept
 
-Add a `RGO_MODE` environment variable (or `--mode` flag) that controls which services start:
+Add a `RAPIDGO_MODE` environment variable (or `--mode` flag) that controls which services start:
 
 ```
-RGO_MODE=all        →  Web + API + WebSocket (monolith, current behavior)
-RGO_MODE=web        →  Web SSR only (templates, static files)
-RGO_MODE=api        →  API only (JSON endpoints)
-RGO_MODE=ws         →  WebSocket only
-RGO_MODE=worker     →  Background job processor only
-RGO_MODE=api,ws     →  API + WebSocket combined
-RGO_MODE=web,api    →  Web + API (no WebSocket)
+RAPIDGO_MODE=all        →  Web + API + WebSocket (monolith, current behavior)
+RAPIDGO_MODE=web        →  Web SSR only (templates, static files)
+RAPIDGO_MODE=api        →  API only (JSON endpoints)
+RAPIDGO_MODE=ws         →  WebSocket only
+RAPIDGO_MODE=worker     →  Background job processor only
+RAPIDGO_MODE=api,ws     →  API + WebSocket combined
+RAPIDGO_MODE=web,api    →  Web + API (no WebSocket)
 ```
 
 ### How it would work
 
 ```
-rgo serve                     →  starts in RGO_MODE (default: all)
-rgo serve --mode=api          →  API-only service on API_PORT
-rgo serve --mode=web          →  Web-only service on WEB_PORT
-rgo serve --mode=api,ws       →  API + WebSocket on separate ports
-rgo worker                    →  Job processing (no HTTP)
+RapidGo serve                     →  starts in RAPIDGO_MODE (default: all)
+RapidGo serve --mode=api          →  API-only service on API_PORT
+RapidGo serve --mode=web          →  Web-only service on WEB_PORT
+RapidGo serve --mode=api,ws       →  API + WebSocket on separate ports
+RapidGo worker                    →  Job processing (no HTTP)
 ```
 
 ### Architecture for multi-mode support
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    rgo serve --mode=all                  │
+│                    RapidGo serve --mode=all                  │
 │                                                         │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌────────┐ │
 │  │ Web SSR  │  │   API    │  │WebSocket │  │ Worker │ │
@@ -176,7 +176,7 @@ rgo worker                    →  Job processing (no HTTP)
 ─── OR ───
 
 ┌─────────────┐   ┌─────────────┐   ┌─────────────┐
-│  rgo serve  │   │  rgo serve  │   │  rgo serve  │
+│  RapidGo serve  │   │  RapidGo serve  │   │  RapidGo serve  │
 │  --mode=web │   │  --mode=api │   │  --mode=ws  │
 │    :8080    │   │    :3001    │   │    :3002    │
 │             │   │             │   │             │
@@ -241,7 +241,7 @@ func (p *SessionProvider) Register(c *container.Container) {
 
 ### Phase 2: Service Mode in Serve Command (SMALL — ~1 day)
 
-**Goal**: `rgo serve --mode=api` only loads API routes.
+**Goal**: `RapidGo serve --mode=api` only loads API routes.
 
 **Change 1**: Add `--mode` flag to serve command:
 
@@ -252,7 +252,7 @@ var serveCmd = &cobra.Command{
     Run: func(cmd *cobra.Command, args []string) {
         mode, _ := cmd.Flags().GetString("mode")
         if mode == "" {
-            mode = os.Getenv("RGO_MODE")
+            mode = os.Getenv("RAPIDGO_MODE")
         }
         if mode == "" {
             mode = "all"
@@ -271,7 +271,7 @@ func init() {
 ```go
 func (p *RouterProvider) Boot(c *container.Container) {
     r := container.MustMake[*router.Router](c, "router")
-    mode := config.Get("RGO_MODE", "all")
+    mode := config.Get("RAPIDGO_MODE", "all")
 
     r.SetFuncMap(router.DefaultFuncMap())
 
@@ -308,7 +308,7 @@ func (p *RouterProvider) Boot(c *container.Container) {
 // WEB_PORT=8080  API_PORT=3001  WS_PORT=3002
 
 func runMultiMode(app *app.App) {
-    modes := strings.Split(config.Get("RGO_MODE", "all"), ",")
+    modes := strings.Split(config.Get("RAPIDGO_MODE", "all"), ",")
     
     var wg sync.WaitGroup
     
@@ -380,7 +380,7 @@ type Router struct {
 
 ### Phase 5: Worker/Queue Mode (LARGE — ~3-5 days)
 
-**Goal**: `rgo worker` processes background jobs.
+**Goal**: `RapidGo worker` processes background jobs.
 
 This requires a new subsystem:
 
@@ -407,10 +407,10 @@ type Queue interface {
 
 ```
 .env:
-  RGO_MODE=all
+  RAPIDGO_MODE=all
   APP_PORT=8080
 
-$ rgo serve
+$ RapidGo serve
 → Starts everything on :8080
 → Web SSR + API + WebSocket all served from one binary
 → Perfect for: MVP, small teams, simple deployments
@@ -421,19 +421,19 @@ $ rgo serve
 ```
 # Service 1: Web Frontend
 .env:
-  RGO_MODE=web
+  RAPIDGO_MODE=web
   WEB_PORT=8080
   DB_HOST=shared-db.internal
 
 # Service 2: API Backend
 .env:
-  RGO_MODE=api
+  RAPIDGO_MODE=api
   API_PORT=3001
   DB_HOST=shared-db.internal
 
 # Service 3: WebSocket Server
 .env:
-  RGO_MODE=ws
+  RAPIDGO_MODE=ws
   WS_PORT=3002
   REDIS_HOST=shared-redis.internal
 
@@ -447,13 +447,13 @@ $ rgo serve
 ```
 # Service 1: Web + API together
 .env:
-  RGO_MODE=web,api
+  RAPIDGO_MODE=web,api
   WEB_PORT=8080
   API_PORT=3001
 
 # Service 2: WebSocket + Worker
 .env:
-  RGO_MODE=ws,worker
+  RAPIDGO_MODE=ws,worker
   WS_PORT=3002
 
 → Flexible grouping based on traffic patterns
@@ -464,10 +464,10 @@ $ rgo serve
 
 ```
 # Build API-only binary (smaller, faster startup)
-$ RGO_MODE=api go build -o api-server ./cmd
+$ RAPIDGO_MODE=api go build -o api-server ./cmd
 
 # Build Web-only binary
-$ RGO_MODE=web go build -o web-server ./cmd
+$ RAPIDGO_MODE=web go build -o web-server ./cmd
 
 → Each binary only contains needed code
 → Smaller container images
@@ -491,13 +491,13 @@ Some things are better solved by infrastructure, not framework:
 | gRPC between services | ❌ No | Use gRPC directly if needed |
 | API Gateway | ❌ No | Kong / Traefik / Caddy |
 
-RGo should focus on making the **application code** splittable, not reimplementing infrastructure.
+RapidGo should focus on making the **application code** splittable, not reimplementing infrastructure.
 
 ---
 
 ## 8. Comparison with Other Frameworks
 
-| Capability | Laravel | Spring Boot | NestJS | RGo (Today) | RGo (Proposed) |
+| Capability | Laravel | Spring Boot | NestJS | RapidGo (Today) | RapidGo (Proposed) |
 |------------|---------|-------------|--------|-------------|----------------|
 | Monolith mode | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Optional providers | ✅ | ✅ | ✅ | ❌ | ✅ Phase 1 |
@@ -530,4 +530,4 @@ RGo should focus on making the **application code** splittable, not reimplementi
 
 **Should we do it now?** Phase 1-2 (2 days) should be done proactively. Phase 3-5 can wait until actually needed.
 
-**The key insight**: RGo's architecture is already 80% there. The container, providers, router, and server are all properly decoupled. The remaining 20% is just removing a few hardcoded assumptions in the bootstrap layer.
+**The key insight**: RapidGo's architecture is already 80% there. The container, providers, router, and server are all properly decoupled. The remaining 20% is just removing a few hardcoded assumptions in the bootstrap layer.

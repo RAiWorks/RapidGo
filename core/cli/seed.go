@@ -3,8 +3,8 @@ package cli
 import (
 	"fmt"
 
-	"github.com/RAiWorks/RGo/core/container"
-	"github.com/RAiWorks/RGo/database/seeders"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/database/seeders"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )

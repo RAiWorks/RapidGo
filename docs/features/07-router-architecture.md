@@ -65,7 +65,7 @@ package router
 import (
 	"net/http"
 
-	"github.com/RAiWorks/RGo/core/config"
+	"github.com/RAiWorks/RapidGo/core/config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -364,9 +364,9 @@ func ResetNamedRoutes() {
 package providers
 
 import (
-	"github.com/RAiWorks/RGo/core/container"
-	"github.com/RAiWorks/RGo/core/router"
-	"github.com/RAiWorks/RGo/routes"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/router"
+	"github.com/RAiWorks/RapidGo/routes"
 )
 
 // RouterProvider creates the router and registers route definitions.
@@ -397,7 +397,7 @@ func (p *RouterProvider) Boot(c *container.Container) {
 ```go
 package routes
 
-import "github.com/RAiWorks/RGo/core/router"
+import "github.com/RAiWorks/RapidGo/core/router"
 
 // RegisterWeb defines web (HTML) routes.
 func RegisterWeb(r *router.Router) {
@@ -411,7 +411,7 @@ func RegisterWeb(r *router.Router) {
 ```go
 package routes
 
-import "github.com/RAiWorks/RGo/core/router"
+import "github.com/RAiWorks/RapidGo/core/router"
 
 // RegisterAPI defines API routes under the /api prefix.
 func RegisterAPI(r *router.Router) {
@@ -435,11 +435,11 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/RAiWorks/RGo/app/providers"
-	"github.com/RAiWorks/RGo/core/app"
-	"github.com/RAiWorks/RGo/core/config"
-	"github.com/RAiWorks/RGo/core/container"
-	"github.com/RAiWorks/RGo/core/router"
+	"github.com/RAiWorks/RapidGo/app/providers"
+	"github.com/RAiWorks/RapidGo/core/app"
+	"github.com/RAiWorks/RapidGo/core/config"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/router"
 )
 
 func main() {
@@ -453,13 +453,13 @@ func main() {
 	// Boot all providers
 	application.Boot()
 
-	appName := config.Env("APP_NAME", "RGo")
+	appName := config.Env("APP_NAME", "RapidGo")
 	appPort := config.Env("APP_PORT", "8080")
 	appEnv := config.AppEnv()
 
 	fmt.Println("=================================")
 	fmt.Printf("  %s Framework\n", appName)
-	fmt.Println("  github.com/RAiWorks/RGo")
+	fmt.Println("  github.com/RAiWorks/RapidGo")
 	fmt.Println("=================================")
 	fmt.Printf("  Environment: %s\n", appEnv)
 	fmt.Printf("  Port: %s\n", appPort)

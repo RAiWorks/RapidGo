@@ -3,7 +3,7 @@ package models
 import (
 	"strings"
 
-	"github.com/RAiWorks/RGo/app/helpers"
+	"github.com/RAiWorks/RapidGo/app/helpers"
 	"gorm.io/gorm"
 )
 

@@ -1,8 +1,8 @@
 package providers
 
 import (
-	"github.com/RAiWorks/RGo/core/container"
-	"github.com/RAiWorks/RGo/core/logger"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/logger"
 )
 
 // LoggerProvider sets up structured logging via slog.

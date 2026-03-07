@@ -1,16 +1,16 @@
-# 🎯 Project Context — RGo Framework
+# 🎯 Project Context — RapidGo Framework
 
-> **Project**: RGo
+> **Project**: RapidGo
 > **Type**: Go Web Framework
-> **Repository**: https://github.com/RAiWorks/RGo
+> **Repository**: https://github.com/RAiWorks/RapidGo
 > **Author**: RAiWorks
 > **Created**: 2026-03-05
 
 ---
 
-## What Is RGo?
+## What Is RapidGo?
 
-RGo is a full-featured, opinionated Go web framework that combines **Laravel-style developer experience with Go performance**. It supports web applications, REST APIs, WebSockets, and CLI tools — all built on proven Go libraries and idiomatic patterns.
+RapidGo is a full-featured, opinionated Go web framework that combines **Laravel-style developer experience with Go performance**. It supports web applications, REST APIs, WebSockets, and CLI tools — all built on proven Go libraries and idiomatic patterns.
 
 The framework follows the **MVC + Services + Helpers** architectural pattern, providing everything needed to build production-ready applications without cobbling together dozens of unrelated packages.
 
@@ -277,9 +277,9 @@ Everything listed in the **Target Capabilities** section above. This is the scop
 
 | Item | Reason |
 |---|---|
-| Frontend framework | RGo serves HTML templates; it does not include a JS framework |
-| Microservices framework | RGo is a monolith-first framework; gRPC/service mesh is out of scope |
-| ORM replacement | RGo uses GORM — building a custom ORM is not a goal |
+| Frontend framework | RapidGo serves HTML templates; it does not include a JS framework |
+| Microservices framework | RapidGo is a monolith-first framework; gRPC/service mesh is out of scope |
+| ORM replacement | RapidGo uses GORM — building a custom ORM is not a goal |
 | Package manager | Go modules (`go.mod`) handles dependency management |
 
 ---

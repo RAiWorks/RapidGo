@@ -83,8 +83,8 @@ func TestNewDBConfig_Defaults(t *testing.T) {
 	if cfg.Port != "5432" {
 		t.Fatalf("expected Port '5432', got '%s'", cfg.Port)
 	}
-	if cfg.Name != "rgo_dev" {
-		t.Fatalf("expected Name 'rgo_dev', got '%s'", cfg.Name)
+	if cfg.Name != "rapidgo_dev" {
+		t.Fatalf("expected Name 'rapidgo_dev', got '%s'", cfg.Name)
 	}
 	if cfg.MaxOpenConns != 25 {
 		t.Fatalf("expected MaxOpenConns 25, got %d", cfg.MaxOpenConns)

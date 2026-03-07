@@ -24,7 +24,7 @@
 
 - [x] **C-01**: Update `cmd/main.go` to import and call `config.Load()` at start
 - [x] **C-02**: Update `cmd/main.go` banner to display `APP_NAME`, `APP_PORT`, `APP_ENV`, `IsDebug()`
-- [x] **C-03**: Run `go build -o bin/rgo.exe ./cmd/` — must compile successfully
+- [x] **C-03**: Run `go build -o bin/RapidGo.exe ./cmd/` — must compile successfully
 
 ## Phase D — Tests (5 tasks)
 
@@ -37,5 +37,5 @@
 ## Phase E — Integration Validation (3 tasks)
 
 - [x] **E-01**: Run `go test ./core/config/... -v` — all tests must pass
-- [x] **E-02**: Run `go run ./cmd/` — verify banner shows `.env` values (APP_NAME=RGo, APP_PORT=8080, etc.)
+- [x] **E-02**: Run `go run ./cmd/` — verify banner shows `.env` values (APP_NAME=RapidGo, APP_PORT=8080, etc.)
 - [x] **E-03**: Run `go vet ./...` — full project must pass with zero warnings

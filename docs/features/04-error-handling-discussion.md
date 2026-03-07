@@ -11,7 +11,7 @@
 
 ## Summary
 
-Implement a centralized error handling package that defines structured error types, helper constructors, and consistent error formatting for the RGo framework. This is the **foundation layer** — pure Go error types with no HTTP framework dependency. The Gin middleware integration will be built in a later HTTP/Router feature.
+Implement a centralized error handling package that defines structured error types, helper constructors, and consistent error formatting for the RapidGo Framework. This is the **foundation layer** — pure Go error types with no HTTP framework dependency. The Gin middleware integration will be built in a later HTTP/Router feature.
 
 ---
 
@@ -60,7 +60,7 @@ Create a `core/errors` package with:
 
 - [x] `AppError.Err` can be nil (e.g., `NotFound("user not found")` with no underlying error) — `Unwrap()` must handle nil gracefully
 - [x] `ErrorResponse()` must NEVER expose internal error details when `APP_DEBUG=false` — security critical
-- [x] Package naming conflict: Go stdlib has `errors` package — using `core/errors` is fine because it's imported by full path (`github.com/RAiWorks/RGo/core/errors`), but internal code must use the full import path to avoid shadowing
+- [x] Package naming conflict: Go stdlib has `errors` package — using `core/errors` is fine because it's imported by full path (`github.com/RAiWorks/RapidGo/core/errors`), but internal code must use the full import path to avoid shadowing
 - [x] `AppError` must work with `errors.As()` — requires pointer receiver pattern
 
 ## Dependencies

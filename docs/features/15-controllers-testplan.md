@@ -19,7 +19,7 @@ All tests use `httptest.NewRecorder()` with Gin's test mode — no server requir
 
 ### TC-01: `TestHome_ReturnsWelcome`
 **What**: `Home` returns a JSON welcome message with status 200.
-**How**: Create a Gin test context with `GET /`. Call `Home(c)`. Assert status 200 and response body contains `"Welcome to RGo"`.
+**How**: Create a Gin test context with `GET /`. Call `Home(c)`. Assert status 200 and response body contains `"Welcome to RapidGo"`.
 **Pass**: Status 200, JSON body with `message` field.
 
 ### TC-02: `TestPostController_Index`

@@ -8,7 +8,7 @@
 
 ## What Are We Building?
 
-A seeder system that populates the database with initial/test data. Seeders live in `database/seeders/`, are registered via a central registry, and are invoked via the `rgo db:seed` CLI command. The system supports running all seeders or a specific one by name.
+A seeder system that populates the database with initial/test data. Seeders live in `database/seeders/`, are registered via a central registry, and are invoked via the `RapidGo db:seed` CLI command. The system supports running all seeders or a specific one by name.
 
 ## Blueprint References
 
@@ -26,7 +26,7 @@ The blueprint specifies (lines 3032–3065):
 - Seeder interface — `Seeder` with `Name()` and `Seed(db)` methods
 - Seeder registry — `Register()` and `RunAll()` in `database/seeders/`
 - `UserSeeder` — sample seeder creating admin + regular user
-- `rgo db:seed` CLI command — runs all registered seeders
+- `RapidGo db:seed` CLI command — runs all registered seeders
 - `--seeder` flag — run a specific seeder by name
 
 ### Out of Scope (deferred)

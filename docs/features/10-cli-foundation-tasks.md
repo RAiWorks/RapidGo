@@ -44,7 +44,7 @@
 - [x] **C.1** — Create `core/cli/serve.go`: `serveCmd` with `--port` flag, banner, server start
 - [x] **C.2** — Create `core/cli/version.go`: `versionCmd` prints framework version
 - [x] **C.3** — Refactor `cmd/main.go` — replace all logic with `cli.Execute()` call
-- [x] 📍 **Checkpoint C** — `go build ./...` succeeds, `rgo serve` starts server, `rgo version` prints version
+- [x] 📍 **Checkpoint C** — `go build ./...` succeeds, `RapidGo serve` starts server, `RapidGo version` prints version
 
 ---
 

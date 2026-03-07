@@ -1,8 +1,8 @@
 package providers
 
 import (
-	"github.com/RAiWorks/RGo/core/config"
-	"github.com/RAiWorks/RGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/config"
+	"github.com/RAiWorks/RapidGo/core/container"
 )
 
 // ConfigProvider loads environment configuration.

@@ -1,6 +1,6 @@
-# 🗺️ Project Roadmap — RGo Framework
+# 🗺️ Project Roadmap — RapidGo Framework
 
-> **Project**: RGo
+> **Project**: RapidGo
 > **Context**: [`project-context.md`](project-context.md)
 > **Process**: [`mastery.md`](mastery.md)
 > **Last Updated**: 2026-03-06
@@ -269,9 +269,9 @@ Every blueprint section mapped to its feature number. No gaps, no extras.
 
 | Project | Description | Depends On |
 |---|---|---|
-| **RGo Docs App** | Documentation platform that parses and renders Markdown files, with admin panel for editing. Serves as the official RGo documentation site and proves the framework works end-to-end. | All Phases 1–5 |
+| **RapidGo Docs App** | Documentation platform that parses and renders Markdown files, with admin panel for editing. Serves as the official RapidGo documentation site and proves the framework works end-to-end. | All Phases 1–5 |
 
-### RGo Docs App — Planned Capabilities
+### RapidGo Docs App — Planned Capabilities
 
 - Markdown parsing and HTML rendering (via `goldmark`)
 - YAML frontmatter extraction for metadata
@@ -280,7 +280,7 @@ Every blueprint section mapped to its feature number. No gaps, no extras.
 - Syntax-highlighted code blocks
 - Version switching for docs across releases
 - Admin panel with auth-protected CRUD editor for `.md` files
-- SSR rendered via RGo's own Views & Templates system
+- SSR rendered via RapidGo's own Views & Templates system
 
 **Reference inspiration**: VitePress (DX), Docusaurus (features), Stripe Docs (API docs UX).
 

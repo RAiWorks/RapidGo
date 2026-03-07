@@ -4,17 +4,17 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/RAiWorks/RGo/app/providers"
-	"github.com/RAiWorks/RGo/core/app"
+	"github.com/RAiWorks/RapidGo/app/providers"
+	"github.com/RAiWorks/RapidGo/core/app"
 	"github.com/spf13/cobra"
 )
 
 // Version is the current framework version.
-const Version = "0.1.0"
+const Version = "0.2.0"
 
 var rootCmd = &cobra.Command{
-	Use:   "rgo",
-	Short: "RGo — A Go web framework with Laravel-style developer experience",
+	Use:   "rapidgo",
+	Short: "RapidGo — A Go web framework with Laravel-style developer experience",
 }
 
 func init() {
@@ -39,7 +39,7 @@ func Execute() {
 	}
 }
 
-// NewApp creates and boots a fully configured RGo application.
+// NewApp creates and boots a fully configured RapidGo application.
 // Used by commands that need the application lifecycle (serve, migrate, etc.).
 func NewApp() *app.App {
 	application := app.New()

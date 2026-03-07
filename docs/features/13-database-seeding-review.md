@@ -17,7 +17,7 @@ Feature #13 adds a database seeding system with a `Seeder` interface, a global r
 |---|---|---|
 | `database/seeders/seeder.go` | Created | `Seeder` interface, `Register`, `RunAll`, `RunByName`, `Names`, `ResetRegistry` |
 | `database/seeders/user_seeder.go` | Created | `UserSeeder` — seeds admin + user via `FirstOrCreate` |
-| `core/cli/seed.go` | Created | `rgo db:seed` command with `--seeder` flag |
+| `core/cli/seed.go` | Created | `RapidGo db:seed` command with `--seeder` flag |
 | `core/cli/root.go` | Modified | Added `dbSeedCmd` to `init()` |
 | `database/seeders/seeders_test.go` | Created | 7 tests (unit + integration) |
 

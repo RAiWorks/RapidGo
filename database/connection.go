@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/RAiWorks/RGo/core/config"
+	"github.com/RAiWorks/RapidGo/core/config"
 	"github.com/glebarez/sqlite"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -33,7 +33,7 @@ func NewDBConfig() DBConfig {
 		Driver:          config.Env("DB_DRIVER", ""),
 		Host:            config.Env("DB_HOST", "localhost"),
 		Port:            config.Env("DB_PORT", "5432"),
-		Name:            config.Env("DB_NAME", "rgo_dev"),
+		Name:            config.Env("DB_NAME", "rapidgo_dev"),
 		User:            config.Env("DB_USER", ""),
 		Password:        config.Env("DB_PASSWORD", ""),
 		SSLMode:         config.Env("DB_SSL_MODE", "disable"),

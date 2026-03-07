@@ -36,8 +36,8 @@ cmd/
 package providers
 
 import (
-	"github.com/RAiWorks/RGo/core/config"
-	"github.com/RAiWorks/RGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/config"
+	"github.com/RAiWorks/RapidGo/core/container"
 )
 
 // ConfigProvider loads environment configuration and registers
@@ -68,8 +68,8 @@ func (p *ConfigProvider) Boot(c *container.Container) {}
 package providers
 
 import (
-	"github.com/RAiWorks/RGo/core/container"
-	"github.com/RAiWorks/RGo/core/logger"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/logger"
 )
 
 // LoggerProvider sets up structured logging via slog.
@@ -104,9 +104,9 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/RAiWorks/RGo/app/providers"
-	"github.com/RAiWorks/RGo/core/app"
-	"github.com/RAiWorks/RGo/core/config"
+	"github.com/RAiWorks/RapidGo/app/providers"
+	"github.com/RAiWorks/RapidGo/core/app"
+	"github.com/RAiWorks/RapidGo/core/config"
 )
 
 func main() {
@@ -120,13 +120,13 @@ func main() {
 	application.Boot()
 
 	// Banner
-	appName := config.Env("APP_NAME", "RGo")
+	appName := config.Env("APP_NAME", "RapidGo")
 	appPort := config.Env("APP_PORT", "8080")
 	appEnv := config.AppEnv()
 
 	fmt.Println("=================================")
 	fmt.Printf("  %s Framework\n", appName)
-	fmt.Println("  github.com/RAiWorks/RGo")
+	fmt.Println("  github.com/RAiWorks/RapidGo")
 	fmt.Println("=================================")
 	fmt.Printf("  Environment: %s\n", appEnv)
 	fmt.Printf("  Port: %s\n", appPort)

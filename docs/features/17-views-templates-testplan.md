@@ -43,7 +43,7 @@
 
 ### TC-06: `TestHome_RendersHTML` (updated existing)
 **What**: Home controller renders HTML template instead of JSON.
-**How**: Create router with templates loaded. Register Home route. Make GET request. Assert 200 with Content-Type `text/html` and body contains "Welcome to RGo".
+**How**: Create router with templates loaded. Register Home route. Make GET request. Assert 200 with Content-Type `text/html` and body contains "Welcome to RapidGo".
 **Pass**: HTML response with expected content.
 
 ---

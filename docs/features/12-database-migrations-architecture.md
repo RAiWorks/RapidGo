@@ -341,7 +341,7 @@ rootCmd.AddCommand(makeMigrationCmd)
 
 ## Data Flow
 
-### `rgo migrate`
+### `RapidGo migrate`
 ```
 CLI → NewApp() → get *gorm.DB from container
     → db.AutoMigrate(models.All()...)       ← step 1: sync model structs
@@ -354,7 +354,7 @@ CLI → NewApp() → get *gorm.DB from container
     → print results
 ```
 
-### `rgo migrate:rollback`
+### `RapidGo migrate:rollback`
 ```
 CLI → NewApp() → get *gorm.DB
     → NewMigrator(db) → migrator.Rollback()
@@ -365,7 +365,7 @@ CLI → NewApp() → get *gorm.DB
     → print results
 ```
 
-### `rgo make:migration CreateSessionsTable`
+### `RapidGo make:migration CreateSessionsTable`
 ```
 CLI → format timestamp + snake_case name
     → create database/migrations/20260306120000_create_sessions_table.go

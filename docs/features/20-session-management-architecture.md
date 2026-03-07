@@ -564,7 +564,7 @@ func (m *Manager) FlashOldInput(data map[string]interface{}, input map[string]st
 package middleware
 
 import (
-	"github.com/RAiWorks/RGo/core/session"
+	"github.com/RAiWorks/RapidGo/core/session"
 	"github.com/gin-gonic/gin"
 )
 
@@ -593,8 +593,8 @@ func SessionMiddleware(mgr *session.Manager) gin.HandlerFunc {
 package providers
 
 import (
-	"github.com/RAiWorks/RGo/core/container"
-	"github.com/RAiWorks/RGo/core/session"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/session"
 	"gorm.io/gorm"
 )
 

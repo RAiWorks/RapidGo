@@ -1,6 +1,6 @@
-# RGo Framework — Architecture Documentation
+# RapidGo Framework — Architecture Documentation
 
-> Comprehensive architecture documentation for the RGo Go web
+> Comprehensive architecture documentation for the RapidGo Go web
 > framework, following RFC-style standards.
 
 ## Quick Links

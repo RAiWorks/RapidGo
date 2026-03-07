@@ -9,7 +9,7 @@
 
 ## Summary
 
-Feature #10 replaces the monolithic `cmd/main.go` with a Cobra-based CLI framework. Introduces root command (`rgo`), `serve` subcommand (with `--port` flag), and `version` subcommand. `cmd/main.go` is now a thin 5-line shell calling `cli.Execute()`.
+Feature #10 replaces the monolithic `cmd/main.go` with a Cobra-based CLI framework. Introduces root command (`RapidGo`), `serve` subcommand (with `--port` flag), and `version` subcommand. `cmd/main.go` is now a thin 5-line shell calling `cli.Execute()`.
 
 ## Files Changed
 

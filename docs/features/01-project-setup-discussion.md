@@ -11,13 +11,13 @@
 
 ## Summary
 
-Initialize the RGo framework as a Go module, create the full directory structure defined in the blueprint, add the application entry point (`cmd/main.go`), and provide essential project files (`.env`, `Makefile`, `.gitignore`). This feature produces a compilable, runnable skeleton that prints a startup banner — the foundation every other feature builds on.
+Initialize the RapidGo Framework as a Go module, create the full directory structure defined in the blueprint, add the application entry point (`cmd/main.go`), and provide essential project files (`.env`, `Makefile`, `.gitignore`). This feature produces a compilable, runnable skeleton that prints a startup banner — the foundation every other feature builds on.
 
 ---
 
 ## Functional Requirements
 
-- As a framework developer, I want a properly initialized Go module so that all subsequent features have a clean import path (`github.com/RAiWorks/RGo`)
+- As a framework developer, I want a properly initialized Go module so that all subsequent features have a clean import path (`github.com/RAiWorks/RapidGo`)
 - As a framework developer, I want the complete directory tree pre-created so that feature branches can add files without creating folders ad hoc
 - As a framework developer, I want a minimal `cmd/main.go` that compiles and runs so that the build pipeline is proven from day one
 - As a framework developer, I want a `.env` file with placeholder values so that the config system (Feature #02) has a file to load
@@ -42,7 +42,7 @@ N/A — no existing code to improve.
 
 ## Proposed Approach
 
-1. **Initialize Go module** — `go mod init github.com/RAiWorks/RGo`
+1. **Initialize Go module** — `go mod init github.com/RAiWorks/RapidGo`
 2. **Create full directory tree** — All directories from the blueprint, with `.gitkeep` in empty directories
 3. **Create `cmd/main.go`** — Minimal `package main` with a startup banner print
 4. **Create `.env`** — Placeholder environment variables covering all config keys the framework will need
@@ -54,7 +54,7 @@ This is a pure scaffold — no business logic, no dependencies beyond the Go sta
 
 ## Edge Cases & Risks
 
-- [x] **Module path casing** — GitHub repo is `RAiWorks/RGo` (mixed case). Go modules are case-sensitive; the module path must match the repository URL exactly: `github.com/RAiWorks/RGo`
+- [x] **Module path casing** — GitHub repo is `RAiWorks/RapidGo` (mixed case). Go modules are case-sensitive; the module path must match the repository URL exactly: `github.com/RAiWorks/RapidGo`
 - [x] **Empty directories in Git** — Git doesn't track empty directories. Use `.gitkeep` placeholder files in every leaf directory that has no Go files
 - [x] **`.env` in version control** — The `.env` file with placeholder/default values IS committed (it serves as documentation of all config keys). A `.env.local` override (which contains real secrets) is gitignored
 - [x] **No dependencies yet** — `go.sum` will be empty/absent until Feature #02+ adds packages. That's expected and correct
@@ -74,7 +74,7 @@ No feature dependencies — this is Feature #01.
 
 All resolved during discussion:
 
-- [x] **What should the module path be?** → `github.com/RAiWorks/RGo` (matches GitHub repo URL)
+- [x] **What should the module path be?** → `github.com/RAiWorks/RapidGo` (matches GitHub repo URL)
 - [x] **Should we add all directories now or only what's needed?** → All directories. The blueprint defines the full structure and having it pre-created keeps feature branches focused on code, not folder creation
 - [x] **Should `.env` be committed?** → Yes, with placeholder values. Gitignore `.env.local` for real secrets
 - [x] **Should `main.go` import any framework packages?** → No. Just `fmt` for the startup banner. Framework wiring happens in later features
@@ -84,7 +84,7 @@ All resolved during discussion:
 
 | Date | Decision | Rationale |
 |---|---|---|
-| 2026-03-05 | Module path: `github.com/RAiWorks/RGo` | Matches GitHub repository URL, standard Go convention |
+| 2026-03-05 | Module path: `github.com/RAiWorks/RapidGo` | Matches GitHub repository URL, standard Go convention |
 | 2026-03-05 | Create all blueprint directories upfront | Avoids directory creation scattered across 40+ features; keeps feature branches clean |
 | 2026-03-05 | Use `.gitkeep` for empty directories | Git doesn't track empty dirs; `.gitkeep` is the standard convention |
 | 2026-03-05 | Commit `.env` with placeholders, gitignore `.env.local` | `.env` serves as config documentation; secrets go in `.env.local` |

@@ -126,7 +126,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/RAiWorks/RGo/core/auth"
+	"github.com/RAiWorks/RapidGo/core/auth"
 	"github.com/gin-gonic/gin"
 )
 
@@ -166,7 +166,7 @@ package models
 import (
 	"strings"
 
-	"github.com/RAiWorks/RGo/app/helpers"
+	"github.com/RAiWorks/RapidGo/app/helpers"
 	"gorm.io/gorm"
 )
 

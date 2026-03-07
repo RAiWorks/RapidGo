@@ -23,7 +23,7 @@ func setupTestContext() (*gin.Context, *httptest.ResponseRecorder) {
 func TestSuccess_Returns200WithData(t *testing.T) {
 	c, w := setupTestContext()
 
-	data := map[string]string{"name": "RGo"}
+	data := map[string]string{"name": "RapidGo"}
 	Success(c, data)
 
 	if w.Code != http.StatusOK {

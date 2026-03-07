@@ -52,7 +52,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/RAiWorks/RGo/core/config"
+	"github.com/RAiWorks/RapidGo/core/config"
 	"github.com/glebarez/sqlite"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -198,8 +198,8 @@ func newDialector(cfg DBConfig) (gorm.Dialector, error) {
 package providers
 
 import (
-	"github.com/RAiWorks/RGo/core/container"
-	"github.com/RAiWorks/RGo/database"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/database"
 )
 
 // DatabaseProvider registers the database connection in the service container.

@@ -4,7 +4,7 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/RAiWorks/RGo/core/config"
+	"github.com/RAiWorks/RapidGo/core/config"
 )
 
 // logFile holds the open log file handle (if LOG_OUTPUT=file).

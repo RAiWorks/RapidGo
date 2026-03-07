@@ -9,7 +9,7 @@
 
 ## Overview
 
-The Database Seeding feature provides a registry-based seeder system. Each seeder implements the `Seeder` interface, self-registers, and is invoked via the `rgo db:seed` CLI command. A sample `UserSeeder` demonstrates the pattern with idempotent user creation.
+The Database Seeding feature provides a registry-based seeder system. Each seeder implements the `Seeder` interface, self-registers, and is invoked via the `RapidGo db:seed` CLI command. A sample `UserSeeder` demonstrates the pattern with idempotent user creation.
 
 ## File Structure
 
@@ -123,7 +123,7 @@ func Names() []string {
 package seeders
 
 import (
-	"github.com/RAiWorks/RGo/database/models"
+	"github.com/RAiWorks/RapidGo/database/models"
 	"gorm.io/gorm"
 )
 
@@ -168,8 +168,8 @@ package cli
 import (
 	"fmt"
 
-	"github.com/RAiWorks/RGo/core/container"
-	"github.com/RAiWorks/RGo/database/seeders"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/database/seeders"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )
@@ -220,7 +220,7 @@ rootCmd.AddCommand(dbSeedCmd)
 
 ## Data Flow
 
-### `rgo db:seed`
+### `RapidGo db:seed`
 ```
 CLI → NewApp() → get *gorm.DB from container
     → seeders.RunAll(db)
@@ -229,7 +229,7 @@ CLI → NewApp() → get *gorm.DB from container
     → print "Database seeding complete."
 ```
 
-### `rgo db:seed --seeder UserSeeder`
+### `RapidGo db:seed --seeder UserSeeder`
 ```
 CLI → NewApp() → get *gorm.DB
     → seeders.RunByName(db, "UserSeeder")

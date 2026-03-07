@@ -11,7 +11,7 @@
 
 ## Summary
 
-Implement the middleware pipeline for the RGo framework. This feature provides a middleware registry with named aliases and groups, a set of built-in middleware (Recovery, RequestID, CORS, Error Handler), and integration with the router's `Use()` infrastructure. The registry enables middleware to be referenced by name and applied to route groups in bulk, following the patterns established in the blueprint.
+Implement the middleware pipeline for the RapidGo Framework. This feature provides a middleware registry with named aliases and groups, a set of built-in middleware (Recovery, RequestID, CORS, Error Handler), and integration with the router's `Use()` infrastructure. The registry enables middleware to be referenced by name and applied to route groups in bulk, following the patterns established in the blueprint.
 
 ---
 

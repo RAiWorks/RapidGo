@@ -1,11 +1,11 @@
-# RGo Framework
+# RapidGo Framework
 
 A modern Go web framework inspired by Laravel and CodeIgniter — combining
 **Laravel-style developer experience** with **Go performance**.
 
 ## Overview
 
-RGo is an opinionated, full-stack Go web framework built on proven
+RapidGo is an opinionated, full-stack Go web framework built on proven
 libraries (Gin, GORM, Cobra) that provides everything needed for web
 applications, REST APIs, and real-time WebSocket services.
 
@@ -40,7 +40,7 @@ The framework has a fully initialized Go module, complete directory structure, a
 
 All documentation lives in the [`docs/`](docs/) directory:
 
-- **[Project Context](docs/project-context.md)** — What RGo is, technology stack, architecture
+- **[Project Context](docs/project-context.md)** — What RapidGo is, technology stack, architecture
 - **[Project Roadmap](docs/project-roadmap.md)** — Feature plan, dependencies, progress
 - **[Mastery Process](docs/mastery.md)** — Development workflow and standards
 - **[Framework Reference](docs/framework/README.md)** — Complete framework documentation
@@ -60,7 +60,7 @@ make test
 
 ## Repository
 
-- **GitHub:** [RAiWorks/RGo](https://github.com/RAiWorks/RGo)
+- **GitHub:** [RAiWorks/RapidGo](https://github.com/RAiWorks/RapidGo)
 
 ## Tech Stack
 
@@ -78,4 +78,6 @@ make test
 
 ## License
 
-TBD
+MIT License. See [LICENSE](LICENSE) for details.
+
+Copyright (c) 2026 RAi Works (https://rai.works)

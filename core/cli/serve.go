@@ -5,10 +5,10 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/RAiWorks/RGo/core/config"
-	"github.com/RAiWorks/RGo/core/container"
-	"github.com/RAiWorks/RGo/core/router"
-	"github.com/RAiWorks/RGo/core/server"
+	"github.com/RAiWorks/RapidGo/core/config"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/router"
+	"github.com/RAiWorks/RapidGo/core/server"
 	"github.com/spf13/cobra"
 )
 
@@ -25,12 +25,12 @@ var serveCmd = &cobra.Command{
 			port = servePort
 		}
 
-		appName := config.Env("APP_NAME", "RGo")
+		appName := config.Env("APP_NAME", "RapidGo")
 		appEnv := config.AppEnv()
 
 		fmt.Println("=================================")
 		fmt.Printf("  %s Framework\n", appName)
-		fmt.Println("  github.com/RAiWorks/RGo")
+		fmt.Println("  github.com/RAiWorks/RapidGo")
 		fmt.Println("=================================")
 		fmt.Printf("  Environment: %s\n", appEnv)
 		fmt.Printf("  Port: %s\n", port)

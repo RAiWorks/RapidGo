@@ -9,7 +9,7 @@
 ## Acceptance Criteria
 
 - [ ] `Execute()` runs without error when invoked with valid subcommands
-- [ ] Root command (`rgo`) displays help text when run with no args
+- [ ] Root command (`RapidGo`) displays help text when run with no args
 - [ ] `serve` command starts the HTTP server with default port from `APP_PORT`
 - [ ] `serve --port 9090` overrides the env port
 - [ ] `version` command prints correct version string
@@ -57,7 +57,7 @@
 |---|---|---|
 | 1 | Create root command, set output buffer | Buffer captures output |
 | 2 | Execute with no args | No error |
-| 3 | Assert output contains "RGo" | Match |
+| 3 | Assert output contains "RapidGo" | Match |
 | 4 | Assert output contains "serve" | Match |
 | 5 | Assert output contains "version" | Match |
 

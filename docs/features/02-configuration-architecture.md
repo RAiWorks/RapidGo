@@ -144,19 +144,19 @@ package main
 import (
 	"fmt"
 
-	"github.com/RAiWorks/RGo/core/config"
+	"github.com/RAiWorks/RapidGo/core/config"
 )
 
 func main() {
 	config.Load()
 
-	appName := config.Env("APP_NAME", "RGo")
+	appName := config.Env("APP_NAME", "RapidGo")
 	appPort := config.Env("APP_PORT", "8080")
 	appEnv := config.AppEnv()
 
 	fmt.Println("=================================")
 	fmt.Printf("  %s Framework\n", appName)
-	fmt.Println("  github.com/RAiWorks/RGo")
+	fmt.Println("  github.com/RAiWorks/RapidGo")
 	fmt.Println("=================================")
 	fmt.Printf("  Environment: %s\n", appEnv)
 	fmt.Printf("  Port: %s\n", appPort)
@@ -199,7 +199,7 @@ This feature doesn't add new `.env` keys — it reads the keys already defined i
 |---|---|---|---|
 | `APP_ENV` | string | `development` | `AppEnv()`, `IsProduction()`, `IsDevelopment()`, `IsTesting()` |
 | `APP_DEBUG` | bool | `false` | `IsDebug()` |
-| `APP_NAME` | string | `RGo` | `main.go` banner |
+| `APP_NAME` | string | `RapidGo` | `main.go` banner |
 | `APP_PORT` | string | `8080` | `main.go` banner |
 
 ## Security Considerations

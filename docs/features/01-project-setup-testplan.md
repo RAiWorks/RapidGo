@@ -10,10 +10,10 @@
 
 The feature is DONE when ALL of these are true:
 
-- [x] Go module initialized with path `github.com/RAiWorks/RGo` and `go 1.21`
+- [x] Go module initialized with path `github.com/RAiWorks/RapidGo` and `go 1.21`
 - [x] All 43 directories exist in the correct hierarchy
 - [x] `cmd/main.go` compiles and runs without errors
-- [x] Running `go run ./cmd/...` prints the RGo startup banner
+- [x] Running `go run ./cmd/...` prints the RapidGo startup banner
 - [x] `go vet ./...` reports zero issues
 - [x] `.env` exists with all placeholder configuration groups
 - [x] `.gitignore` excludes binaries, `.env.local`, IDE files, storage artifacts
@@ -31,7 +31,7 @@ The feature is DONE when ALL of these are true:
 |---|---|
 | **Category** | Happy Path |
 | **Precondition** | Go 1.21+ installed, project root is clean |
-| **Steps** | 1. Check `go.mod` exists → 2. Verify `module github.com/RAiWorks/RGo` → 3. Verify `go 1.21` directive |
+| **Steps** | 1. Check `go.mod` exists → 2. Verify `module github.com/RAiWorks/RapidGo` → 3. Verify `go 1.21` directive |
 | **Expected Result** | `go.mod` contains correct module path and Go version, no `require` blocks |
 | **Status** | ✅ Pass |
 | **Notes** | — |
@@ -53,7 +53,7 @@ The feature is DONE when ALL of these are true:
 |---|---|
 | **Category** | Happy Path |
 | **Precondition** | `cmd/main.go` created |
-| **Steps** | 1. Run `go build ./cmd/...` → 2. Check exit code is 0 → 3. Verify `bin/rgo` binary exists (via Makefile) |
+| **Steps** | 1. Run `go build ./cmd/...` → 2. Check exit code is 0 → 3. Verify `bin/RapidGo` binary exists (via Makefile) |
 | **Expected Result** | Zero compilation errors, binary produced |
 | **Status** | ✅ Pass |
 | **Notes** | — |
@@ -65,7 +65,7 @@ The feature is DONE when ALL of these are true:
 | **Category** | Happy Path |
 | **Precondition** | TC-03 passes |
 | **Steps** | 1. Run `go run ./cmd/...` → 2. Capture stdout |
-| **Expected Result** | Output contains "RGo Framework" and "github.com/RAiWorks/RGo" |
+| **Expected Result** | Output contains "RapidGo Framework" and "github.com/RAiWorks/RapidGo" |
 | **Status** | ✅ Pass |
 | **Notes** | — |
 
@@ -86,10 +86,10 @@ The feature is DONE when ALL of these are true:
 |---|---|
 | **Category** | Happy Path |
 | **Precondition** | `Makefile` created |
-| **Steps** | 1. Run `make build` → verify `bin/rgo` → 2. Run `make run` → verify banner → 3. Run `make clean` → verify `bin/` removed |
+| **Steps** | 1. Run `make build` → verify `bin/RapidGo` → 2. Run `make run` → verify banner → 3. Run `make clean` → verify `bin/` removed |
 | **Expected Result** | All three targets execute successfully |
 | **Status** | ✅ Pass |
-| **Notes** | `make` not available on Windows; verified with equivalent commands (`go build -o bin/rgo.exe`, `go run`, `Remove-Item bin/`) |
+| **Notes** | `make` not available on Windows; verified with equivalent commands (`go build -o bin/RapidGo.exe`, `go run`, `Remove-Item bin/`) |
 
 ### TC-07: `.env` Configuration File
 
@@ -176,5 +176,5 @@ N/A — this feature creates project structure only. No runtime performance char
 **Executed**: 2026-03-05 | **Environment**: Go 1.25.6, Windows/amd64
 
 **Notes**:
-- TC-06 (Makefile): `make` not available on Windows PowerShell; verified equivalent commands (`go build -o bin/rgo.exe ./cmd/...`, `go run ./cmd/...`, `Remove-Item bin/`) manually — all pass.
+- TC-06 (Makefile): `make` not available on Windows PowerShell; verified equivalent commands (`go build -o bin/RapidGo.exe ./cmd/...`, `go run ./cmd/...`, `Remove-Item bin/`) manually — all pass.
 - Edge Case 3 confirmed: Makefile targets require Git Bash / WSL on Windows; Go commands work natively.

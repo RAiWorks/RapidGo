@@ -9,9 +9,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/RAiWorks/RGo/core/router"
-	"github.com/RAiWorks/RGo/http/controllers"
-	"github.com/RAiWorks/RGo/routes"
+	"github.com/RAiWorks/RapidGo/core/router"
+	"github.com/RAiWorks/RapidGo/http/controllers"
+	"github.com/RAiWorks/RapidGo/routes"
 	"github.com/gin-gonic/gin"
 )
 
@@ -68,8 +68,8 @@ func TestHome_RendersHTML(t *testing.T) {
 	if !strings.Contains(ct, "text/html") {
 		t.Fatalf("expected Content-Type text/html, got '%s'", ct)
 	}
-	if !strings.Contains(w.Body.String(), "Welcome to RGo") {
-		t.Fatalf("expected body to contain 'Welcome to RGo', got: %s", w.Body.String())
+	if !strings.Contains(w.Body.String(), "Welcome to RapidGo") {
+		t.Fatalf("expected body to contain 'Welcome to RapidGo', got: %s", w.Body.String())
 	}
 }
 

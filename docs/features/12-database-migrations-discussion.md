@@ -41,7 +41,7 @@ The blueprint specifies:
 ### 1. GORM AutoMigrate as Foundation
 The blueprint consistently uses `AutoMigrate`. This is idiomatic for Go/GORM — no separate SQL migration files for schema creation. AutoMigrate creates tables, adds missing columns, and creates indexes. It never drops columns or tables (safe by design).
 
-**Blueprint deviation**: The blueprint places AutoMigrate in `DatabaseProvider.Boot()`. We instead run it via the `rgo migrate` CLI command. This is deliberate — auto-migrating on every boot is risky in production. Explicit CLI invocation gives the developer control over when schema changes apply.
+**Blueprint deviation**: The blueprint places AutoMigrate in `DatabaseProvider.Boot()`. We instead run it via the `RapidGo migrate` CLI command. This is deliberate — auto-migrating on every boot is risky in production. Explicit CLI invocation gives the developer control over when schema changes apply.
 
 ### 2. Custom Migrations for Changes AutoMigrate Can't Handle
 AutoMigrate can't rename columns, drop columns, change types, or add data. For these operations, we need file-based migrations with Up/Down functions. This is standard in Laravel (`php artisan migrate`) and Rails-style frameworks.
@@ -58,10 +58,10 @@ database/migrations/
 Each migration file exports an `init()` that registers Up/Down functions with the migration registry.
 
 ### 4. CLI Commands
-- `rgo migrate` — runs AutoMigrate for all registered models, then runs pending file-based migrations
-- `rgo make:migration <name>` — generates a timestamped migration file with Up/Down stubs
-- `rgo migrate:rollback` — undoes the last batch of applied migrations
-- `rgo migrate:status` — lists all migrations and their applied/pending status
+- `RapidGo migrate` — runs AutoMigrate for all registered models, then runs pending file-based migrations
+- `RapidGo make:migration <name>` — generates a timestamped migration file with Up/Down stubs
+- `RapidGo migrate:rollback` — undoes the last batch of applied migrations
+- `RapidGo migrate:status` — lists all migrations and their applied/pending status
 
 ### 5. Model Registry
 A central `database/models/registry.go` file exports `All()` returning `[]interface{}`. The migrate command calls `db.AutoMigrate(models.All()...)`. This keeps model registration in one place.

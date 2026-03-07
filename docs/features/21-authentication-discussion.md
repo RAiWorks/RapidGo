@@ -8,7 +8,7 @@
 
 ## 1. What Are We Building?
 
-JWT and session-based authentication for the RGo framework. The blueprint defines two strategies:
+JWT and session-based authentication for the RapidGo Framework. The blueprint defines two strategies:
 
 - **JWT (stateless)** — for REST APIs. Uses `golang-jwt/jwt/v5` with HMAC-SHA256 signing.
 - **Session-based** — for SSR web apps. Uses the existing session manager (#20) to store user state.
