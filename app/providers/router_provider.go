@@ -4,8 +4,10 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/RAiWorks/RapidGo/core/config"
 	"github.com/RAiWorks/RapidGo/core/container"
 	"github.com/RAiWorks/RapidGo/core/health"
+	"github.com/RAiWorks/RapidGo/core/metrics"
 	"github.com/RAiWorks/RapidGo/core/router"
 	"github.com/RAiWorks/RapidGo/core/service"
 	"github.com/RAiWorks/RapidGo/routes"
@@ -57,5 +59,12 @@ func (p *RouterProvider) Boot(c *container.Container) {
 		health.Routes(r, func() *gorm.DB {
 			return container.MustMake[*gorm.DB](c, "db")
 		})
+	}
+
+	// Prometheus metrics — opt-in via METRICS_ENABLED
+	if config.EnvBool("METRICS_ENABLED", false) {
+		m := metrics.New()
+		r.Use(m.Middleware())
+		r.Get(config.Env("METRICS_PATH", "/metrics"), metrics.Handler())
 	}
 }
