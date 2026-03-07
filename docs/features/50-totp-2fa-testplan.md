@@ -2,7 +2,7 @@
 
 > **Feature**: `50` — Two-Factor Authentication (TOTP)
 > **Tasks**: [`50-totp-2fa-tasks.md`](50-totp-2fa-tasks.md)
-> **Status**: 🟡 IN PROGRESS
+> **Status**: ✅ SHIPPED
 > **Date**: 2026-03-07
 
 ---

@@ -1,9 +1,9 @@
 # 📝 Changelog: Two-Factor Authentication (TOTP)
 
 > **Feature**: `50` — Two-Factor Authentication (TOTP)
-> **Status**: 🟡 IN PROGRESS
+> **Status**: ✅ SHIPPED
 > **Date**: 2026-03-07
-> **Commit**: _pending_
+> **Commit**: `a28379c`
 
 ---
 

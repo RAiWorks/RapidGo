@@ -2,7 +2,7 @@
 
 > **Feature**: `50` — Two-Factor Authentication (TOTP)
 > **Discussion**: [`50-totp-2fa-discussion.md`](50-totp-2fa-discussion.md)
-> **Status**: 🟡 IN PROGRESS
+> **Status**: ✅ SHIPPED
 > **Date**: 2026-03-07
 
 ---
