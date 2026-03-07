@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/service"
 	"github.com/RAiWorks/RapidGo/database/seeders"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
@@ -13,7 +14,7 @@ var dbSeedCmd = &cobra.Command{
 	Use:   "db:seed",
 	Short: "Seed the database with records",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		application := NewApp()
+		application := NewApp(service.ModeAll)
 		db := container.MustMake[*gorm.DB](application.Container, "db")
 
 		name, _ := cmd.Flags().GetString("seeder")

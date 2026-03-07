@@ -6,6 +6,7 @@ import (
 
 	"github.com/RAiWorks/RapidGo/app/providers"
 	"github.com/RAiWorks/RapidGo/core/app"
+	"github.com/RAiWorks/RapidGo/core/service"
 	"github.com/spf13/cobra"
 )
 
@@ -39,16 +40,29 @@ func Execute() {
 	}
 }
 
-// NewApp creates and boots a fully configured RapidGo application.
+// NewApp creates and boots a RapidGo application configured for the given mode.
 // Used by commands that need the application lifecycle (serve, migrate, etc.).
-func NewApp() *app.App {
+func NewApp(mode service.Mode) *app.App {
 	application := app.New()
+
+	// Always required
 	application.Register(&providers.ConfigProvider{})
 	application.Register(&providers.LoggerProvider{})
-	application.Register(&providers.DatabaseProvider{})
-	application.Register(&providers.SessionProvider{})
-	application.Register(&providers.MiddlewareProvider{})
-	application.Register(&providers.RouterProvider{})
+
+	// DB required for HTTP modes that may access data
+	if mode.Has(service.ModeWeb) || mode.Has(service.ModeAPI) || mode.Has(service.ModeWS) {
+		application.Register(&providers.DatabaseProvider{})
+	}
+
+	// Session only needed for web mode (cookie-based auth)
+	if mode.Has(service.ModeWeb) {
+		application.Register(&providers.SessionProvider{})
+	}
+
+	// Middleware and Router for any HTTP mode
+	application.Register(&providers.MiddlewareProvider{Mode: mode})
+	application.Register(&providers.RouterProvider{Mode: mode})
+
 	application.Boot()
 	return application
 }

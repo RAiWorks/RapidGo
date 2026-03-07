@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"os/signal"
@@ -63,4 +64,62 @@ func ListenAndServe(cfg Config) error {
 
 	slog.Info("server stopped")
 	return nil
+}
+
+// ServiceConfig identifies a named HTTP service to run on a specific port.
+type ServiceConfig struct {
+	Name   string // "web", "api", "ws" — for logging
+	Config Config // Standard server config (addr, handler, timeouts)
+}
+
+// ListenAndServeMulti starts multiple HTTP servers on separate ports and
+// blocks until SIGINT/SIGTERM. All servers are shut down gracefully.
+func ListenAndServeMulti(services []ServiceConfig) error {
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	servers := make([]*http.Server, len(services))
+	errCh := make(chan error, len(services))
+
+	for i, svc := range services {
+		srv := &http.Server{
+			Addr:         svc.Config.Addr,
+			Handler:      svc.Config.Handler,
+			ReadTimeout:  svc.Config.ReadTimeout,
+			WriteTimeout: svc.Config.WriteTimeout,
+			IdleTimeout:  svc.Config.IdleTimeout,
+		}
+		servers[i] = srv
+
+		go func(name string) {
+			slog.Info("service starting", "name", name, "addr", srv.Addr)
+			if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+				errCh <- fmt.Errorf("service %s: %w", name, err)
+			}
+		}(svc.Name)
+	}
+
+	// Wait for signal or server error
+	select {
+	case err := <-errCh:
+		return err
+	case <-ctx.Done():
+	}
+
+	slog.Info("shutting down all services…")
+	stop()
+
+	shutdownTimeout := services[0].Config.ShutdownTimeout
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
+	defer cancel()
+
+	// Shutdown all servers
+	var firstErr error
+	for i, srv := range servers {
+		if err := srv.Shutdown(shutdownCtx); err != nil && firstErr == nil {
+			firstErr = fmt.Errorf("shutdown %s: %w", services[i].Name, err)
+		}
+	}
+	slog.Info("all services stopped")
+	return firstErr
 }
