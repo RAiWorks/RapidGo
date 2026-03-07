@@ -1,6 +1,6 @@
 # Feature #54 — Prometheus Metrics: Architecture
 
-> **Status**: 🟡 IN PROGRESS
+> **Status**: ✅ SHIPPED
 > **Depends On**: #07 (Router)
 > **Branch**: `docs/54-prometheus-metrics`
 
