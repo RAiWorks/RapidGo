@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/service"
 	"github.com/RAiWorks/RapidGo/database/migrations"
 	"github.com/RAiWorks/RapidGo/database/models"
 	"github.com/spf13/cobra"
@@ -14,7 +15,7 @@ var migrateCmd = &cobra.Command{
 	Use:   "migrate",
 	Short: "Run database migrations",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		application := NewApp()
+		application := NewApp(service.ModeAll)
 		db := container.MustMake[*gorm.DB](application.Container, "db")
 
 		// Step 1: AutoMigrate all models

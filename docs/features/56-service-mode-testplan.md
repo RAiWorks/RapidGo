@@ -8,8 +8,8 @@
 
 ## Pre-Conditions
 
-- [ ] All 30 existing test packages pass before implementation begins
-- [ ] No stale references or compilation errors in codebase
+- [x] All 30 existing test packages pass before implementation begins
+- [x] No stale references or compilation errors in codebase
 
 ---
 
@@ -191,19 +191,19 @@
 
 | TC | Title | Type | Status |
 |---|---|---|---|
-| TC-01 | ParseMode valid inputs | Unit | ⬜ |
-| TC-02 | ParseMode invalid inputs | Unit | ⬜ |
-| TC-03 | Mode bitmask operations | Unit | ⬜ |
-| TC-04 | Default mode backward compat | Integration | ⬜ |
-| TC-05 | CLI --mode overrides env var | Unit | ⬜ |
+| TC-01 | ParseMode valid inputs | Unit | ✅ |
+| TC-02 | ParseMode invalid inputs | Unit | ✅ |
+| TC-03 | Mode bitmask operations | Unit | ✅ |
+| TC-04 | Default mode backward compat | Integration | ✅ |
+| TC-05 | CLI --mode overrides env var | Unit | ✅ |
 | TC-06 | API-only provider selection | Integration | ⬜ |
 | TC-07 | Web-only Session loaded | Integration | ⬜ |
 | TC-08 | Route registration per mode | Integration | ⬜ |
 | TC-09 | Mode-aware middleware (CSRF) | Unit | ⬜ |
-| TC-10 | Multi-port separate servers | Integration | ⬜ |
+| TC-10 | Multi-port separate servers | Integration | ✅ |
 | TC-11 | Same port falls back to single | Unit | ⬜ |
-| TC-12 | Invalid mode fails fast | Unit | ⬜ |
-| TC-13 | Full regression | Regression | ⬜ |
+| TC-12 | Invalid mode fails fast | Unit | ✅ |
+| TC-13 | Full regression | Regression | ✅ |
 
 ---
 

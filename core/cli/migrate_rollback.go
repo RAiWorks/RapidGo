@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/service"
 	"github.com/RAiWorks/RapidGo/database/migrations"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
@@ -13,7 +14,7 @@ var migrateRollbackCmd = &cobra.Command{
 	Use:   "migrate:rollback",
 	Short: "Rollback the last batch of migrations",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		application := NewApp()
+		application := NewApp(service.ModeAll)
 		db := container.MustMake[*gorm.DB](application.Container, "db")
 
 		migrator, err := migrations.NewMigrator(db)

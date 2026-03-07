@@ -3,6 +3,8 @@ package cli
 import (
 	"bytes"
 	"testing"
+
+	"github.com/RAiWorks/RapidGo/core/service"
 )
 
 // TC-01: Version constant is set
@@ -64,7 +66,7 @@ func TestNewApp_ReturnsBootedApp(t *testing.T) {
 	t.Setenv("LOG_FORMAT", "json")
 	t.Setenv("LOG_OUTPUT", "stdout")
 
-	application := NewApp()
+	application := NewApp(service.ModeAll)
 	if application == nil {
 		t.Fatal("expected non-nil application")
 	}

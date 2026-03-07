@@ -8,6 +8,7 @@ import (
 	"github.com/RAiWorks/RapidGo/core/container"
 	"github.com/RAiWorks/RapidGo/core/middleware"
 	"github.com/RAiWorks/RapidGo/core/router"
+	"github.com/RAiWorks/RapidGo/core/service"
 )
 
 // TC-01: ConfigProvider implements Provider interface (compile-time check)
@@ -115,7 +116,7 @@ func TestRouterProvider_RegistersRouter(t *testing.T) {
 	t.Setenv("APP_ENV", "testing")
 
 	c := container.New()
-	p := &RouterProvider{}
+	p := &RouterProvider{Mode: service.ModeAll}
 	p.Register(c)
 
 	r := container.MustMake[*router.Router](c, "router")
@@ -138,7 +139,7 @@ func TestFullAppBootstrap_WithRouter(t *testing.T) {
 	a := app.New()
 	a.Register(&ConfigProvider{})
 	a.Register(&LoggerProvider{})
-	a.Register(&RouterProvider{})
+	a.Register(&RouterProvider{Mode: service.ModeAll})
 	a.Boot()
 
 	r := container.MustMake[*router.Router](a.Container, "router")
@@ -187,7 +188,7 @@ func TestMiddlewareProvider_RegistersAliases(t *testing.T) {
 	middleware.ResetRegistry()
 
 	c := container.New()
-	p := &MiddlewareProvider{}
+	p := &MiddlewareProvider{Mode: service.ModeAll}
 	p.Boot(c)
 
 	// Verify all 4 built-in aliases resolve without panic

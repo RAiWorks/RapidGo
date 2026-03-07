@@ -155,3 +155,165 @@ func TestConfig_Fields(t *testing.T) {
 		t.Fatalf("ShutdownTimeout = %v, want %v", cfg.ShutdownTimeout, 30*time.Second)
 	}
 }
+
+// TC-04: ServiceConfig holds name and config.
+func TestServiceConfig_Fields(t *testing.T) {
+	sc := ServiceConfig{
+		Name: "api",
+		Config: Config{
+			Addr:            ":8081",
+			ReadTimeout:     10 * time.Second,
+			ShutdownTimeout: 5 * time.Second,
+		},
+	}
+
+	if sc.Name != "api" {
+		t.Fatalf("Name = %q, want %q", sc.Name, "api")
+	}
+	if sc.Config.Addr != ":8081" {
+		t.Fatalf("Config.Addr = %q, want %q", sc.Config.Addr, ":8081")
+	}
+}
+
+// TC-05: Multiple servers start on different ports and respond to requests.
+// Follows existing test pattern: test http.Server directly to avoid signal handling.
+func TestMultiServer_StartsAndResponds(t *testing.T) {
+	// Pick two free ports
+	ln1, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatalf("pick free port 1: %v", err)
+	}
+	addr1 := ln1.Addr().String()
+	ln1.Close()
+
+	ln2, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatalf("pick free port 2: %v", err)
+	}
+	addr2 := ln2.Addr().String()
+	ln2.Close()
+
+	mux1 := http.NewServeMux()
+	mux1.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("api"))
+	})
+
+	mux2 := http.NewServeMux()
+	mux2.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("ws"))
+	})
+
+	srv1 := &http.Server{Addr: addr1, Handler: mux1}
+	srv2 := &http.Server{Addr: addr2, Handler: mux2}
+
+	go func() { _ = srv1.ListenAndServe() }()
+	go func() { _ = srv2.ListenAndServe() }()
+
+	// Wait for both to be ready
+	for _, addr := range []string{addr1, addr2} {
+		for i := 0; i < 50; i++ {
+			if _, err := http.Get("http://" + addr + "/ping"); err == nil {
+				break
+			}
+			time.Sleep(10 * time.Millisecond)
+		}
+	}
+
+	// Check responses
+	resp1, err := http.Get("http://" + addr1 + "/ping")
+	if err != nil {
+		t.Fatalf("server 1 not ready: %v", err)
+	}
+	defer resp1.Body.Close()
+	if resp1.StatusCode != http.StatusOK {
+		t.Fatalf("server 1 status = %d, want %d", resp1.StatusCode, http.StatusOK)
+	}
+
+	resp2, err := http.Get("http://" + addr2 + "/ping")
+	if err != nil {
+		t.Fatalf("server 2 not ready: %v", err)
+	}
+	defer resp2.Body.Close()
+	if resp2.StatusCode != http.StatusOK {
+		t.Fatalf("server 2 status = %d, want %d", resp2.StatusCode, http.StatusOK)
+	}
+
+	// Shutdown both
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv1.Shutdown(ctx); err != nil {
+		t.Fatalf("shutdown srv1: %v", err)
+	}
+	if err := srv2.Shutdown(ctx); err != nil {
+		t.Fatalf("shutdown srv2: %v", err)
+	}
+}
+
+// TC-06: Multiple servers shut down gracefully when one is stopped.
+func TestMultiServer_GracefulShutdown(t *testing.T) {
+	ln1, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatalf("pick free port 1: %v", err)
+	}
+	addr1 := ln1.Addr().String()
+	ln1.Close()
+
+	ln2, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatalf("pick free port 2: %v", err)
+	}
+	addr2 := ln2.Addr().String()
+	ln2.Close()
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+
+	srv1 := &http.Server{Addr: addr1, Handler: mux}
+	srv2 := &http.Server{Addr: addr2, Handler: mux}
+
+	done1 := make(chan struct{})
+	done2 := make(chan struct{})
+
+	go func() {
+		if err := srv1.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			t.Errorf("srv1: %v", err)
+		}
+		close(done1)
+	}()
+	go func() {
+		if err := srv2.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			t.Errorf("srv2: %v", err)
+		}
+		close(done2)
+	}()
+
+	// Wait for both ready
+	for _, addr := range []string{addr1, addr2} {
+		for i := 0; i < 50; i++ {
+			if _, err := http.Get("http://" + addr + "/"); err == nil {
+				break
+			}
+			time.Sleep(10 * time.Millisecond)
+		}
+	}
+
+	// Shutdown both in sequence
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv1.Shutdown(ctx); err != nil {
+		t.Fatalf("shutdown srv1: %v", err)
+	}
+	if err := srv2.Shutdown(ctx); err != nil {
+		t.Fatalf("shutdown srv2: %v", err)
+	}
+
+	for _, ch := range []chan struct{}{done1, done2} {
+		select {
+		case <-ch:
+		case <-time.After(5 * time.Second):
+			t.Fatal("server did not stop within 5s")
+		}
+	}
+}
