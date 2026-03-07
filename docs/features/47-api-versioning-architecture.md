@@ -2,7 +2,7 @@
 
 > **Feature**: `47` — API Versioning
 > **Discussion**: [`47-api-versioning-discussion.md`](47-api-versioning-discussion.md)
-> **Status**: 🟡 IN PROGRESS
+> **Status**: ✅ SHIPPED
 > **Date**: 2026-03-07
 
 ---

@@ -2,7 +2,7 @@
 
 > **Feature**: `47` — API Versioning
 > **Architecture**: [`47-api-versioning-architecture.md`](47-api-versioning-architecture.md)
-> **Status**: 🟡 IN PROGRESS
+> **Status**: ✅ SHIPPED
 > **Date**: 2026-03-07
 
 ---

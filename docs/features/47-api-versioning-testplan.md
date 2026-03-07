@@ -2,7 +2,7 @@
 
 > **Feature**: `47` — API Versioning
 > **Tasks**: [`47-api-versioning-tasks.md`](47-api-versioning-tasks.md)
-> **Status**: 🟡 IN PROGRESS
+> **Status**: ✅ SHIPPED
 > **Date**: 2026-03-07
 
 ---
