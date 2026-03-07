@@ -21,6 +21,9 @@ func TestParseMode_ValidInputs(t *testing.T) {
 		{"ALL", ModeAll},                  // case insensitive
 		{"Api", ModeAPI},                  // mixed case
 		{"WEB,API", ModeWeb | ModeAPI},    // uppercase combo
+		{"all,web", ModeAll},              // redundant combo — all already includes web
+		{"api,api", ModeAPI},              // duplicate mode — deduped by OR
+		{"web,api,web", ModeWeb | ModeAPI}, // repeated element
 	}
 
 	for _, tt := range tests {

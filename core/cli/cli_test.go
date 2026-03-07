@@ -59,6 +59,37 @@ func TestServeCmd_HasPortFlag(t *testing.T) {
 	}
 }
 
+// TC-05: Serve command has mode flag
+func TestServeCmd_HasModeFlag(t *testing.T) {
+	f := serveCmd.Flags().Lookup("mode")
+	if f == nil {
+		t.Fatal("expected 'mode' flag on serve command")
+	}
+	if f.Shorthand != "m" {
+		t.Fatalf("expected mode flag shorthand 'm', got %q", f.Shorthand)
+	}
+}
+
+// TC-06: Serve command usage includes mode flag
+func TestServeCmd_HelpIncludesModeFlag(t *testing.T) {
+	usage := serveCmd.UsageString()
+
+	if !bytes.Contains([]byte(usage), []byte("--mode")) {
+		t.Fatal("expected serve usage to contain '--mode'")
+	}
+	if !bytes.Contains([]byte(usage), []byte("-m")) {
+		t.Fatal("expected serve usage to contain '-m' shorthand")
+	}
+}
+
+// TC-07: Invalid mode string causes ParseMode error
+func TestParseMode_InvalidReturnsError(t *testing.T) {
+	_, err := service.ParseMode("invalid")
+	if err == nil {
+		t.Fatal("expected error for invalid mode string")
+	}
+}
+
 // TC-05: NewApp returns booted application
 func TestNewApp_ReturnsBootedApp(t *testing.T) {
 	t.Setenv("APP_ENV", "testing")

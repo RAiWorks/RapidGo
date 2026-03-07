@@ -211,3 +211,41 @@ func TestMiddlewareProvider_RegistersAliases(t *testing.T) {
 		t.Fatalf("expected global group length 2, got %d", len(global))
 	}
 }
+
+// TC-18: CSRF middleware only registered in web mode, absent in API mode
+func TestMiddlewareProvider_CSRFConditionalOnMode(t *testing.T) {
+	// API mode — CSRF should NOT be registered
+	middleware.ResetRegistry()
+	c := container.New()
+	p := &MiddlewareProvider{Mode: service.ModeAPI}
+	p.Boot(c)
+
+	func() {
+		defer func() {
+			if r := recover(); r == nil {
+				t.Fatal("expected panic when resolving 'csrf' in API mode — it should not be registered")
+			}
+		}()
+		middleware.Resolve("csrf")
+	}()
+
+	// Web mode — CSRF SHOULD be registered
+	middleware.ResetRegistry()
+	c2 := container.New()
+	p2 := &MiddlewareProvider{Mode: service.ModeWeb}
+	p2.Boot(c2)
+
+	if middleware.Resolve("csrf") == nil {
+		t.Fatal("csrf alias should be registered in web mode")
+	}
+
+	// All mode — CSRF SHOULD be registered (all includes web)
+	middleware.ResetRegistry()
+	c3 := container.New()
+	p3 := &MiddlewareProvider{Mode: service.ModeAll}
+	p3.Boot(c3)
+
+	if middleware.Resolve("csrf") == nil {
+		t.Fatal("csrf alias should be registered in all mode")
+	}
+}
