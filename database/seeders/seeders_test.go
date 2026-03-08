@@ -16,7 +16,14 @@ func setupTestDB(t *testing.T) *gorm.DB {
 	if err != nil {
 		t.Fatalf("failed to open test db: %v", err)
 	}
-	if err := db.AutoMigrate(&models.User{}, &models.Post{}); err != nil {
+	return db
+}
+
+// setupUserSeederDB creates a test DB with the User table for UserSeeder tests.
+func setupUserSeederDB(t *testing.T) *gorm.DB {
+	t.Helper()
+	db := setupTestDB(t)
+	if err := db.AutoMigrate(&models.User{}); err != nil {
 		t.Fatalf("AutoMigrate failed: %v", err)
 	}
 	return db
@@ -128,7 +135,7 @@ func TestRunByName_NotFound(t *testing.T) {
 
 // TC-06: UserSeeder creates admin and regular user.
 func TestUserSeeder_CreatesUsers(t *testing.T) {
-	db := setupTestDB(t)
+	db := setupUserSeederDB(t)
 
 	seeder := &UserSeeder{}
 	if err := seeder.Seed(db); err != nil {
@@ -157,7 +164,7 @@ func TestUserSeeder_CreatesUsers(t *testing.T) {
 
 // TC-07: UserSeeder is idempotent — no duplicates on second run.
 func TestUserSeeder_Idempotent(t *testing.T) {
-	db := setupTestDB(t)
+	db := setupUserSeederDB(t)
 
 	seeder := &UserSeeder{}
 	seeder.Seed(db)

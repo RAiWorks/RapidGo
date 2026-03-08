@@ -9,7 +9,10 @@ import (
 	"github.com/RAiWorks/RapidGo/core/container"
 	"github.com/RAiWorks/RapidGo/core/router"
 	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/RAiWorks/RapidGo/database/models"
+	"github.com/RAiWorks/RapidGo/database/seeders"
 	"github.com/RAiWorks/RapidGo/routes"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -42,6 +45,15 @@ func main() {
 
 	cli.SetJobRegistrar(jobs.RegisterJobs)
 	cli.SetScheduleRegistrar(schedule.RegisterSchedule)
+
+	cli.SetModelRegistry(models.All)
+
+	cli.SetSeeder(func(db *gorm.DB, name string) error {
+		if name != "" {
+			return seeders.RunByName(db, name)
+		}
+		return seeders.RunAll(db)
+	})
 
 	cli.Execute()
 }

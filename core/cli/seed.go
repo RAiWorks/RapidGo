@@ -5,7 +5,6 @@ import (
 
 	"github.com/RAiWorks/RapidGo/core/container"
 	"github.com/RAiWorks/RapidGo/core/service"
-	"github.com/RAiWorks/RapidGo/database/seeders"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )
@@ -17,19 +16,19 @@ var dbSeedCmd = &cobra.Command{
 		application := NewApp(service.ModeAll)
 		db := container.MustMake[*gorm.DB](application.Container, "db")
 
-		name, _ := cmd.Flags().GetString("seeder")
-		if name != "" {
-			if err := seeders.RunByName(db, name); err != nil {
-				return err
-			}
-			fmt.Fprintf(cmd.OutOrStdout(), "Seeder %s complete.\n", name)
-			return nil
+		if seederFn == nil {
+			return fmt.Errorf("no seeder registered — call cli.SetSeeder() in main.go")
 		}
 
-		if err := seeders.RunAll(db); err != nil {
+		name, _ := cmd.Flags().GetString("seeder")
+		if err := seederFn(db, name); err != nil {
 			return err
 		}
-		fmt.Fprintln(cmd.OutOrStdout(), "Database seeding complete.")
+		if name != "" {
+			fmt.Fprintf(cmd.OutOrStdout(), "Seeder %s complete.\n", name)
+		} else {
+			fmt.Fprintln(cmd.OutOrStdout(), "Database seeding complete.")
+		}
 		return nil
 	},
 }

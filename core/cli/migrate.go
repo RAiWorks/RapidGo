@@ -6,7 +6,6 @@ import (
 	"github.com/RAiWorks/RapidGo/core/container"
 	"github.com/RAiWorks/RapidGo/core/service"
 	"github.com/RAiWorks/RapidGo/database/migrations"
-	"github.com/RAiWorks/RapidGo/database/models"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )
@@ -19,10 +18,12 @@ var migrateCmd = &cobra.Command{
 		db := container.MustMake[*gorm.DB](application.Container, "db")
 
 		// Step 1: AutoMigrate all models
-		if err := db.AutoMigrate(models.All()...); err != nil {
-			return fmt.Errorf("auto-migrate failed: %w", err)
+		if modelRegistryFn != nil {
+			if err := db.AutoMigrate(modelRegistryFn()...); err != nil {
+				return fmt.Errorf("auto-migrate failed: %w", err)
+			}
+			fmt.Fprintln(cmd.OutOrStdout(), "AutoMigrate complete.")
 		}
-		fmt.Fprintln(cmd.OutOrStdout(), "AutoMigrate complete.")
 
 		// Step 2: Run pending file-based migrations
 		migrator, err := migrations.NewMigrator(db)

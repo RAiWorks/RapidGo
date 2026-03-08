@@ -3,10 +3,15 @@ package migrations
 import (
 	"testing"
 
-	"github.com/RAiWorks/RapidGo/database/models"
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
+
+// testMigrationModel is a test-only model used instead of app-level models.
+type testMigrationModel struct {
+	ID   uint   `gorm:"primaryKey"`
+	Name string `gorm:"size:255"`
+}
 
 // setupTestDB opens SQLite :memory: and returns a clean *gorm.DB.
 func setupTestDB(t *testing.T) *gorm.DB {
@@ -18,21 +23,14 @@ func setupTestDB(t *testing.T) *gorm.DB {
 	return db
 }
 
-// TC-01: models.All() returns all registered models.
+// TC-01: AutoMigrate works with a model struct.
 func TestModelsAll(t *testing.T) {
-	all := models.All()
-	if len(all) != 3 {
-		t.Fatalf("expected 3 models, got %d", len(all))
+	db := setupTestDB(t)
+	if err := db.AutoMigrate(&testMigrationModel{}); err != nil {
+		t.Fatalf("AutoMigrate with test model failed: %v", err)
 	}
-	// Verify types
-	if _, ok := all[0].(*models.User); !ok {
-		t.Fatal("expected first model to be *User")
-	}
-	if _, ok := all[1].(*models.Post); !ok {
-		t.Fatal("expected second model to be *Post")
-	}
-	if _, ok := all[2].(*models.AuditLog); !ok {
-		t.Fatal("expected third model to be *AuditLog")
+	if !db.Migrator().HasTable(&testMigrationModel{}) {
+		t.Fatal("expected test_migration_models table to exist")
 	}
 }
 
