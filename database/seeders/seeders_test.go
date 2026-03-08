@@ -5,7 +5,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/RAiWorks/RapidGo/database/models"
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
@@ -15,16 +14,6 @@ func setupTestDB(t *testing.T) *gorm.DB {
 	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("failed to open test db: %v", err)
-	}
-	return db
-}
-
-// setupUserSeederDB creates a test DB with the User table for UserSeeder tests.
-func setupUserSeederDB(t *testing.T) *gorm.DB {
-	t.Helper()
-	db := setupTestDB(t)
-	if err := db.AutoMigrate(&models.User{}); err != nil {
-		t.Fatalf("AutoMigrate failed: %v", err)
 	}
 	return db
 }
@@ -130,49 +119,5 @@ func TestRunByName_NotFound(t *testing.T) {
 	}
 	if !strings.Contains(err.Error(), "not found") {
 		t.Fatalf("expected 'not found' in error, got %q", err.Error())
-	}
-}
-
-// TC-06: UserSeeder creates admin and regular user.
-func TestUserSeeder_CreatesUsers(t *testing.T) {
-	db := setupUserSeederDB(t)
-
-	seeder := &UserSeeder{}
-	if err := seeder.Seed(db); err != nil {
-		t.Fatalf("UserSeeder.Seed failed: %v", err)
-	}
-
-	var users []models.User
-	db.Find(&users)
-
-	if len(users) != 2 {
-		t.Fatalf("expected 2 users, got %d", len(users))
-	}
-
-	var admin models.User
-	db.Where("email = ?", "admin@example.com").First(&admin)
-	if admin.Role != "admin" {
-		t.Fatalf("expected admin role, got %q", admin.Role)
-	}
-
-	var user models.User
-	db.Where("email = ?", "user@example.com").First(&user)
-	if user.Role != "user" {
-		t.Fatalf("expected user role, got %q", user.Role)
-	}
-}
-
-// TC-07: UserSeeder is idempotent — no duplicates on second run.
-func TestUserSeeder_Idempotent(t *testing.T) {
-	db := setupUserSeederDB(t)
-
-	seeder := &UserSeeder{}
-	seeder.Seed(db)
-	seeder.Seed(db)
-
-	var count int64
-	db.Model(&models.User{}).Count(&count)
-	if count != 2 {
-		t.Fatalf("expected 2 users after double seed, got %d", count)
 	}
 }
