@@ -1,7 +1,9 @@
 package main
 
 import (
+	"github.com/RAiWorks/RapidGo/app/jobs"
 	"github.com/RAiWorks/RapidGo/app/providers"
+	"github.com/RAiWorks/RapidGo/app/schedule"
 	"github.com/RAiWorks/RapidGo/core/app"
 	"github.com/RAiWorks/RapidGo/core/cli"
 	"github.com/RAiWorks/RapidGo/core/container"
@@ -37,6 +39,9 @@ func main() {
 			routes.RegisterWS(r)
 		}
 	})
+
+	cli.SetJobRegistrar(jobs.RegisterJobs)
+	cli.SetScheduleRegistrar(schedule.RegisterSchedule)
 
 	cli.Execute()
 }

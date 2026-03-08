@@ -9,12 +9,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/RAiWorks/RapidGo/app/jobs"
-	"github.com/RAiWorks/RapidGo/app/providers"
-	"github.com/RAiWorks/RapidGo/core/app"
 	"github.com/RAiWorks/RapidGo/core/config"
 	"github.com/RAiWorks/RapidGo/core/container"
 	"github.com/RAiWorks/RapidGo/core/queue"
+	"github.com/RAiWorks/RapidGo/core/service"
 	"github.com/spf13/cobra"
 )
 
@@ -28,17 +26,12 @@ var workCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		config.Load()
 
-		// Minimal bootstrap — no HTTP providers needed.
-		application := app.New()
-		application.Register(&providers.ConfigProvider{})
-		application.Register(&providers.LoggerProvider{})
-		application.Register(&providers.DatabaseProvider{})
-		application.Register(&providers.RedisProvider{})
-		application.Register(&providers.QueueProvider{})
-		application.Boot()
+		application := NewApp(service.ModeAll)
 
-		// Register application job handlers.
-		jobs.RegisterJobs()
+		// Register application job handlers via callback.
+		if jobRegistrar != nil {
+			jobRegistrar()
+		}
 
 		// Resolve dispatcher from container.
 		dispatcher := container.MustMake[*queue.Dispatcher](application.Container, "queue")

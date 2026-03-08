@@ -7,11 +7,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/RAiWorks/RapidGo/app/providers"
-	"github.com/RAiWorks/RapidGo/app/schedule"
-	"github.com/RAiWorks/RapidGo/core/app"
 	"github.com/RAiWorks/RapidGo/core/config"
 	"github.com/RAiWorks/RapidGo/core/scheduler"
+	"github.com/RAiWorks/RapidGo/core/service"
 	"github.com/spf13/cobra"
 )
 
@@ -21,20 +19,15 @@ var scheduleRunCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		config.Load()
 
-		// Minimal bootstrap — no HTTP providers needed.
-		application := app.New()
-		application.Register(&providers.ConfigProvider{})
-		application.Register(&providers.LoggerProvider{})
-		application.Register(&providers.DatabaseProvider{})
-		application.Register(&providers.RedisProvider{})
-		application.Register(&providers.QueueProvider{})
-		application.Boot()
+		application := NewApp(service.ModeAll)
 
 		// Create scheduler.
 		s := scheduler.New(slog.Default())
 
-		// Register application-defined tasks.
-		schedule.RegisterSchedule(s, application)
+		// Register application-defined tasks via callback.
+		if scheduleRegistrar != nil {
+			scheduleRegistrar(s, application)
+		}
 
 		// Print banner with registered tasks.
 		fmt.Println("=================================")
