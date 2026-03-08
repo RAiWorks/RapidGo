@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/RAiWorks/RapidGo/core/app"
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/RAiWorks/RapidGo/v2/core/app"
+	"github.com/RAiWorks/RapidGo/v2/core/container"
+	"github.com/RAiWorks/RapidGo/v2/core/service"
 )
 
 // TC-01: Version constant is set

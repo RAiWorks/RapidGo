@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/RAiWorks/RapidGo/core/router"
+	"github.com/RAiWorks/RapidGo/v2/core/router"
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )

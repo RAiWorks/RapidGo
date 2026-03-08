@@ -3,9 +3,9 @@ package cli
 import (
 	"fmt"
 
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/service"
-	"github.com/RAiWorks/RapidGo/database/migrations"
+	"github.com/RAiWorks/RapidGo/v2/core/container"
+	"github.com/RAiWorks/RapidGo/v2/core/service"
+	"github.com/RAiWorks/RapidGo/v2/database/migrations"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )

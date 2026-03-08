@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/RAiWorks/RapidGo/core/cli"
+	"github.com/RAiWorks/RapidGo/v2/core/cli"
 )
 
 func main() {

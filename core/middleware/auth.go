@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/RAiWorks/RapidGo/core/auth"
+	"github.com/RAiWorks/RapidGo/v2/core/auth"
 	"github.com/gin-gonic/gin"
 )
 

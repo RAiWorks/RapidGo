@@ -7,9 +7,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/RAiWorks/RapidGo/core/config"
-	"github.com/RAiWorks/RapidGo/core/scheduler"
-	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/RAiWorks/RapidGo/v2/core/config"
+	"github.com/RAiWorks/RapidGo/v2/core/scheduler"
+	"github.com/RAiWorks/RapidGo/v2/core/service"
 	"github.com/spf13/cobra"
 )
 

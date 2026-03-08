@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/RAiWorks/RapidGo/core/app"
-	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/RAiWorks/RapidGo/v2/core/app"
+	"github.com/RAiWorks/RapidGo/v2/core/service"
 	"github.com/spf13/cobra"
 )
 
