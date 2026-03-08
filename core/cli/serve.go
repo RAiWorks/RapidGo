@@ -14,7 +14,6 @@ import (
 	"github.com/RAiWorks/RapidGo/core/router"
 	"github.com/RAiWorks/RapidGo/core/server"
 	"github.com/RAiWorks/RapidGo/core/service"
-	"github.com/RAiWorks/RapidGo/routes"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )
@@ -169,13 +168,11 @@ func applyRoutesForMode(r *router.Router, c *container.Container, m service.Mode
 		if info, err := os.Stat("storage/uploads"); err == nil && info.IsDir() {
 			r.Static("/uploads", "./storage/uploads")
 		}
-		routes.RegisterWeb(r)
 	}
-	if m.Has(service.ModeAPI) {
-		routes.RegisterAPI(r)
-	}
-	if m.Has(service.ModeWS) {
-		routes.RegisterWS(r)
+
+	// Delegate route registration to the application callback
+	if routeRegistrar != nil {
+		routeRegistrar(r, c, m)
 	}
 
 	// Health check — each per-service router gets its own health endpoints

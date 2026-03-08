@@ -4,7 +4,10 @@ import (
 	"github.com/RAiWorks/RapidGo/app/providers"
 	"github.com/RAiWorks/RapidGo/core/app"
 	"github.com/RAiWorks/RapidGo/core/cli"
+	"github.com/RAiWorks/RapidGo/core/container"
+	"github.com/RAiWorks/RapidGo/core/router"
 	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/RAiWorks/RapidGo/routes"
 )
 
 func main() {
@@ -21,6 +24,18 @@ func main() {
 		}
 		a.Register(&providers.MiddlewareProvider{Mode: mode})
 		a.Register(&providers.RouterProvider{Mode: mode})
+	})
+
+	cli.SetRoutes(func(r *router.Router, c *container.Container, mode service.Mode) {
+		if mode.Has(service.ModeWeb) {
+			routes.RegisterWeb(r)
+		}
+		if mode.Has(service.ModeAPI) {
+			routes.RegisterAPI(r)
+		}
+		if mode.Has(service.ModeWS) {
+			routes.RegisterWS(r)
+		}
 	})
 
 	cli.Execute()
