@@ -6,7 +6,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/RAiWorks/RapidGo/database/models"
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
@@ -18,7 +17,7 @@ func setupTestDB(t *testing.T) *gorm.DB {
 	if err != nil {
 		t.Fatalf("failed to open test db: %v", err)
 	}
-	if err := db.AutoMigrate(&models.AuditLog{}); err != nil {
+	if err := db.AutoMigrate(&AuditLog{}); err != nil {
 		t.Fatalf("failed to migrate: %v", err)
 	}
 	return db
@@ -50,7 +49,7 @@ func TestLog_CreateAction(t *testing.T) {
 		t.Fatalf("Log() error: %v", err)
 	}
 
-	var record models.AuditLog
+	var record AuditLog
 	if err := db.First(&record).Error; err != nil {
 		t.Fatalf("failed to find record: %v", err)
 	}
@@ -86,7 +85,7 @@ func TestLog_UpdateWithOldNewValues(t *testing.T) {
 		t.Fatalf("Log() error: %v", err)
 	}
 
-	var record models.AuditLog
+	var record AuditLog
 	db.First(&record)
 
 	var oldVals, newVals map[string]interface{}
@@ -121,7 +120,7 @@ func TestLog_DeleteAction(t *testing.T) {
 		t.Fatalf("Log() error: %v", err)
 	}
 
-	var record models.AuditLog
+	var record AuditLog
 	db.First(&record)
 	if record.Action != "delete" {
 		t.Errorf("Action = %q, want 'delete'", record.Action)
@@ -148,7 +147,7 @@ func TestLog_WithMetadata(t *testing.T) {
 		t.Fatalf("Log() error: %v", err)
 	}
 
-	var record models.AuditLog
+	var record AuditLog
 	db.First(&record)
 
 	var meta map[string]interface{}
@@ -179,7 +178,7 @@ func TestLog_NilMapsStoreEmpty(t *testing.T) {
 		t.Fatalf("Log() error: %v", err)
 	}
 
-	var record models.AuditLog
+	var record AuditLog
 	db.First(&record)
 	if record.OldValues != "" {
 		t.Errorf("OldValues = %q, want empty string", record.OldValues)
@@ -208,7 +207,7 @@ func TestLog_ZeroUserID(t *testing.T) {
 		t.Fatalf("Log() error: %v", err)
 	}
 
-	var record models.AuditLog
+	var record AuditLog
 	db.First(&record)
 	if record.UserID != 0 {
 		t.Errorf("UserID = %d, want 0", record.UserID)
@@ -231,7 +230,7 @@ func TestLog_CustomAction(t *testing.T) {
 		t.Fatalf("Log() error: %v", err)
 	}
 
-	var record models.AuditLog
+	var record AuditLog
 	db.First(&record)
 	if record.Action != "login" {
 		t.Errorf("Action = %q, want 'login'", record.Action)
@@ -345,7 +344,7 @@ func TestForModel_DifferentModelTypes(t *testing.T) {
 // ── T14: AuditLog has no DeletedAt field ────────────────────────────────────
 
 func TestAuditLog_NoDeletedAt(t *testing.T) {
-	typ := reflect.TypeOf(models.AuditLog{})
+	typ := reflect.TypeOf(AuditLog{})
 	if _, found := typ.FieldByName("DeletedAt"); found {
 		t.Error("AuditLog has DeletedAt field — audit logs should be immutable")
 	}

@@ -3,7 +3,6 @@ package audit
 import (
 	"encoding/json"
 
-	"github.com/RAiWorks/RapidGo/database/models"
 	"gorm.io/gorm"
 )
 
@@ -30,7 +29,7 @@ type Entry struct {
 
 // Log persists an audit entry to the database.
 func (l *Logger) Log(e Entry) error {
-	record := models.AuditLog{
+	record := AuditLog{
 		UserID:    e.UserID,
 		Action:    e.Action,
 		ModelType: e.ModelType,
@@ -62,13 +61,13 @@ func (l *Logger) Log(e Entry) error {
 
 // Find returns audit log entries matching the given conditions, ordered newest first.
 // Conditions use GORM Where syntax: Find("user_id = ?", 42).
-func (l *Logger) Find(query string, args ...interface{}) ([]models.AuditLog, error) {
-	var logs []models.AuditLog
+func (l *Logger) Find(query string, args ...interface{}) ([]AuditLog, error) {
+	var logs []AuditLog
 	err := l.db.Where(query, args...).Order("created_at DESC").Find(&logs).Error
 	return logs, err
 }
 
 // ForModel returns all audit log entries for a specific model type and ID.
-func (l *Logger) ForModel(modelType string, modelID uint) ([]models.AuditLog, error) {
+func (l *Logger) ForModel(modelType string, modelID uint) ([]AuditLog, error) {
 	return l.Find("model_type = ? AND model_id = ?", modelType, modelID)
 }
