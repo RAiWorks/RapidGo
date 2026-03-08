@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"testing"
 
+	"github.com/RAiWorks/RapidGo/core/app"
+	"github.com/RAiWorks/RapidGo/core/container"
 	"github.com/RAiWorks/RapidGo/core/service"
 )
 
@@ -96,6 +98,15 @@ func TestNewApp_ReturnsBootedApp(t *testing.T) {
 	t.Setenv("LOG_LEVEL", "info")
 	t.Setenv("LOG_FORMAT", "json")
 	t.Setenv("LOG_OUTPUT", "stdout")
+
+	// Set a bootstrap function that registers test bindings
+	original := bootstrapFn
+	t.Cleanup(func() { bootstrapFn = original })
+
+	SetBootstrap(func(a *app.App, mode service.Mode) {
+		a.Container.Bind("router", func(_ *container.Container) interface{} { return "fake-router" })
+		a.Container.Bind("db", func(_ *container.Container) interface{} { return "fake-db" })
+	})
 
 	application := NewApp(service.ModeAll)
 	if application == nil {
