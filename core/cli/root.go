@@ -32,6 +32,7 @@ func init() {
 	rootCmd.AddCommand(workCmd)
 	rootCmd.AddCommand(scheduleRunCmd)
 	rootCmd.AddCommand(makeAdminCmd)
+	rootCmd.AddCommand(newCmd)
 }
 
 // Execute runs the root command. Called from main().
