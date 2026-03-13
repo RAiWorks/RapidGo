@@ -65,7 +65,7 @@ package router
 import (
 	"net/http"
 
-	"github.com/RAiWorks/RapidGo/core/config"
+	"github.com/raiworks/rapidgo/core/config"
 	"github.com/gin-gonic/gin"
 )
 
@@ -364,9 +364,9 @@ func ResetNamedRoutes() {
 package providers
 
 import (
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/router"
-	"github.com/RAiWorks/RapidGo/routes"
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/core/router"
+	"github.com/raiworks/rapidgo/routes"
 )
 
 // RouterProvider creates the router and registers route definitions.
@@ -397,7 +397,7 @@ func (p *RouterProvider) Boot(c *container.Container) {
 ```go
 package routes
 
-import "github.com/RAiWorks/RapidGo/core/router"
+import "github.com/raiworks/rapidgo/core/router"
 
 // RegisterWeb defines web (HTML) routes.
 func RegisterWeb(r *router.Router) {
@@ -411,7 +411,7 @@ func RegisterWeb(r *router.Router) {
 ```go
 package routes
 
-import "github.com/RAiWorks/RapidGo/core/router"
+import "github.com/raiworks/rapidgo/core/router"
 
 // RegisterAPI defines API routes under the /api prefix.
 func RegisterAPI(r *router.Router) {
@@ -435,11 +435,11 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/RAiWorks/RapidGo/app/providers"
-	"github.com/RAiWorks/RapidGo/core/app"
-	"github.com/RAiWorks/RapidGo/core/config"
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/router"
+	"github.com/raiworks/rapidgo/app/providers"
+	"github.com/raiworks/rapidgo/core/app"
+	"github.com/raiworks/rapidgo/core/config"
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/core/router"
 )
 
 func main() {
@@ -459,7 +459,7 @@ func main() {
 
 	fmt.Println("=================================")
 	fmt.Printf("  %s Framework\n", appName)
-	fmt.Println("  github.com/RAiWorks/RapidGo")
+	fmt.Println("  github.com/raiworks/rapidgo")
 	fmt.Println("=================================")
 	fmt.Printf("  Environment: %s\n", appEnv)
 	fmt.Printf("  Port: %s\n", appPort)

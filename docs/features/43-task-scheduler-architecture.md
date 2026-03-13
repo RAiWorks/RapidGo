@@ -198,8 +198,8 @@ import (
     "context"
     "log/slog"
 
-    "github.com/RAiWorks/RapidGo/core/app"
-    "github.com/RAiWorks/RapidGo/core/scheduler"
+    "github.com/raiworks/rapidgo/core/app"
+    "github.com/raiworks/rapidgo/core/scheduler"
 )
 
 // RegisterSchedule defines all scheduled tasks.

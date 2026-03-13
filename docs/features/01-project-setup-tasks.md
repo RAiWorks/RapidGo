@@ -24,7 +24,7 @@
 > Initialize the Go module and verify the toolchain.
 
 - [x] **A.1** — Verify Go version is 1.21+ (`go version`)
-- [x] **A.2** — Run `go mod init github.com/RAiWorks/RapidGo`
+- [x] **A.2** — Run `go mod init github.com/raiworks/rapidgo`
 - [x] **A.3** — Set Go version in `go.mod` to `go 1.21`
 - [x] ?? **Checkpoint A** — `go.mod` exists with correct module path and Go version
 

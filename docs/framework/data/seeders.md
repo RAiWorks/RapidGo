@@ -5,7 +5,7 @@ status: "Final"
 date: "2026-03-05"
 last_updated: "2026-03-10"
 authors:
-  - "RAiWorks"
+  - "raiworks"
 supersedes: ""
 ---
 
@@ -110,7 +110,7 @@ seeder files in your application's `database/seeders/` directory:
 package seeders
 
 import (
-    "github.com/RAiWorks/RapidGo/v2/core/crypto"
+    "github.com/raiworks/rapidgo/v2/core/crypto"
     "gorm.io/gorm"
 )
 
@@ -176,7 +176,7 @@ registration function:
 package seeders
 
 import (
-    dbseeders "github.com/RAiWorks/RapidGo/v2/database/seeders"
+    dbseeders "github.com/raiworks/rapidgo/v2/database/seeders"
 )
 
 func init() {
@@ -263,5 +263,5 @@ without the framework depending on your application code directly.
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 0.1.0 | 2026-03-05 | RAiWorks | Initial draft |
-| 1.0.0 | 2026-03-10 | RAiWorks | Rewritten to match interface-based registry implementation. Added architecture diagram, registration, CLI flags, wiring hook, best practices. |
+| 0.1.0 | 2026-03-05 | raiworks | Initial draft |
+| 1.0.0 | 2026-03-10 | raiworks | Rewritten to match interface-based registry implementation. Added architecture diagram, registration, CLI flags, wiring hook, best practices. |

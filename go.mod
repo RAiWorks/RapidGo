@@ -1,4 +1,4 @@
-module github.com/RAiWorks/RapidGo/v2
+module github.com/raiworks/rapidgo/v2
 
 go 1.25.0
 

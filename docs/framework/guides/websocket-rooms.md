@@ -5,7 +5,7 @@ status: "Final"
 date: "2026-03-11"
 last_updated: "2026-03-11"
 authors:
-  - "RAiWorks"
+  - "raiworks"
 supersedes: ""
 ---
 
@@ -45,7 +45,7 @@ clients and rooms. Features:
 ## 2. Creating a Hub
 
 ```go
-import "github.com/RAiWorks/RapidGo/v2/core/websocket"
+import "github.com/raiworks/rapidgo/v2/core/websocket"
 
 // Default: 30s ping, 10s pong timeout
 hub := websocket.NewHub()

@@ -69,7 +69,7 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/RAiWorks/RapidGo/core/config"
+	"github.com/raiworks/rapidgo/core/config"
 )
 
 // logFile holds the open log file handle (if LOG_OUTPUT=file).
@@ -138,8 +138,8 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/RAiWorks/RapidGo/core/config"
-	"github.com/RAiWorks/RapidGo/core/logger"
+	"github.com/raiworks/rapidgo/core/config"
+	"github.com/raiworks/rapidgo/core/logger"
 )
 
 func main() {
@@ -152,7 +152,7 @@ func main() {
 
 	fmt.Println("=================================")
 	fmt.Printf("  %s Framework\n", appName)
-	fmt.Println("  github.com/RAiWorks/RapidGo")
+	fmt.Println("  github.com/raiworks/rapidgo")
 	fmt.Println("=================================")
 	fmt.Printf("  Environment: %s\n", appEnv)
 	fmt.Printf("  Port: %s\n", appPort)

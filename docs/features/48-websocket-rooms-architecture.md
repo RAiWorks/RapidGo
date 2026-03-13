@@ -210,7 +210,7 @@ No existing files modified. `websocket.go` remains unchanged.
 ```go
 // In routes/ws.go:
 import (
-    ws "github.com/RAiWorks/RapidGo/core/websocket"
+    ws "github.com/raiworks/rapidgo/core/websocket"
     "github.com/coder/websocket"
 )
 

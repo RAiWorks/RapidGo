@@ -33,9 +33,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/RAiWorks/RapidGo/app/providers"    // ← REMOVE
-	"github.com/RAiWorks/RapidGo/core/app"
-	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/raiworks/rapidgo/app/providers"    // ← REMOVE
+	"github.com/raiworks/rapidgo/core/app"
+	"github.com/raiworks/rapidgo/core/service"
 	"github.com/spf13/cobra"
 )
 
@@ -66,8 +66,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/RAiWorks/RapidGo/core/app"
-	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/raiworks/rapidgo/core/app"
+	"github.com/raiworks/rapidgo/core/service"
 	"github.com/spf13/cobra"
 )
 
@@ -89,7 +89,7 @@ func NewApp(mode service.Mode) *app.App {
 ```go
 package main
 
-import "github.com/RAiWorks/RapidGo/core/cli"
+import "github.com/raiworks/rapidgo/core/cli"
 
 func main() {
 	cli.Execute()
@@ -101,10 +101,10 @@ func main() {
 package main
 
 import (
-	"github.com/RAiWorks/RapidGo/app/providers"
-	"github.com/RAiWorks/RapidGo/core/app"
-	"github.com/RAiWorks/RapidGo/core/cli"
-	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/raiworks/rapidgo/app/providers"
+	"github.com/raiworks/rapidgo/core/app"
+	"github.com/raiworks/rapidgo/core/cli"
+	"github.com/raiworks/rapidgo/core/service"
 )
 
 func main() {
@@ -162,7 +162,7 @@ Replace `routes.RegisterWeb/API/WS()` calls in `applyRoutesForMode()` with the `
 // BEFORE:
 import (
 	...
-	"github.com/RAiWorks/RapidGo/routes"    // ← REMOVE
+	"github.com/raiworks/rapidgo/routes"    // ← REMOVE
 	...
 )
 
@@ -240,9 +240,9 @@ Add to existing `main()` (after `SetBootstrap`):
 ```go
 import (
 	...
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/router"
-	"github.com/RAiWorks/RapidGo/routes"
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/core/router"
+	"github.com/raiworks/rapidgo/routes"
 )
 
 // In main():
@@ -294,12 +294,12 @@ Replace the manual provider bootstrap and hard imports in `work.go` and `schedul
 ```go
 import (
 	...
-	"github.com/RAiWorks/RapidGo/app/jobs"        // ← REMOVE
-	"github.com/RAiWorks/RapidGo/app/providers"    // ← REMOVE
-	"github.com/RAiWorks/RapidGo/core/app"         // ← REMOVE (use NewApp instead)
-	"github.com/RAiWorks/RapidGo/core/config"
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/queue"
+	"github.com/raiworks/rapidgo/app/jobs"        // ← REMOVE
+	"github.com/raiworks/rapidgo/app/providers"    // ← REMOVE
+	"github.com/raiworks/rapidgo/core/app"         // ← REMOVE (use NewApp instead)
+	"github.com/raiworks/rapidgo/core/config"
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/core/queue"
 	...
 )
 
@@ -323,10 +323,10 @@ jobs.RegisterJobs()
 ```go
 import (
 	...
-	"github.com/RAiWorks/RapidGo/core/config"
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/queue"
-	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/raiworks/rapidgo/core/config"
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/core/queue"
+	"github.com/raiworks/rapidgo/core/service"
 	...
 )
 
@@ -347,11 +347,11 @@ if jobRegistrar != nil {
 ```go
 import (
 	...
-	"github.com/RAiWorks/RapidGo/app/providers"    // ← REMOVE
-	"github.com/RAiWorks/RapidGo/app/schedule"      // ← REMOVE
-	"github.com/RAiWorks/RapidGo/core/app"           // ← REMOVE
-	"github.com/RAiWorks/RapidGo/core/config"
-	"github.com/RAiWorks/RapidGo/core/scheduler"
+	"github.com/raiworks/rapidgo/app/providers"    // ← REMOVE
+	"github.com/raiworks/rapidgo/app/schedule"      // ← REMOVE
+	"github.com/raiworks/rapidgo/core/app"           // ← REMOVE
+	"github.com/raiworks/rapidgo/core/config"
+	"github.com/raiworks/rapidgo/core/scheduler"
 	...
 )
 
@@ -374,9 +374,9 @@ schedule.RegisterSchedule(s, application)
 ```go
 import (
 	...
-	"github.com/RAiWorks/RapidGo/core/config"
-	"github.com/RAiWorks/RapidGo/core/scheduler"
-	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/raiworks/rapidgo/core/config"
+	"github.com/raiworks/rapidgo/core/scheduler"
+	"github.com/raiworks/rapidgo/core/service"
 	...
 )
 
@@ -400,8 +400,8 @@ Add to existing `main()`:
 ```go
 import (
 	...
-	"github.com/RAiWorks/RapidGo/app/jobs"
-	"github.com/RAiWorks/RapidGo/app/schedule"
+	"github.com/raiworks/rapidgo/app/jobs"
+	"github.com/raiworks/rapidgo/app/schedule"
 )
 
 // In main():
@@ -452,10 +452,10 @@ go test ./... -count=1
 import (
 	"fmt"
 
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/service"
-	"github.com/RAiWorks/RapidGo/database/migrations"
-	"github.com/RAiWorks/RapidGo/database/models"       // ← REMOVE
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/core/service"
+	"github.com/raiworks/rapidgo/database/migrations"
+	"github.com/raiworks/rapidgo/database/models"       // ← REMOVE
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )
@@ -469,9 +469,9 @@ if err := db.AutoMigrate(models.All()...); err != nil {
 import (
 	"fmt"
 
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/service"
-	"github.com/RAiWorks/RapidGo/database/migrations"
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/core/service"
+	"github.com/raiworks/rapidgo/database/migrations"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )
@@ -492,9 +492,9 @@ if modelRegistryFn != nil {
 import (
 	"fmt"
 
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/service"
-	"github.com/RAiWorks/RapidGo/database/seeders"    // ← REMOVE
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/core/service"
+	"github.com/raiworks/rapidgo/database/seeders"    // ← REMOVE
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )
@@ -515,8 +515,8 @@ if err := seeders.RunAll(db); err != nil {
 import (
 	"fmt"
 
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/core/service"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )
@@ -544,8 +544,8 @@ Add to existing `main()`:
 ```go
 import (
 	...
-	"github.com/RAiWorks/RapidGo/database/models"
-	"github.com/RAiWorks/RapidGo/database/seeders"
+	"github.com/raiworks/rapidgo/database/models"
+	"github.com/raiworks/rapidgo/database/seeders"
 	"gorm.io/gorm"
 )
 
@@ -603,7 +603,7 @@ type testScopesModel struct {
 Replace `models.User` / `models.Post` with local test model:
 
 ```go
-// Remove: "github.com/RAiWorks/RapidGo/database/models"
+// Remove: "github.com/raiworks/rapidgo/database/models"
 
 // Add:
 type testMigrationModel struct {
@@ -620,7 +620,7 @@ type testMigrationModel struct {
 Replace `models.User` in `setupTestDB()`:
 
 ```go
-// Remove: "github.com/RAiWorks/RapidGo/database/models"
+// Remove: "github.com/raiworks/rapidgo/database/models"
 
 // Add:
 type testSeederModel struct {
@@ -679,20 +679,20 @@ go test ./... -count=1                          # full suite passes
 package main
 
 import (
-	"github.com/RAiWorks/RapidGo/app/jobs"
-	"github.com/RAiWorks/RapidGo/app/providers"
-	"github.com/RAiWorks/RapidGo/app/schedule"
-	"github.com/RAiWorks/RapidGo/core/app"
-	"github.com/RAiWorks/RapidGo/core/cli"
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/router"
-	"github.com/RAiWorks/RapidGo/core/service"
-	"github.com/RAiWorks/RapidGo/database/models"
-	"github.com/RAiWorks/RapidGo/database/seeders"
-	"github.com/RAiWorks/RapidGo/routes"
+	"github.com/raiworks/rapidgo/app/jobs"
+	"github.com/raiworks/rapidgo/app/providers"
+	"github.com/raiworks/rapidgo/app/schedule"
+	"github.com/raiworks/rapidgo/core/app"
+	"github.com/raiworks/rapidgo/core/cli"
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/core/router"
+	"github.com/raiworks/rapidgo/core/service"
+	"github.com/raiworks/rapidgo/database/models"
+	"github.com/raiworks/rapidgo/database/seeders"
+	"github.com/raiworks/rapidgo/routes"
 	"gorm.io/gorm"
 
-	_ "github.com/RAiWorks/RapidGo/database/migrations" // blank import for init() registration
+	_ "github.com/raiworks/rapidgo/database/migrations" // blank import for init() registration
 )
 
 func main() {
@@ -751,7 +751,7 @@ func main() {
 After Phase B, run this one command to verify:
 
 ```bash
-grep -rn "RAiWorks/RapidGo/app\|RAiWorks/RapidGo/routes\|RAiWorks/RapidGo/http\|RAiWorks/RapidGo/plugins" core/
+grep -rn "raiworks/rapidgo/app\|raiworks/rapidgo/routes\|raiworks/rapidgo/http\|raiworks/rapidgo/plugins" core/
 ```
 
 This must return **zero results**.

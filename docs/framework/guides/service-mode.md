@@ -5,7 +5,7 @@ status: "Final"
 date: "2026-03-11"
 last_updated: "2026-03-11"
 authors:
-  - "RAiWorks"
+  - "raiworks"
 supersedes: ""
 ---
 

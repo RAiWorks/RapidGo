@@ -75,7 +75,7 @@
 
 - [x] 4.1 Updated 61 `docs/framework/**/*.md` files: `status: "Draft"` → `status: "Final"`
 - [x] 4.2 Updated `last_updated` dates to 2026-03-10 across all 61 files
-- [ ] 4.3 Verify import paths use `github.com/RAiWorks/RapidGo/v2` (deferred — needs separate pass)
+- [ ] 4.3 Verify import paths use `github.com/raiworks/rapidgo/v2` (deferred — needs separate pass)
 - [ ] 4.4 Spot-check 10 code examples against actual implementations (deferred — post-Ship review)
 - [ ] 4.5 Fix any broken cross-references between framework docs (deferred — post-Ship review)
 

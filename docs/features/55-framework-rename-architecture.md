@@ -19,7 +19,7 @@ Six distinct patterns must be replaced in a specific order to avoid partial matc
 
 | # | Pattern (Old) | Replacement (New) | Context | Scope |
 |---|---|---|---|---|
-| 1 | `github.com/RAiWorks/RGo` | `github.com/RAiWorks/RapidGo` | Module path & imports | All `.go` files, `go.mod`, docs code blocks |
+| 1 | `github.com/raiworks/RGo` | `github.com/raiworks/rapidgo` | Module path & imports | All `.go` files, `go.mod`, docs code blocks |
 | 2 | `RGo Framework` | `RapidGo Framework` | Human-readable name | Docs, comments, templates, CLI output |
 | 3 | `RGo` (standalone) | `RapidGo` | Framework name in text | Docs, comments, strings, `.env` values |
 | 4 | `"rgo"` | `"rapidgo"` | CLI command name | `core/cli/root.go` |
@@ -69,7 +69,7 @@ core/
 │   └── file.go                      # MODIFY — imports
 ├── cli/
 │   ├── root.go                      # MODIFY — imports, Use: "rgo" → "rapidgo", comment, version
-│   ├── serve.go                     # MODIFY — imports, banner "github.com/RAiWorks/RGo"
+│   ├── serve.go                     # MODIFY — imports, banner "github.com/raiworks/RGo"
 │   ├── version.go                   # MODIFY — "RGo Framework" string
 │   ├── cli_test.go                  # MODIFY — "RGo" test assertion
 │   ├── migrate.go                   # MODIFY — imports
@@ -333,10 +333,10 @@ fmt.Fprintf(cmd.OutOrStdout(), "RapidGo Framework v%s\n", Version)
 **`core/cli/serve.go`**:
 ```go
 // Before
-fmt.Println("  github.com/RAiWorks/RGo")
+fmt.Println("  github.com/raiworks/RGo")
 
 // After
-fmt.Println("  github.com/RAiWorks/RapidGo")
+fmt.Println("  github.com/raiworks/rapidgo")
 ```
 
 **`http/controllers/home_controller.go`**:
@@ -407,7 +407,7 @@ The rename is executed via automated find-and-replace in a specific order, then 
 ### Replacement Execution Order
 
 1. **`go.mod`** — Module path (must be first — all imports depend on this)
-2. **All `.go` files** — Import paths (`github.com/RAiWorks/RGo` → `github.com/RAiWorks/RapidGo`)
+2. **All `.go` files** — Import paths (`github.com/raiworks/RGo` → `github.com/raiworks/rapidgo`)
 3. **All `.go` files** — String literals and comments (`RGo` → `RapidGo`, `rgo` → `rapidgo`)
 4. **`core/cli/root.go`** — Version bump `0.1.0` → `0.2.0`
 5. **`.env`** — Configuration defaults
@@ -428,7 +428,7 @@ The rename is executed via automated find-and-replace in a specific order, then 
 | Compilation | `go build ./...` | Zero errors |
 | Tests | `go test ./...` | All pass |
 | CLI verify | `./bin/rapidgo version` | `RapidGo Framework v0.2.0` |
-| CLI serve banner | `./bin/rapidgo serve` | Shows `github.com/RAiWorks/RapidGo` |
+| CLI serve banner | `./bin/rapidgo serve` | Shows `github.com/raiworks/rapidgo` |
 | No stale references | `grep -r "RGo" --include="*.go" \| grep -v RapidGo \| grep -v RGO_TEST` | Zero results (except `RGO_TEST_*`) |
 
 ---

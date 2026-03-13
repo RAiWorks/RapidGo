@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/RAiWorks/RapidGo/v2/core/router"
+	"github.com/raiworks/rapidgo/v2/core/router"
 	"gorm.io/gorm"
 )
 

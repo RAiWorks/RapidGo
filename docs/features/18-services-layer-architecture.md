@@ -42,7 +42,7 @@ package services
 import (
 	"errors"
 
-	"github.com/RAiWorks/RapidGo/database/models"
+	"github.com/raiworks/rapidgo/database/models"
 
 	"gorm.io/gorm"
 )
@@ -104,7 +104,7 @@ func (s *UserService) Delete(id uint) error {
 
 **Design notes**:
 - Exact match to blueprint code (lines 2535–2595)
-- Module path `github.com/RAiWorks/RapidGo/database/models` instead of blueprint's `yourframework/database/models`
+- Module path `github.com/raiworks/rapidgo/database/models` instead of blueprint's `yourframework/database/models`
 - `Create` checks for duplicate email before insertion (business rule)
 - `Password` stored as-is with comment — hashing belongs to Feature #22
 - `Update` uses `map[string]interface{}` for flexible partial updates

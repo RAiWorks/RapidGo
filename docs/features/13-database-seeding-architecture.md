@@ -123,7 +123,7 @@ func Names() []string {
 package seeders
 
 import (
-	"github.com/RAiWorks/RapidGo/database/models"
+	"github.com/raiworks/rapidgo/database/models"
 	"gorm.io/gorm"
 )
 
@@ -168,8 +168,8 @@ package cli
 import (
 	"fmt"
 
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/database/seeders"
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/database/seeders"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )

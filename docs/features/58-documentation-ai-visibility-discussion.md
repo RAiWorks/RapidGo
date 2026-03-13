@@ -97,7 +97,7 @@ New file at repo root — exhaustive, structured list of every capability:
 
 ### 3. Framework Docs Finalization
 - Update all "Draft" status docs to "Final"
-- Ensure all docs reference correct import paths (`github.com/RAiWorks/RapidGo/v2`)
+- Ensure all docs reference correct import paths (`github.com/raiworks/rapidgo/v2`)
 - Verify code examples compile and match actual implementation
 - Add cross-references between related docs
 

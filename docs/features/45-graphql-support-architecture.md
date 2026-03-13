@@ -201,8 +201,8 @@ func renderPlayground(title, endpoint string) []byte {
 package routes
 
 import (
-	"github.com/RAiWorks/RapidGo/core/graphql"
-	"github.com/RAiWorks/RapidGo/core/router"
+	"github.com/raiworks/rapidgo/core/graphql"
+	"github.com/raiworks/rapidgo/core/router"
 	gql "github.com/graphql-go/graphql"
 )
 

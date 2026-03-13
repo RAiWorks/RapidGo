@@ -1,11 +1,11 @@
 package cli
 
 import (
-	"github.com/RAiWorks/RapidGo/v2/core/app"
-	"github.com/RAiWorks/RapidGo/v2/core/container"
-	"github.com/RAiWorks/RapidGo/v2/core/router"
-	"github.com/RAiWorks/RapidGo/v2/core/scheduler"
-	"github.com/RAiWorks/RapidGo/v2/core/service"
+	"github.com/raiworks/rapidgo/v2/core/app"
+	"github.com/raiworks/rapidgo/v2/core/container"
+	"github.com/raiworks/rapidgo/v2/core/router"
+	"github.com/raiworks/rapidgo/v2/core/scheduler"
+	"github.com/raiworks/rapidgo/v2/core/service"
 	"gorm.io/gorm"
 )
 

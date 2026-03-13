@@ -7,13 +7,13 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/RAiWorks/RapidGo/v2/core/app"
-	"github.com/RAiWorks/RapidGo/v2/core/config"
-	"github.com/RAiWorks/RapidGo/v2/core/container"
-	"github.com/RAiWorks/RapidGo/v2/core/health"
-	"github.com/RAiWorks/RapidGo/v2/core/router"
-	"github.com/RAiWorks/RapidGo/v2/core/server"
-	"github.com/RAiWorks/RapidGo/v2/core/service"
+	"github.com/raiworks/rapidgo/v2/core/app"
+	"github.com/raiworks/rapidgo/v2/core/config"
+	"github.com/raiworks/rapidgo/v2/core/container"
+	"github.com/raiworks/rapidgo/v2/core/health"
+	"github.com/raiworks/rapidgo/v2/core/router"
+	"github.com/raiworks/rapidgo/v2/core/server"
+	"github.com/raiworks/rapidgo/v2/core/service"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )
@@ -51,7 +51,7 @@ var serveCmd = &cobra.Command{
 
 			fmt.Println("=================================")
 			fmt.Printf("  %s Framework\n", appName)
-			fmt.Println("  github.com/RAiWorks/RapidGo")
+			fmt.Println("  github.com/raiworks/rapidgo")
 			fmt.Println("=================================")
 			fmt.Printf("  Environment: %s\n", appEnv)
 			fmt.Printf("  Mode: %s\n", mode)
@@ -72,7 +72,7 @@ var serveCmd = &cobra.Command{
 		// Multi-port — one server per service
 		fmt.Println("=================================")
 		fmt.Printf("  %s Framework\n", appName)
-		fmt.Println("  github.com/RAiWorks/RapidGo")
+		fmt.Println("  github.com/raiworks/rapidgo")
 		fmt.Println("=================================")
 		fmt.Printf("  Environment: %s\n", appEnv)
 		fmt.Printf("  Mode: %s\n", mode)

@@ -14,9 +14,9 @@
 - [ ] `cmd/main.go` wires all 6 hooks before `cli.Execute()`
 - [ ] All test files in `database/` use test-only model structs (no `User`/`Post` references)
 - [ ] Library repo builds and tests standalone (no `app/`, `routes/`, `http/`, `plugins/` directories)
-- [ ] `RapidGo-starter` repo builds and runs (`serve`, `migrate`, `db:seed`)
+- [ ] `rapidgo-starter` repo builds and runs (`serve`, `migrate`, `db:seed`)
 - [ ] `rapidgo new myapp` scaffolds a working project
-- [ ] `go get github.com/RAiWorks/RapidGo@v2.0.0` succeeds
+- [ ] `go get github.com/raiworks/rapidgo@v2.0.0` succeeds
 - [ ] v2.0.0 tag exists on library repo
 
 ---
@@ -198,7 +198,7 @@
 |---|---|
 | **Category** | Regression |
 | **Precondition** | All Phase B complete |
-| **Steps** | 1. `grep -rn "RAiWorks/RapidGo/app\|RAiWorks/RapidGo/routes\|RAiWorks/RapidGo/http\|RAiWorks/RapidGo/plugins" core/` |
+| **Steps** | 1. `grep -rn "raiworks/rapidgo/app\|raiworks/rapidgo/routes\|raiworks/rapidgo/http\|raiworks/rapidgo/plugins" core/` |
 | **Expected Result** | Zero results |
 | **Status** | ⬜ Not Run |
 | **Notes** | Gate B — the critical milestone |
@@ -288,7 +288,7 @@
 |---|---|
 | **Category** | Happy Path |
 | **Precondition** | C2 complete |
-| **Steps** | 1. (in starter dir) `go mod tidy` → 2. Verify `go.mod` imports `github.com/RAiWorks/RapidGo` → 3. `go build ./...` |
+| **Steps** | 1. (in starter dir) `go mod tidy` → 2. Verify `go.mod` imports `github.com/raiworks/rapidgo` → 3. `go build ./...` |
 | **Expected Result** | Module resolves correctly, builds |
 | **Status** | ⬜ Not Run |
 | **Notes** | — |
@@ -324,7 +324,7 @@
 |---|---|
 | **Category** | Happy Path |
 | **Precondition** | D1 complete, internet access |
-| **Steps** | 1. `rapidgo new testapp` → 2. `cd testapp && go build ./...` → 3. `grep -r "RapidGo-starter" .` |
+| **Steps** | 1. `rapidgo new testapp` → 2. `cd testapp && go build ./...` → 3. `grep -r "rapidgo-starter" .` |
 | **Expected Result** | Project created, builds, no starter module references remain |
 | **Status** | ⬜ Not Run |
 | **Notes** | Integration test — network required |

@@ -5,7 +5,7 @@ status: "Final"
 date: "2026-03-11"
 last_updated: "2026-03-11"
 authors:
-  - "RAiWorks"
+  - "raiworks"
 supersedes: ""
 ---
 
@@ -77,7 +77,7 @@ OAUTH_REDIRECT_BASE=https://yourapp.com
 ## 3. Configure the Provider
 
 ```go
-import "github.com/RAiWorks/RapidGo/v2/core/oauth"
+import "github.com/raiworks/rapidgo/v2/core/oauth"
 
 googleProvider := oauth.Google(
     os.Getenv("GOOGLE_CLIENT_ID"),

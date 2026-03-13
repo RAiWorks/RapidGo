@@ -345,7 +345,7 @@ func init() {
 ```go
 package routes
 
-import "github.com/RAiWorks/RapidGo/core/router"
+import "github.com/raiworks/rapidgo/core/router"
 
 // RegisterWS defines WebSocket routes.
 // Currently a placeholder — WebSocket routes will be added as the application grows.

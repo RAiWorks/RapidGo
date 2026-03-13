@@ -1,6 +1,6 @@
 # 🔍 RapidGo Framework — Cross-Check Audit Report
 
-> **Repository**: [RAiWorks/RapidGo](https://github.com/RAiWorks/RapidGo)  
+> **Repository**: [raiworks/rapidgo](https://github.com/raiworks/rapidgo)  
 > **Audit Date**: 2026-03-07  
 > **Scope**: Code vs. documentation alignment, completeness, gaps, and scope creep
 

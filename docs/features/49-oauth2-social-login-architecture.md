@@ -212,7 +212,7 @@ No existing files modified.
 
 ```go
 import (
-    "github.com/RAiWorks/RapidGo/core/oauth"
+    "github.com/raiworks/rapidgo/core/oauth"
 )
 
 // Setup

@@ -151,7 +151,7 @@ Request → Middleware Pipeline → Router (Gin) → Controller → Service → 
 
 ```bash
 # Install the CLI
-go install github.com/RAiWorks/RapidGo/v2/cmd/rapidgo@latest
+go install github.com/raiworks/rapidgo/v2/cmd/rapidgo@latest
 
 # Create a new project
 rapidgo new myapp
@@ -176,7 +176,7 @@ rapidgo work --queues=default,emails --workers=4
 rapidgo schedule:run
 ```
 
-Or clone the starter: [RapidGo-starter](https://github.com/RAiWorks/RapidGo-starter)
+Or clone the starter: [rapidgo-starter](https://github.com/raiworks/rapidgo-starter)
 
 ---
 

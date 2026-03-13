@@ -5,7 +5,7 @@ status: "Final"
 date: "2026-03-11"
 last_updated: "2026-03-11"
 authors:
-  - "RAiWorks"
+  - "raiworks"
 supersedes: ""
 ---
 
@@ -45,7 +45,7 @@ The `core/queue` package provides:
 Register a handler for each job type at application startup:
 
 ```go
-import "github.com/RAiWorks/RapidGo/v2/core/queue"
+import "github.com/raiworks/rapidgo/v2/core/queue"
 
 queue.RegisterHandler("send_email", func(ctx context.Context, payload json.RawMessage) error {
     var data struct {

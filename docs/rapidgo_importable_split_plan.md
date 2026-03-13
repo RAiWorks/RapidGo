@@ -1,7 +1,7 @@
 # RapidGo — Importable Library Architecture: Discussion & Split Plan
 
 > **Project**: RapidGo Framework  
-> **Author**: RAiWorks  
+> **Author**: raiworks  
 > **Date**: 2026-03-07  
 > **Status**: Proposal — for discussion  
 
@@ -22,7 +22,7 @@ The transition requires **breaking 5 hard coupling points** in the current codeb
 | Aspect | 🏗️ Monolithic Starter (Current) | 📦 Importable Library (Proposed) |
 |--------|----------------------------------|----------------------------------|
 | **Onboarding** | `git clone` → start coding | `rapidgo new myapp` → start coding |
-| **Upgrades** | 😬 Manual git merge conflicts | ✅ `go get -u github.com/RAiWorks/RapidGo@latest` |
+| **Upgrades** | 😬 Manual git merge conflicts | ✅ `go get -u github.com/raiworks/rapidgo@latest` |
 | **Multi-project** | Copy entire repo per project | Import same module everywhere |
 | **Customization** | Edit framework internals freely | Extend via interfaces, wrap behaviors |
 | **Go ecosystem fit** | ❌ Unusual — Go devs expect `go get` | ✅ Idiomatic — how Gin, Echo, Fiber work |
@@ -36,7 +36,7 @@ Today, when a bug is fixed in `core/router/`, **every user must manually merge c
 
 ```bash
 # Current painful upgrade process
-git remote add upstream https://github.com/RAiWorks/RapidGo.git
+git remote add upstream https://github.com/raiworks/rapidgo.git
 git fetch upstream
 git merge upstream/main  # 💥 Merge conflicts with user's app code
 ```
@@ -45,7 +45,7 @@ With an importable library:
 
 ```bash
 # Clean upgrade
-go get -u github.com/RAiWorks/RapidGo@v1.2.3
+go get -u github.com/raiworks/rapidgo@v1.2.3
 # Done. No merge conflicts. No manual patching.
 ```
 
@@ -205,8 +205,8 @@ These `core/` packages have **zero app-specific imports** and are already import
 ### 5.1 Two-Repository Architecture
 
 ```
-github.com/RAiWorks/RapidGo          ← Importable framework library (go get)
-github.com/RAiWorks/RapidGo-starter  ← Scaffold project (clone → build inside)
+github.com/raiworks/rapidgo          ← Importable framework library (go get)
+github.com/raiworks/rapidgo-starter  ← Scaffold project (clone → build inside)
 ```
 
 ### 5.2 What Goes Where
@@ -214,7 +214,7 @@ github.com/RAiWorks/RapidGo-starter  ← Scaffold project (clone → build insid
 #### 📦 `RapidGo` (Library) — Everything Reusable
 
 ```
-github.com/RAiWorks/RapidGo/
+github.com/raiworks/rapidgo/
 ├── core/                       # ALL core packages (unchanged)
 │   ├── app/                    # App container & lifecycle
 │   ├── container/              # Service container (DI)
@@ -251,16 +251,16 @@ github.com/RAiWorks/RapidGo/
 │       └── migrator.go         # Migration engine (no app-specific migrations)
 ├── testing/
 │   └── testutil/               # Test utilities for user apps
-├── go.mod                      # github.com/RAiWorks/RapidGo
+├── go.mod                      # github.com/raiworks/rapidgo
 ├── go.sum
 ├── LICENSE
 └── README.md
 ```
 
-#### 🏗️ `RapidGo-starter` (Scaffold) — App-Specific Code
+#### 🏗️ `rapidgo-starter` (Scaffold) — App-Specific Code
 
 ```
-github.com/RAiWorks/RapidGo-starter/
+github.com/raiworks/rapidgo-starter/
 ├── cmd/
 │   └── main.go                 # Entry point (calls rapidgo.Execute)
 ├── app/
@@ -334,7 +334,7 @@ github.com/RAiWorks/RapidGo-starter/
 ├── docker-compose.yml
 ├── Caddyfile
 ├── Makefile
-├── go.mod                      # Imports github.com/RAiWorks/RapidGo
+├── go.mod                      # Imports github.com/raiworks/rapidgo
 └── README.md
 ```
 
@@ -348,7 +348,7 @@ github.com/RAiWorks/RapidGo-starter/
 
 ```diff
 - // core/cli/root.go (BEFORE)
-- import "github.com/RAiWorks/RapidGo/app/providers"
+- import "github.com/raiworks/rapidgo/app/providers"
 -
 - func NewApp(mode service.Mode) *app.App {
 -     application := app.New()
@@ -387,7 +387,7 @@ github.com/RAiWorks/RapidGo-starter/
 package main
 
 import (
-    "github.com/RAiWorks/RapidGo/core/cli"
+    "github.com/raiworks/rapidgo/core/cli"
     "myapp/app/providers"
     "myapp/routes"
 )
@@ -409,7 +409,7 @@ func main() {
 
 ```diff
 - // core/cli/serve.go (BEFORE)
-- import "github.com/RAiWorks/RapidGo/routes"
+- import "github.com/raiworks/rapidgo/routes"
 -
 - func applyRoutesForMode(r *router.Router, ...) {
 -     routes.RegisterWeb(r)
@@ -450,7 +450,7 @@ func main() {
 
 ```diff
 - // core/cli/work.go (BEFORE)
-- import "github.com/RAiWorks/RapidGo/app/jobs"
+- import "github.com/raiworks/rapidgo/app/jobs"
 - jobs.RegisterJobs()
 
 + // core/cli/work.go (AFTER)
@@ -567,7 +567,7 @@ module myapp
 go 1.25.0
 
 require (
-    github.com/RAiWorks/RapidGo v1.0.0
+    github.com/raiworks/rapidgo v1.0.0
 )
 ```
 
@@ -581,13 +581,13 @@ All transitive dependencies (Gin, GORM, Cobra, etc.) are pulled automatically vi
 
 ```bash
 # Create a new RapidGo project
-go run github.com/RAiWorks/RapidGo/cmd/rapidgo@latest new myapp
+go run github.com/raiworks/rapidgo/cmd/rapidgo@latest new myapp
 ```
 
 This would:
 1. Create `myapp/` directory
 2. Clone/copy the starter template
-3. Replace module name `github.com/RAiWorks/RapidGo-starter` → `myapp`
+3. Replace module name `github.com/raiworks/rapidgo-starter` → `myapp`
 4. Run `go mod tidy`
 5. Print getting-started instructions
 
@@ -635,7 +635,7 @@ All `make:*` commands stay in the library — they generate files using Go templ
 
 ```bash
 # Install and create new project
-go run github.com/RAiWorks/RapidGo/cmd/rapidgo@latest new myapp
+go run github.com/raiworks/rapidgo/cmd/rapidgo@latest new myapp
 cd myapp
 
 # Run
@@ -650,7 +650,7 @@ go run cmd/main.go migrate
 ### 7.2 Upgrade Framework
 
 ```bash
-go get -u github.com/RAiWorks/RapidGo@latest
+go get -u github.com/raiworks/rapidgo@latest
 go mod tidy
 # Done — no merge conflicts
 ```
@@ -661,9 +661,9 @@ go mod tidy
 package main
 
 import (
-    "github.com/RAiWorks/RapidGo/core/app"
-    "github.com/RAiWorks/RapidGo/core/cli"
-    "github.com/RAiWorks/RapidGo/core/service"
+    "github.com/raiworks/rapidgo/core/app"
+    "github.com/raiworks/rapidgo/core/cli"
+    "github.com/raiworks/rapidgo/core/service"
 
     "myapp/app/jobs"
     "myapp/app/providers"
@@ -714,11 +714,11 @@ func main() {
 
 | Step | Action | Risk |
 |------|--------|------|
-| B1 | Create `RapidGo-starter` repo with app-specific code | Low |
+| B1 | Create `rapidgo-starter` repo with app-specific code | Low |
 | B2 | Remove app-specific code from `RapidGo` library | Medium — breaking |
 | B3 | Remove hard imports from `core/cli/` (use callbacks only) | Medium — breaking |
 | B4 | Tag `RapidGo` as `v1.0.0` | Release |
-| B5 | Update `RapidGo-starter` `go.mod` to import `RapidGo@v1.0.0` | Low |
+| B5 | Update `rapidgo-starter` `go.mod` to import `RapidGo@v1.0.0` | Low |
 
 ### Phase C: Polish
 

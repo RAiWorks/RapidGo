@@ -13,7 +13,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const starterRepo = "https://github.com/RAiWorks/RapidGo-starter/archive/refs/heads/main.zip"
+const starterRepo = "https://github.com/raiworks/rapidgo-starter/archive/refs/heads/main.zip"
 
 var newCmd = &cobra.Command{
 	Use:   "new [project-name]",
@@ -103,7 +103,7 @@ func downloadStarter() (string, error) {
 }
 
 // extractZip extracts a GitHub archive zip to the target directory.
-// GitHub archives contain a top-level directory (e.g., "RapidGo-starter-main/")
+// GitHub archives contain a top-level directory (e.g., "rapidgo-starter-main/")
 // which is stripped during extraction.
 func extractZip(zipPath, targetDir string) error {
 	r, err := zip.OpenReader(zipPath)
@@ -166,10 +166,10 @@ func extractZip(zipPath, targetDir string) error {
 	return nil
 }
 
-// replaceModuleName replaces "github.com/RAiWorks/RapidGo-starter" with
+// replaceModuleName replaces "github.com/raiworks/rapidgo-starter" with
 // the project name in go.mod and all .go files.
 func replaceModuleName(projectDir string) error {
-	oldModule := "github.com/RAiWorks/RapidGo-starter"
+	oldModule := "github.com/raiworks/rapidgo-starter"
 	newModule := projectDir
 
 	return filepath.Walk(projectDir, func(path string, info os.FileInfo, err error) error {

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/RAiWorks/RapidGo/v2/core/config"
+	"github.com/raiworks/rapidgo/v2/core/config"
 	"github.com/glebarez/sqlite"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"

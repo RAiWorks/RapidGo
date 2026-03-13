@@ -278,7 +278,7 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/RAiWorks/RapidGo/core/errors"
+	"github.com/raiworks/rapidgo/core/errors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -323,8 +323,8 @@ func ErrorHandler() gin.HandlerFunc {
 package providers
 
 import (
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/middleware"
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/core/middleware"
 )
 
 // MiddlewareProvider registers built-in middleware aliases and groups.

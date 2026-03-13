@@ -113,7 +113,7 @@
 
 - [ ] 📍 **Checkpoint B** — Zero `app/`/`routes/`/`http/`/`plugins/` imports in `core/`. Verify with:
   ```
-  grep -rn "RAiWorks/RapidGo/app\|RAiWorks/RapidGo/routes\|RAiWorks/RapidGo/http\|RAiWorks/RapidGo/plugins" core/
+  grep -rn "raiworks/rapidgo/app\|raiworks/rapidgo/routes\|raiworks/rapidgo/http\|raiworks/rapidgo/plugins" core/
   ```
   Must return **zero results**. `rapidgo serve` starts and serves routes.
 
@@ -142,13 +142,13 @@
 - [ ] **C1.14** — Commit: `refactor(core): remove application code — library is standalone`
 - [ ] **C1.15** — Push and merge into `v2`
 
-### Step C2: Create RapidGo-starter Repository
+### Step C2: Create rapidgo-starter Repository
 **Branch**: `feature/v2-08-starter-repo` (from `v2`)
 
-- [ ] **C2.1** — Create GitHub repo `RAiWorks/RapidGo-starter`
-- [ ] **C2.2** — Initialize `go.mod` with `module github.com/RAiWorks/RapidGo-starter`
+- [ ] **C2.1** — Create GitHub repo `raiworks/rapidgo-starter`
+- [ ] **C2.2** — Initialize `go.mod` with `module github.com/raiworks/rapidgo-starter`
 - [ ] **C2.3** — Copy all deleted app code into starter structure (see architecture doc for layout)
-- [ ] **C2.4** — Update all import paths from `github.com/RAiWorks/RapidGo/app/...` → local paths
+- [ ] **C2.4** — Update all import paths from `github.com/raiworks/rapidgo/app/...` → local paths
 - [ ] **C2.5** — Update `database/models/*.go` to embed `fwmodels.BaseModel` from library
 - [ ] **C2.6** — Update `database/migrations/*.go` to use `fwmigrations.Register()` with `init()`
 - [ ] **C2.7** — Update `database/seeders/*.go` to use `fwseeders.Register()` with `init()`
@@ -204,7 +204,7 @@
 - [ ] Push tag: `git push origin v2.0.0`
 - [ ] Set `v2` as default branch on GitHub
 - [ ] Tag `v1.0.0` on starter repo
-- [ ] Verify `go get github.com/RAiWorks/RapidGo@v2.0.0` works
+- [ ] Verify `go get github.com/raiworks/rapidgo@v2.0.0` works
 - [ ] Create GitHub releases on both repos
 - [ ] **Keep all feature branches** — do not delete
 - [ ] Create review doc → `57-importable-library-split-review.md`

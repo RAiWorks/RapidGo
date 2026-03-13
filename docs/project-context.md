@@ -2,8 +2,8 @@
 
 > **Project**: RapidGo
 > **Type**: Go Web Framework
-> **Repository**: https://github.com/RAiWorks/RapidGo
-> **Author**: RAiWorks
+> **Repository**: https://github.com/raiworks/rapidgo
+> **Author**: raiworks
 > **Created**: 2026-03-05
 
 ---

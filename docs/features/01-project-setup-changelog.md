@@ -12,7 +12,7 @@
 | Date | Change | Notes |
 |---|---|---|
 | 2026-03-05 | Merged `documentation` branch to `main`, created `feature/01-project-setup` branch | Pre-flight |
-| 2026-03-05 | Initialized Go module (`go mod init github.com/RAiWorks/RapidGo`), set `go 1.21` | Phase A — Go auto-detected 1.25.6, manually set to 1.21 for compatibility |
+| 2026-03-05 | Initialized Go module (`go mod init github.com/raiworks/rapidgo`), set `go 1.21` | Phase A — Go auto-detected 1.25.6, manually set to 1.21 for compatibility |
 | 2026-03-05 | Created 44 directories with 35 `.gitkeep` files | Phase B — actual count is 44 not 43 (architecture doc had core/ off-by-one) |
 | 2026-03-05 | Created `cmd/main.go`, `database/connection.go`, `routes/web.go`, `routes/api.go` | Phase C — compiles and prints banner |
 | 2026-03-05 | Created `.env` (10 config groups), `Makefile` (7 targets), updated `.gitignore`, updated `README.md` | Phase D |

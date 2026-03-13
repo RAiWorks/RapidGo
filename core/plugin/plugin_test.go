@@ -3,9 +3,9 @@ package plugin
 import (
 	"testing"
 
-	"github.com/RAiWorks/RapidGo/v2/core/container"
-	"github.com/RAiWorks/RapidGo/v2/core/events"
-	"github.com/RAiWorks/RapidGo/v2/core/router"
+	"github.com/raiworks/rapidgo/v2/core/container"
+	"github.com/raiworks/rapidgo/v2/core/events"
+	"github.com/raiworks/rapidgo/v2/core/router"
 	"github.com/spf13/cobra"
 )
 

@@ -44,7 +44,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const starterRepo = "https://github.com/RAiWorks/RapidGo-starter/archive/refs/heads/main.zip"
+const starterRepo = "https://github.com/raiworks/rapidgo-starter/archive/refs/heads/main.zip"
 
 var newCmd = &cobra.Command{
 	Use:   "new [project-name]",
@@ -134,7 +134,7 @@ func downloadStarter() (string, error) {
 }
 
 // extractZip extracts a GitHub archive zip to the target directory.
-// GitHub archives contain a top-level directory (e.g., "RapidGo-starter-main/")
+// GitHub archives contain a top-level directory (e.g., "rapidgo-starter-main/")
 // which is stripped during extraction.
 func extractZip(zipPath, targetDir string) error {
 	r, err := zip.OpenReader(zipPath)
@@ -191,10 +191,10 @@ func extractZip(zipPath, targetDir string) error {
 	return nil
 }
 
-// replaceModuleName replaces "github.com/RAiWorks/RapidGo-starter" with
+// replaceModuleName replaces "github.com/raiworks/rapidgo-starter" with
 // the project name in go.mod and all .go files.
 func replaceModuleName(projectDir string) error {
-	oldModule := "github.com/RAiWorks/RapidGo-starter"
+	oldModule := "github.com/raiworks/rapidgo-starter"
 	newModule := projectDir // simple name like "myapp"
 
 	return filepath.Walk(projectDir, func(path string, info os.FileInfo, err error) error {
@@ -262,7 +262,7 @@ func init() {
 | T04 | `rapidgo new "bad/name"` | Fails with "invalid project name" |
 | T05 | Scaffolded project `go build ./...` | Compiles |
 | T06 | Scaffolded project `go run cmd/main.go version` | Prints version |
-| T07 | Scaffolded project has no `RapidGo-starter` references | `grep -r "RapidGo-starter" myapp/` returns nothing |
+| T07 | Scaffolded project has no `rapidgo-starter` references | `grep -r "rapidgo-starter" myapp/` returns nothing |
 | T08 | Zip slip protection | Malicious zip paths are rejected |
 
 ### Verification
@@ -276,7 +276,7 @@ go run cmd/main.go new testproject
 cd testproject
 go build ./...
 go run cmd/main.go version
-grep -r "RapidGo-starter" .  # should return nothing
+grep -r "rapidgo-starter" .  # should return nothing
 cd ..
 rm -rf testproject
 ```
@@ -298,7 +298,7 @@ Write focused READMEs for both repos. The library README explains how to `go get
 | Action | File | Repo |
 |--------|------|------|
 | REWRITE | `README.md` | Library (RapidGo) |
-| CREATE | `README.md` | Starter (RapidGo-starter) |
+| CREATE | `README.md` | Starter (rapidgo-starter) |
 
 ### Library README Outline
 
@@ -309,7 +309,7 @@ A batteries-included Go web framework with Laravel-style developer experience.
 
 ## Install
 
-    go get github.com/RAiWorks/RapidGo
+    go get github.com/raiworks/rapidgo
 
 ## Quick Start
 
@@ -329,7 +329,7 @@ A batteries-included Go web framework with Laravel-style developer experience.
 
 ## Creating a Project
 
-See [RapidGo-starter](https://github.com/RAiWorks/RapidGo-starter).
+See [rapidgo-starter](https://github.com/raiworks/rapidgo-starter).
 
 ## Hook System
 
@@ -351,18 +351,18 @@ MIT
 ```markdown
 # RapidGo Starter
 
-A scaffold project for the [RapidGo](https://github.com/RAiWorks/RapidGo) framework.
+A scaffold project for the [RapidGo](https://github.com/raiworks/rapidgo) framework.
 
 ## Getting Started
 
 ### Option 1: CLI (recommended)
 
-    go install github.com/RAiWorks/RapidGo/cmd/rapidgo@latest
+    go install github.com/raiworks/rapidgo/cmd/rapidgo@latest
     rapidgo new myapp
 
 ### Option 2: Clone
 
-    git clone https://github.com/RAiWorks/RapidGo-starter myapp
+    git clone https://github.com/raiworks/rapidgo-starter myapp
     cd myapp
     # Update module name in go.mod and all .go files
     go mod tidy
@@ -424,11 +424,11 @@ cd RapidGo
 go build ./...
 go test ./... -count=1
 go vet ./...
-grep -rn "RAiWorks/RapidGo/app\|RAiWorks/RapidGo/routes\|RAiWorks/RapidGo/http\|RAiWorks/RapidGo/plugins" core/
+grep -rn "raiworks/rapidgo/app\|raiworks/rapidgo/routes\|raiworks/rapidgo/http\|raiworks/rapidgo/plugins" core/
 # Expected: no output
 
 # Starter
-cd ../RapidGo-starter
+cd ../rapidgo-starter
 go build ./...
 go test ./... -count=1
 go vet ./...
@@ -447,7 +447,7 @@ git push origin v2.0.0
 # Set v2 as default branch on GitHub (Settings → Default branch → v2)
 
 # Starter
-cd ../RapidGo-starter
+cd ../rapidgo-starter
 git tag -a v1.0.0 -m "v1.0.0 — Initial starter template for RapidGo v2"
 git push origin v1.0.0
 ```
@@ -459,11 +459,11 @@ git push origin v1.0.0
 mkdir /tmp/test-import
 cd /tmp/test-import
 go mod init test
-go get github.com/RAiWorks/RapidGo@v2.0.0
+go get github.com/raiworks/rapidgo@v2.0.0
 # Should succeed
 
 # Test rapidgo new works
-go install github.com/RAiWorks/RapidGo/cmd/rapidgo@v2.0.0
+go install github.com/raiworks/rapidgo/cmd/rapidgo@v2.0.0
 rapidgo new testapp
 cd testapp
 go build ./...
@@ -488,6 +488,6 @@ Create releases on both repos with:
 | 4 | Starter README complete with getting-started guide | - [ ] |
 | 5 | v2.0.0 tagged on library | - [ ] |
 | 6 | v1.0.0 tagged on starter | - [ ] |
-| 7 | `go get github.com/RAiWorks/RapidGo@v2.0.0` works | - [ ] |
+| 7 | `go get github.com/raiworks/rapidgo@v2.0.0` works | - [ ] |
 | 8 | v2 set as default branch on GitHub | - [ ] |
 | 9 | GitHub releases created | - [ ] |

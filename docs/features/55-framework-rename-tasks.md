@@ -24,9 +24,9 @@
 > Module path, all imports, string literals in Go files.
 
 - [x] **A.1** — Update `go.mod` module path
-  - [x] `module github.com/RAiWorks/RGo` → `module github.com/RAiWorks/RapidGo`
+  - [x] `module github.com/raiworks/RGo` → `module github.com/raiworks/rapidgo`
 - [x] **A.2** — Replace all Go import paths across all `.go` files
-  - [x] `github.com/RAiWorks/RGo/` → `github.com/RAiWorks/RapidGo/` in every import statement
+  - [x] `github.com/raiworks/RGo/` → `github.com/raiworks/rapidgo/` in every import statement
   - [x] Verify no `.go` file still contains old import path
 - [x] **A.3** — Update CLI root command (`core/cli/root.go`)
   - [x] `Use: "rgo"` → `Use: "rapidgo"`
@@ -37,7 +37,7 @@
   - [x] `"Print the RGo framework"` → `"Print the RapidGo framework"`
   - [x] `"RGo Framework v%s\n"` → `"RapidGo Framework v%s\n"`
 - [x] **A.5** — Update CLI serve banner (`core/cli/serve.go`)
-  - [x] `"github.com/RAiWorks/RGo"` → `"github.com/RAiWorks/RapidGo"`
+  - [x] `"github.com/raiworks/RGo"` → `"github.com/raiworks/rapidgo"`
 - [x] **A.6** — Update home controller (`http/controllers/home_controller.go`)
   - [x] `"Welcome to RGo"` → `"Welcome to RapidGo"`
 - [x] **A.7** — Update test assertions
@@ -83,7 +83,7 @@
 - [x] **C.1** — Update `resources/views/home.html`
   - [x] Page title: `RGo Framework` → `RapidGo Framework`
   - [x] Heading/branding text: all `RGo` → `RapidGo`
-  - [x] GitHub link: `github.com/RAiWorks/RGo` → `github.com/RAiWorks/RapidGo`
+  - [x] GitHub link: `github.com/raiworks/RGo` → `github.com/raiworks/rapidgo`
   - [x] Footer: `RGo Framework` → `RapidGo Framework`
 - [x] 📍 **Checkpoint C** — Start server, visit localhost:8080, verify page shows "RapidGo" everywhere
 
@@ -111,7 +111,7 @@
   - [x] All `RGO_MODE` → `RAPIDGO_MODE`
 - [x] **D.6** — Update all feature docs (`docs/features/01-* through 41-*`)
   - [x] All `RGo` → `RapidGo` in content
-  - [x] All `github.com/RAiWorks/RGo` → `github.com/RAiWorks/RapidGo` in code blocks
+  - [x] All `github.com/raiworks/RGo` → `github.com/raiworks/rapidgo` in code blocks
   - [x] All `rgo` CLI references → `rapidgo`
 - [x] **D.7** — Update `docs/framework/**/*.md` (all framework reference docs)
   - [x] All `RGo` → `RapidGo`
@@ -126,16 +126,16 @@
 - [x] **E.1** — Run full test suite: `go test ./... -count=1`
 - [x] **E.2** — Verify CLI commands
   - [x] `./bin/rapidgo version` → `RapidGo Framework v0.2.0`
-  - [x] `./bin/rapidgo serve` → banner shows `RapidGo Framework` and `github.com/RAiWorks/RapidGo`
+  - [x] `./bin/rapidgo serve` → banner shows `RapidGo Framework` and `github.com/raiworks/rapidgo`
 - [x] **E.3** — Verify no stale references in Go source
-  - [x] `grep -r "github.com/RAiWorks/RGo[^a-zA-Z]" --include="*.go"` returns zero matches
+  - [x] `grep -r "github.com/raiworks/RGo[^a-zA-Z]" --include="*.go"` returns zero matches
   - [x] `grep -r '"rgo"' --include="*.go"` returns zero matches (except RGO_TEST_* in helpers_test.go)
 - [x] **E.4** — Verify no stale references in docs
   - [x] `grep -r "RGo" docs/ | grep -v RapidGo` returns zero matches
 - [x] **E.5** — Verify welcome page in browser
   - [x] Build and run: `./bin/rapidgo serve`
   - [x] Visit `http://localhost:8080` — shows "RapidGo"
-  - [x] GitHub link points to `github.com/RAiWorks/RapidGo`
+  - [x] GitHub link points to `github.com/raiworks/rapidgo`
 - [x] 📍 **Checkpoint E** — All tests pass, all validations green
 
 ---
@@ -161,4 +161,4 @@
 - [x] Push `main`
 - [x] **Keep the feature branch** — do not delete
 - [x] Create review doc → `55-framework-rename-review.md`
-- [x] Rename GitHub repository (`RAiWorks/RGo` → `RAiWorks/RapidGo`)
+- [x] Rename GitHub repository (`raiworks/RGo` → `raiworks/rapidgo`)

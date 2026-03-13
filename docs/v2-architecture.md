@@ -45,7 +45,7 @@
 ```
 ┌──────────────────────────────────────────────────────────┐
 │              RapidGo Library (importable)                 │
-│              go get github.com/RAiWorks/RapidGo          │
+│              go get github.com/raiworks/rapidgo          │
 │                                                          │
 │  core/                                                   │
 │  ├── app/          Application lifecycle                 │
@@ -96,8 +96,8 @@
         │  go get
         │
 ┌──────────────────────────────────────────────────────────┐
-│            RapidGo-Starter (template project)            │
-│            github.com/RAiWorks/RapidGo-starter           │
+│            rapidgo-starter (template project)            │
+│            github.com/raiworks/rapidgo-starter           │
 │                                                          │
 │  cmd/main.go ───→ cli.Set*() hooks wire app → framework │
 │                                                          │
@@ -256,7 +256,7 @@ Library: database/
 
 These are the packages and types that starter apps will import:
 
-### Core Packages (imported as `github.com/RAiWorks/RapidGo/core/...`)
+### Core Packages (imported as `github.com/raiworks/rapidgo/core/...`)
 
 | Package | Key Exports | Used By Starter |
 |---------|------------|:--------------:|
@@ -290,7 +290,7 @@ These are the packages and types that starter apps will import:
 | `validation` | `Validate()`, rules | Yes |
 | `websocket` | `Hub`, `Room`, `Client` | Optional |
 
-### Database Packages (imported as `github.com/RAiWorks/RapidGo/database/...`)
+### Database Packages (imported as `github.com/raiworks/rapidgo/database/...`)
 
 | Package | Key Exports | Used By Starter |
 |---------|------------|:--------------:|
@@ -402,12 +402,12 @@ cli.Execute()        ────→ rootCmd.Execute()
 package main
 
 import (
-    "github.com/RAiWorks/RapidGo/core/app"
-    "github.com/RAiWorks/RapidGo/core/cli"
-    "github.com/RAiWorks/RapidGo/core/container"
-    "github.com/RAiWorks/RapidGo/core/router"
-    "github.com/RAiWorks/RapidGo/core/scheduler"
-    "github.com/RAiWorks/RapidGo/core/service"
+    "github.com/raiworks/rapidgo/core/app"
+    "github.com/raiworks/rapidgo/core/cli"
+    "github.com/raiworks/rapidgo/core/container"
+    "github.com/raiworks/rapidgo/core/router"
+    "github.com/raiworks/rapidgo/core/scheduler"
+    "github.com/raiworks/rapidgo/core/service"
     "gorm.io/gorm"
 
     "myapp/app/jobs"
@@ -480,7 +480,7 @@ The starter's `database/models` package shares a name with the library's. Go han
 
 ```go
 import (
-    fwmodels "github.com/RAiWorks/RapidGo/database/models"  // library's BaseModel
+    fwmodels "github.com/raiworks/rapidgo/database/models"  // library's BaseModel
     "myapp/database/models"                                   // app's User, Post
 )
 

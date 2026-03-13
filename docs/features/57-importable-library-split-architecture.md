@@ -9,7 +9,7 @@
 
 ## Overview
 
-Introduce a 6-hook callback system in `core/cli/hooks.go` that decouples the library from application code. Move `AuditLog` into `core/audit/`. Replace all hard imports in `core/cli/` commands with hook callbacks. Wire hooks in `cmd/main.go`. Delete application code from the library repo and create `RapidGo-starter` as a separate repository. Add `rapidgo new` scaffolding command.
+Introduce a 6-hook callback system in `core/cli/hooks.go` that decouples the library from application code. Move `AuditLog` into `core/audit/`. Replace all hard imports in `core/cli/` commands with hook callbacks. Wire hooks in `cmd/main.go`. Delete application code from the library repo and create `rapidgo-starter` as a separate repository. Add `rapidgo new` scaffolding command.
 
 **Reference**: Full diagrams, dependency graphs, and data flow in [`v2-architecture.md`](../v2-architecture.md). Detailed per-step code in [`v2-phase-a-foundation.md`](../v2-phase-a-foundation.md), [`v2-phase-b-decouple.md`](../v2-phase-b-decouple.md), [`v2-phase-c-split.md`](../v2-phase-c-split.md), [`v2-phase-d-polish.md`](../v2-phase-d-polish.md).
 
@@ -96,10 +96,10 @@ DELETE (root files):
   .dockerignore, .env.example
 ```
 
-### Phase C — Starter Repo (new `RapidGo-starter` repository)
+### Phase C — Starter Repo (new `rapidgo-starter` repository)
 
 ```
-RapidGo-starter/
+rapidgo-starter/
 ├── cmd/main.go                        # Full hook wiring
 ├── app/
 │   ├── helpers/                       # All helper files
@@ -116,7 +116,7 @@ RapidGo-starter/
 │   └── seeders/                        # init() + fwseeders.Register()
 ├── resources/, storage/, plugins/, tests/
 ├── .env.example, Dockerfile, Caddyfile, Makefile
-├── go.mod                              # module github.com/RAiWorks/RapidGo-starter
+├── go.mod                              # module github.com/raiworks/rapidgo-starter
 └── README.md
 ```
 
@@ -166,7 +166,7 @@ Exported API:
 
 ### `rapidgo new` Command (`core/cli/new.go`)
 
-**Responsibility**: Scaffold new projects from `RapidGo-starter` template.
+**Responsibility**: Scaffold new projects from `rapidgo-starter` template.
 **Package**: `core/cli`
 **File**: `core/cli/new.go`
 

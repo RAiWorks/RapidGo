@@ -144,7 +144,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/RAiWorks/RapidGo/core/config"
+	"github.com/raiworks/rapidgo/core/config"
 )
 
 func main() {
@@ -156,7 +156,7 @@ func main() {
 
 	fmt.Println("=================================")
 	fmt.Printf("  %s Framework\n", appName)
-	fmt.Println("  github.com/RAiWorks/RapidGo")
+	fmt.Println("  github.com/raiworks/rapidgo")
 	fmt.Println("=================================")
 	fmt.Printf("  Environment: %s\n", appEnv)
 	fmt.Printf("  Port: %s\n", appPort)

@@ -170,8 +170,8 @@ This keeps `rootCmd` unexported while providing controlled access.
 package app
 
 import (
-    "github.com/RAiWorks/RapidGo/core/plugin"
-    exampleplugin "github.com/RAiWorks/RapidGo/plugins/example"
+    "github.com/raiworks/rapidgo/core/plugin"
+    exampleplugin "github.com/raiworks/rapidgo/plugins/example"
 )
 
 // RegisterPlugins registers all application plugins with the manager.
@@ -218,8 +218,8 @@ import (
     "fmt"
     "log/slog"
 
-    "github.com/RAiWorks/RapidGo/core/container"
-    "github.com/RAiWorks/RapidGo/core/router"
+    "github.com/raiworks/rapidgo/core/container"
+    "github.com/raiworks/rapidgo/core/router"
     "github.com/gin-gonic/gin"
     "github.com/spf13/cobra"
 )

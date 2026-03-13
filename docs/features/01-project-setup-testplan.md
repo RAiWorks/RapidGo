@@ -10,7 +10,7 @@
 
 The feature is DONE when ALL of these are true:
 
-- [x] Go module initialized with path `github.com/RAiWorks/RapidGo` and `go 1.21`
+- [x] Go module initialized with path `github.com/raiworks/rapidgo` and `go 1.21`
 - [x] All 43 directories exist in the correct hierarchy
 - [x] `cmd/main.go` compiles and runs without errors
 - [x] Running `go run ./cmd/...` prints the RapidGo startup banner
@@ -31,7 +31,7 @@ The feature is DONE when ALL of these are true:
 |---|---|
 | **Category** | Happy Path |
 | **Precondition** | Go 1.21+ installed, project root is clean |
-| **Steps** | 1. Check `go.mod` exists → 2. Verify `module github.com/RAiWorks/RapidGo` → 3. Verify `go 1.21` directive |
+| **Steps** | 1. Check `go.mod` exists → 2. Verify `module github.com/raiworks/rapidgo` → 3. Verify `go 1.21` directive |
 | **Expected Result** | `go.mod` contains correct module path and Go version, no `require` blocks |
 | **Status** | ✅ Pass |
 | **Notes** | — |
@@ -65,7 +65,7 @@ The feature is DONE when ALL of these are true:
 | **Category** | Happy Path |
 | **Precondition** | TC-03 passes |
 | **Steps** | 1. Run `go run ./cmd/...` → 2. Capture stdout |
-| **Expected Result** | Output contains "RapidGo Framework" and "github.com/RAiWorks/RapidGo" |
+| **Expected Result** | Output contains "RapidGo Framework" and "github.com/raiworks/rapidgo" |
 | **Status** | ✅ Pass |
 | **Notes** | — |
 

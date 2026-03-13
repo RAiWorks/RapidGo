@@ -5,7 +5,7 @@ status: "Final"
 date: "2026-03-05"
 last_updated: "2026-03-10"
 authors:
-  - "RAiWorks"
+  - "raiworks"
 supersedes: ""
 ---
 
@@ -248,5 +248,5 @@ func Dashboard(c *gin.Context) {
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 0.1.0 | 2026-03-05 | RAiWorks | Initial draft |
-| 1.0.0 | 2026-03-10 | RAiWorks | Fixed code examples to match source (secret validation, signing method check, correct default expiry) |
+| 0.1.0 | 2026-03-05 | raiworks | Initial draft |
+| 1.0.0 | 2026-03-10 | raiworks | Fixed code examples to match source (secret validation, signing method check, correct default expiry) |

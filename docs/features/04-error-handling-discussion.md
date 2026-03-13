@@ -60,7 +60,7 @@ Create a `core/errors` package with:
 
 - [x] `AppError.Err` can be nil (e.g., `NotFound("user not found")` with no underlying error) — `Unwrap()` must handle nil gracefully
 - [x] `ErrorResponse()` must NEVER expose internal error details when `APP_DEBUG=false` — security critical
-- [x] Package naming conflict: Go stdlib has `errors` package — using `core/errors` is fine because it's imported by full path (`github.com/RAiWorks/RapidGo/core/errors`), but internal code must use the full import path to avoid shadowing
+- [x] Package naming conflict: Go stdlib has `errors` package — using `core/errors` is fine because it's imported by full path (`github.com/raiworks/rapidgo/core/errors`), but internal code must use the full import path to avoid shadowing
 - [x] `AppError` must work with `errors.As()` — requires pointer receiver pattern
 
 ## Dependencies

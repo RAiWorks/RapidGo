@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/RAiWorks/RapidGo/v2/core/errors"
+	"github.com/raiworks/rapidgo/v2/core/errors"
 	"github.com/gin-gonic/gin"
 )
 

@@ -3,7 +3,7 @@ package app
 import (
 	"testing"
 
-	"github.com/RAiWorks/RapidGo/v2/core/container"
+	"github.com/raiworks/rapidgo/v2/core/container"
 )
 
 // mockProvider tracks Register/Boot calls for testing.

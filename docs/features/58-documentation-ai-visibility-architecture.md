@@ -152,7 +152,7 @@ Each feature entry includes:
 Update all `docs/framework/**/*.md` files:
 - Change YAML frontmatter `status: "Draft"` → `status: "Final"`
 - Update `last_updated` to `2026-03-10`
-- Verify import paths use `github.com/RAiWorks/RapidGo/v2`
+- Verify import paths use `github.com/raiworks/rapidgo/v2`
 - Spot-check code examples against actual implementations
 
 ---
@@ -192,4 +192,4 @@ Developer/AI discovers repo
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 0.1.0 | 2026-03-10 | RAiWorks | Initial architecture |
+| 0.1.0 | 2026-03-10 | raiworks | Initial architecture |

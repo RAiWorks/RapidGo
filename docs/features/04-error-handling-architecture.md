@@ -33,7 +33,7 @@ No existing files are modified. This is a new, standalone package.
 package errors
 
 import (
-	"github.com/RAiWorks/RapidGo/core/config"
+	"github.com/raiworks/rapidgo/core/config"
 )
 
 // AppError represents a structured application error with HTTP status context.

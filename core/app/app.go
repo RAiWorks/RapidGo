@@ -1,6 +1,6 @@
 package app
 
-import "github.com/RAiWorks/RapidGo/v2/core/container"
+import "github.com/raiworks/rapidgo/v2/core/container"
 
 // App is the application container that manages providers and services.
 type App struct {

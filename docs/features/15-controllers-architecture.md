@@ -128,8 +128,8 @@ func (ctrl *PostController) Destroy(c *gin.Context) {
 package routes
 
 import (
-	"github.com/RAiWorks/RapidGo/core/router"
-	"github.com/RAiWorks/RapidGo/http/controllers"
+	"github.com/raiworks/rapidgo/core/router"
+	"github.com/raiworks/rapidgo/http/controllers"
 )
 
 func RegisterWeb(r *router.Router) {
@@ -143,8 +143,8 @@ func RegisterWeb(r *router.Router) {
 package routes
 
 import (
-	"github.com/RAiWorks/RapidGo/core/router"
-	"github.com/RAiWorks/RapidGo/http/controllers"
+	"github.com/raiworks/rapidgo/core/router"
+	"github.com/raiworks/rapidgo/http/controllers"
 )
 
 func RegisterAPI(r *router.Router) {

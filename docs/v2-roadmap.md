@@ -10,7 +10,7 @@
 
 ## Goal
 
-Transform RapidGo from a monolithic starter (clone-and-modify) into an importable Go library (`go get github.com/RAiWorks/RapidGo`) plus a companion starter template (`RapidGo-starter`).
+Transform RapidGo from a monolithic starter (clone-and-modify) into an importable Go library (`go get github.com/raiworks/rapidgo`) plus a companion starter template (`rapidgo-starter`).
 
 ---
 
@@ -49,7 +49,7 @@ v1.0.0 (frozen) ─── main branch ──────────────
                           │
                           ├─ Phase C: Split ───────────────────────────
                           │   ├─ C1: Delete app code from library
-                          │   └─ C2: Create RapidGo-starter repo
+                          │   └─ C2: Create rapidgo-starter repo
                           │   └── ✓ Checkpoint: both repos build + test
                           │
                           ├─ Phase D: Polish ──────────────────────────

@@ -52,7 +52,7 @@
 
 ## Follow-ups
 
-- **Deferred task 4.3**: Full import path audit across all 61 framework docs (verify `github.com/RAiWorks/RapidGo/v2` consistency)
+- **Deferred task 4.3**: Full import path audit across all 61 framework docs (verify `github.com/raiworks/rapidgo/v2` consistency)
 - **Deferred task 4.4**: Spot-check remaining framework doc code examples (container double-check locking, events `Has()` method undocumented)
 - **Deferred task 4.5**: Verify cross-references between framework docs (broken links)
 - **Queue doc missing**: No `docs/framework/` reference doc exists for the queue system (`core/queue`). Should be created.

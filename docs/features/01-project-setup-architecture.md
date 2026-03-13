@@ -152,7 +152,7 @@ import "fmt"
 func main() {
     fmt.Println("=================================")
     fmt.Println("  RapidGo Framework")
-    fmt.Println("  github.com/RAiWorks/RapidGo")
+    fmt.Println("  github.com/raiworks/rapidgo")
     fmt.Println("=================================")
     fmt.Println("Ready. Waiting for features...")
 }

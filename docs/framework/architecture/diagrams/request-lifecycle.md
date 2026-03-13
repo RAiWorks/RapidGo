@@ -5,7 +5,7 @@ status: "Final"
 date: "2026-03-05"
 last_updated: "2026-03-10"
 authors:
-  - "RAiWorks"
+  - "raiworks"
 supersedes: ""
 ---
 
@@ -160,4 +160,4 @@ or per route group.
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 0.1.0 | 2026-03-05 | RAiWorks | Initial draft |
+| 0.1.0 | 2026-03-05 | raiworks | Initial draft |

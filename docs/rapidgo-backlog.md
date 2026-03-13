@@ -1,7 +1,7 @@
 # 🔧 RapidGo Framework Backlog
 
 > **Framework**: RapidGo v2
-> **Repo**: https://github.com/RAiWorks/RapidGo
+> **Repo**: https://github.com/raiworks/rapidgo
 > **Last Updated**: 2026-03-11
 > **Purpose**: Track features, fixes, and improvements needed in the RapidGo framework — discovered while building SpecialMedia. Work on these in the framework repo separately.
 
@@ -98,11 +98,11 @@ Framework docs that are missing or incomplete.
 ## How to Work on These
 
 1. Pick an item from this doc
-2. Open the RapidGo framework repo (`github.com/RAiWorks/RapidGo`)
+2. Open the RapidGo framework repo (`github.com/raiworks/rapidgo`)
 3. Create a branch: `feature/F-001-image-processing` or `fix/B-001-description`
 4. Implement, test, merge to framework main
 5. Update this doc: mark status as ✅ Done, note the version/commit
-6. In SpecialMedia: `go get github.com/RAiWorks/RapidGo/v2@latest` to pull the update
+6. In SpecialMedia: `go get github.com/raiworks/rapidgo/v2@latest` to pull the update
 7. Continue building the feature that needed it
 
 ---

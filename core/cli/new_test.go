@@ -23,10 +23,10 @@ func createTestZip(t *testing.T, dest string) {
 	w := zip.NewWriter(f)
 
 	// Prefix mimics GitHub archive structure
-	prefix := "RapidGo-starter-main/"
+	prefix := "rapidgo-starter-main/"
 	files := map[string]string{
-		prefix + "go.mod":        "module github.com/RAiWorks/RapidGo-starter\n\ngo 1.25\n",
-		prefix + "cmd/main.go":   "package main\n\nimport \"github.com/RAiWorks/RapidGo-starter/app\"\n\nfunc main() { app.Run() }\n",
+		prefix + "go.mod":        "module github.com/raiworks/rapidgo-starter\n\ngo 1.25\n",
+		prefix + "cmd/main.go":   "package main\n\nimport \"github.com/raiworks/rapidgo-starter/app\"\n\nfunc main() { app.Run() }\n",
 		prefix + "app/app.go":    "package app\n\nfunc Run() {}\n",
 		prefix + ".env.example":  "APP_ENV=local\n",
 	}
@@ -106,12 +106,12 @@ func TestReplaceModuleName(t *testing.T) {
 	os.MkdirAll(filepath.Join(projectDir, "cmd"), 0755)
 
 	os.WriteFile(filepath.Join(projectDir, "go.mod"),
-		[]byte("module github.com/RAiWorks/RapidGo-starter\n\ngo 1.25\n"), 0644)
+		[]byte("module github.com/raiworks/rapidgo-starter\n\ngo 1.25\n"), 0644)
 	os.WriteFile(filepath.Join(projectDir, "cmd", "main.go"),
-		[]byte("package main\n\nimport \"github.com/RAiWorks/RapidGo-starter/app\"\n"), 0644)
+		[]byte("package main\n\nimport \"github.com/raiworks/rapidgo-starter/app\"\n"), 0644)
 	// Non-go file should be left alone
 	os.WriteFile(filepath.Join(projectDir, "README.md"),
-		[]byte("github.com/RAiWorks/RapidGo-starter\n"), 0644)
+		[]byte("github.com/raiworks/rapidgo-starter\n"), 0644)
 
 	if err := replaceModuleName(projectDir); err != nil {
 		t.Fatalf("replaceModuleName failed: %v", err)
@@ -119,7 +119,7 @@ func TestReplaceModuleName(t *testing.T) {
 
 	// Check go.mod
 	content, _ := os.ReadFile(filepath.Join(projectDir, "go.mod"))
-	if strings.Contains(string(content), "RapidGo-starter") {
+	if strings.Contains(string(content), "rapidgo-starter") {
 		t.Error("go.mod still contains old module name")
 	}
 	if !strings.Contains(string(content), projectDir) {
@@ -128,13 +128,13 @@ func TestReplaceModuleName(t *testing.T) {
 
 	// Check .go file
 	content, _ = os.ReadFile(filepath.Join(projectDir, "cmd", "main.go"))
-	if strings.Contains(string(content), "RapidGo-starter") {
+	if strings.Contains(string(content), "rapidgo-starter") {
 		t.Error("main.go still contains old module name")
 	}
 
 	// README should be untouched
 	content, _ = os.ReadFile(filepath.Join(projectDir, "README.md"))
-	if !strings.Contains(string(content), "RapidGo-starter") {
+	if !strings.Contains(string(content), "rapidgo-starter") {
 		t.Error("README.md should not have been modified")
 	}
 }

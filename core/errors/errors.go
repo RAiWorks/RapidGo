@@ -1,7 +1,7 @@
 package errors
 
 import (
-	"github.com/RAiWorks/RapidGo/v2/core/config"
+	"github.com/raiworks/rapidgo/v2/core/config"
 )
 
 // AppError represents a structured application error with HTTP status context.

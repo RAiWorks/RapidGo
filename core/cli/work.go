@@ -9,10 +9,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/RAiWorks/RapidGo/v2/core/config"
-	"github.com/RAiWorks/RapidGo/v2/core/container"
-	"github.com/RAiWorks/RapidGo/v2/core/queue"
-	"github.com/RAiWorks/RapidGo/v2/core/service"
+	"github.com/raiworks/rapidgo/v2/core/config"
+	"github.com/raiworks/rapidgo/v2/core/container"
+	"github.com/raiworks/rapidgo/v2/core/queue"
+	"github.com/raiworks/rapidgo/v2/core/service"
 	"github.com/spf13/cobra"
 )
 

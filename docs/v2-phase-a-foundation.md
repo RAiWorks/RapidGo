@@ -31,11 +31,11 @@ Define the 6 callback types and their `Set*()` setter functions. No existing fil
 package cli
 
 import (
-	"github.com/RAiWorks/RapidGo/core/app"
-	"github.com/RAiWorks/RapidGo/core/container"
-	"github.com/RAiWorks/RapidGo/core/router"
-	"github.com/RAiWorks/RapidGo/core/scheduler"
-	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/raiworks/rapidgo/core/app"
+	"github.com/raiworks/rapidgo/core/container"
+	"github.com/raiworks/rapidgo/core/router"
+	"github.com/raiworks/rapidgo/core/scheduler"
+	"github.com/raiworks/rapidgo/core/service"
 	"gorm.io/gorm"
 )
 
@@ -93,8 +93,8 @@ package cli
 import (
 	"testing"
 
-	"github.com/RAiWorks/RapidGo/core/app"
-	"github.com/RAiWorks/RapidGo/core/service"
+	"github.com/raiworks/rapidgo/core/app"
+	"github.com/raiworks/rapidgo/core/service"
 )
 
 func TestHooksDefaultNil(t *testing.T) {
@@ -264,7 +264,7 @@ type AuditLog struct {
 // BEFORE:
 import (
     "encoding/json"
-    "github.com/RAiWorks/RapidGo/database/models"
+    "github.com/raiworks/rapidgo/database/models"
     "gorm.io/gorm"
 )
 
@@ -292,7 +292,7 @@ var logs []AuditLog
 ```go
 // BEFORE:
 import (
-    "github.com/RAiWorks/RapidGo/database/models"
+    "github.com/raiworks/rapidgo/database/models"
     ...
 )
 
@@ -327,7 +327,7 @@ type AuditLog struct {
 // AFTER:
 package models
 
-import "github.com/RAiWorks/RapidGo/core/audit"
+import "github.com/raiworks/rapidgo/core/audit"
 
 // AuditLog is an alias for the framework's audit log model.
 // Kept for backward compatibility — new code should use audit.AuditLog directly.

@@ -88,7 +88,7 @@ package audit
 import (
 	"encoding/json"
 
-	"github.com/RAiWorks/RapidGo/database/models"
+	"github.com/raiworks/rapidgo/database/models"
 	"gorm.io/gorm"
 )
 

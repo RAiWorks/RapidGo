@@ -11,13 +11,13 @@
 
 ## Summary
 
-Transform RapidGo from a monolithic starter project (clone-and-build-inside) into an **importable Go library** (`go get github.com/RAiWorks/RapidGo`) with a companion **starter template** (`RapidGo-starter`). This enables users to create new projects via `rapidgo new myapp` or `go get`, rather than cloning and modifying the framework repo directly.
+Transform RapidGo from a monolithic starter project (clone-and-build-inside) into an **importable Go library** (`go get github.com/raiworks/rapidgo`) with a companion **starter template** (`rapidgo-starter`). This enables users to create new projects via `rapidgo new myapp` or `go get`, rather than cloning and modifying the framework repo directly.
 
 ---
 
 ## Functional Requirements
 
-- As a developer, I want to `go get github.com/RAiWorks/RapidGo` so that I can import the framework as a dependency in my own Go module
+- As a developer, I want to `go get github.com/raiworks/rapidgo` so that I can import the framework as a dependency in my own Go module
 - As a developer, I want to run `rapidgo new myapp` so that I can scaffold a new project from a clean starter template
 - As a developer, I want the library to have zero imports from application-specific code (`app/`, `routes/`, `http/`, `plugins/`) so that it compiles standalone
 - As a developer, I want backward compatibility during the transition so that the monolith keeps working throughout the refactor
@@ -52,7 +52,7 @@ RapidGo v1.0.0 is a complete monolithic framework with 56 features shipped. The 
 
 1. **Phase A (Foundation)**: Create `hooks.go` with 6 callback types. Move `AuditLog` into `core/audit/`. No existing code changes.
 2. **Phase B (Decouple)**: Replace hard imports in all 6 `core/cli/` files with hook callbacks. Wire hooks in `cmd/main.go`. Refactor 4 test files.
-3. **Phase C (Split)**: Delete app code from library repo. Create `RapidGo-starter` repo with the removed code.
+3. **Phase C (Split)**: Delete app code from library repo. Create `rapidgo-starter` repo with the removed code.
 4. **Phase D (Polish)**: Add `rapidgo new` CLI command. Write READMEs for both repos. Tag v2.0.0.
 
 Each phase is non-breaking until Phase C. The monolith keeps working throughout Phases A and B because `cmd/main.go` wires the same code via hooks.
@@ -71,7 +71,7 @@ Each phase is non-breaking until Phase C. The monolith keeps working throughout 
 |---|---|---|
 | Features #01–#56 (v1.0.0) | Feature | ✅ Done |
 | v1.0.0 tag (commit `9c0a22a`) | Milestone | ✅ Tagged |
-| GitHub repo `RapidGo-starter` | Infrastructure | 🔴 Needs creation (Phase C) |
+| GitHub repo `rapidgo-starter` | Infrastructure | 🔴 Needs creation (Phase C) |
 
 ## Open Questions
 
@@ -90,7 +90,7 @@ Each phase is non-breaking until Phase C. The monolith keeps working throughout 
 | 2026-03-07 | 7 coupling points, not 5 or 9 | Audit (C7) and seed (C6) are true coupling; migrate_rollback/status are engine imports (not coupling) |
 | 2026-03-07 | AuditLog moves to `core/audit/model.go` | Breaks the only `core/ → database/models` dependency; type alias preserves backward compat |
 | 2026-03-07 | worker/scheduler use `NewApp()` instead of manual bootstrap | Eliminates duplicate provider registration; `NewApp()` uses `bootstrapFn` after Phase B |
-| 2026-03-08 | Two repos: `RapidGo` (library) + `RapidGo-starter` (template) | Clean separation; library is `go get`-able; starter is clone-and-customize |
+| 2026-03-08 | Two repos: `RapidGo` (library) + `rapidgo-starter` (template) | Clean separation; library is `go get`-able; starter is clone-and-customize |
 | 2026-03-08 | Branch strategy: `v2` branch (not a new repo) | Keeps git history; `v2` becomes default branch when done |
 
 ## Discussion Complete ✅

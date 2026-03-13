@@ -104,15 +104,15 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/RAiWorks/RapidGo/core/cli"
+	"github.com/raiworks/rapidgo/core/cli"
 )
 
 func main() {
 	// This is the library's built-in CLI.
 	// Application projects should use cli.Set*() to wire their code.
-	// See: https://github.com/RAiWorks/RapidGo-starter
+	// See: https://github.com/raiworks/rapidgo-starter
 	fmt.Fprintln(os.Stderr, "RapidGo is a library. Create a project with: rapidgo new myapp")
-	fmt.Fprintln(os.Stderr, "Or see: https://github.com/RAiWorks/RapidGo-starter")
+	fmt.Fprintln(os.Stderr, "Or see: https://github.com/raiworks/rapidgo-starter")
 	cli.Execute()
 }
 ```
@@ -162,7 +162,7 @@ go test ./... -count=1
 go vet ./...
 
 # 4. Zero app imports in core/
-grep -rn "RAiWorks/RapidGo/app\|RAiWorks/RapidGo/routes\|RAiWorks/RapidGo/http\|RAiWorks/RapidGo/plugins" core/
+grep -rn "raiworks/rapidgo/app\|raiworks/rapidgo/routes\|raiworks/rapidgo/http\|raiworks/rapidgo/plugins" core/
 # Expected: no output
 
 # 5. No app directories
@@ -182,7 +182,7 @@ test -f core/audit/model.go && echo "OK: audit model.go exists"
 
 ---
 
-## Step C2: Create RapidGo-starter Repository
+## Step C2: Create rapidgo-starter Repository
 
 ### Branch
 
@@ -190,23 +190,23 @@ test -f core/audit/model.go && echo "OK: audit model.go exists"
 
 ### Objective
 
-Create the `RapidGo-starter` repository with all the application code removed from the library. Set up its own `go.mod` importing the library. Verify it builds and runs independently.
+Create the `rapidgo-starter` repository with all the application code removed from the library. Set up its own `go.mod` importing the library. Verify it builds and runs independently.
 
 ### Repository Setup
 
 ```bash
-# On GitHub: create repo RAiWorks/RapidGo-starter
+# On GitHub: create repo raiworks/rapidgo-starter
 # Locally:
-mkdir RapidGo-starter
-cd RapidGo-starter
+mkdir rapidgo-starter
+cd rapidgo-starter
 git init
-go mod init github.com/RAiWorks/RapidGo-starter
+go mod init github.com/raiworks/rapidgo-starter
 ```
 
 ### Starter Directory Structure
 
 ```
-RapidGo-starter/
+rapidgo-starter/
 ├── cmd/
 │   └── main.go                    ← Full wiring with all cli.Set*() hooks
 ├── app/
@@ -278,12 +278,12 @@ RapidGo-starter/
 #### `go.mod`
 
 ```
-module github.com/RAiWorks/RapidGo-starter
+module github.com/raiworks/rapidgo-starter
 
 go 1.25
 
 require (
-    github.com/RAiWorks/RapidGo v2.0.0
+    github.com/raiworks/rapidgo v2.0.0
 )
 ```
 
@@ -297,8 +297,8 @@ See the complete starter `main.go` in `v2-architecture.md` section 6.
 package models
 
 import (
-	fwmodels "github.com/RAiWorks/RapidGo/database/models"
-	"github.com/RAiWorks/RapidGo-starter/app/helpers"
+	fwmodels "github.com/raiworks/rapidgo/database/models"
+	"github.com/raiworks/rapidgo-starter/app/helpers"
 )
 
 type User struct {
@@ -328,7 +328,7 @@ Each migration file needs to import the library's migrations package:
 package migrations
 
 import (
-	fwmigrations "github.com/RAiWorks/RapidGo/database/migrations"
+	fwmigrations "github.com/raiworks/rapidgo/database/migrations"
 	"gorm.io/gorm"
 )
 
@@ -351,8 +351,8 @@ func init() {
 package seeders
 
 import (
-	fwseeders "github.com/RAiWorks/RapidGo/database/seeders"
-	"github.com/RAiWorks/RapidGo-starter/database/models"
+	fwseeders "github.com/raiworks/rapidgo/database/seeders"
+	"github.com/raiworks/rapidgo-starter/database/models"
 	"gorm.io/gorm"
 )
 
@@ -370,14 +370,14 @@ func init() {
 
 #### `app/providers/*.go` — Updated Imports
 
-All providers change their module path from `github.com/RAiWorks/RapidGo/app/providers` to match the starter's module. The `core/` imports remain the same since they point to the library:
+All providers change their module path from `github.com/raiworks/rapidgo/app/providers` to match the starter's module. The `core/` imports remain the same since they point to the library:
 
 ```go
 package providers
 
 import (
-	"github.com/RAiWorks/RapidGo/core/config"     // ← library import (unchanged)
-	"github.com/RAiWorks/RapidGo/core/container"   // ← library import (unchanged)
+	"github.com/raiworks/rapidgo/core/config"     // ← library import (unchanged)
+	"github.com/raiworks/rapidgo/core/container"   // ← library import (unchanged)
 )
 
 type ConfigProvider struct{}

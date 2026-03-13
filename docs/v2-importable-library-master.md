@@ -11,7 +11,7 @@
 
 ## 1. Objective
 
-Transform RapidGo from a **monolithic starter** (clone-and-build-inside) into an **importable Go library** (`go get`) with a companion **starter template** (`RapidGo-starter`).
+Transform RapidGo from a **monolithic starter** (clone-and-build-inside) into an **importable Go library** (`go get`) with a companion **starter template** (`rapidgo-starter`).
 
 **v1.0.0** remains frozen on `main`. All v2 work happens on the `v2` branch, which becomes the default branch when complete.
 
@@ -20,16 +20,16 @@ Transform RapidGo from a **monolithic starter** (clone-and-build-inside) into an
 ## 2. Two-Repository Architecture
 
 ```
-github.com/RAiWorks/RapidGo           ← Importable framework library (go get)
-github.com/RAiWorks/RapidGo-starter   ← Scaffold project (clone → build inside)
+github.com/raiworks/rapidgo           ← Importable framework library (go get)
+github.com/raiworks/rapidgo-starter   ← Scaffold project (clone → build inside)
 ```
 
 ### What Each Repo Contains
 
 | Repo | Contains | Purpose |
 |------|----------|---------|
-| **RapidGo** (library) | `core/*`, `database/connection.go`, `database/transaction.go`, `database/migrations/migrator.go`, `database/models/base.go`, `testing/testutil/`, `go.mod`, `LICENSE`, `README.md` | Importable framework — `go get github.com/RAiWorks/RapidGo` |
-| **RapidGo-starter** (template) | `cmd/`, `app/`, `routes/`, `http/`, `database/models/` (app models), `database/migrations/` (app migrations), `database/seeders/`, `resources/`, `storage/`, `plugins/`, `.env.example`, `Dockerfile`, `docker-compose.yml`, `Caddyfile`, `Makefile` | Clone or scaffold → customize → build |
+| **RapidGo** (library) | `core/*`, `database/connection.go`, `database/transaction.go`, `database/migrations/migrator.go`, `database/models/base.go`, `testing/testutil/`, `go.mod`, `LICENSE`, `README.md` | Importable framework — `go get github.com/raiworks/rapidgo` |
+| **rapidgo-starter** (template) | `cmd/`, `app/`, `routes/`, `http/`, `database/models/` (app models), `database/migrations/` (app migrations), `database/seeders/`, `resources/`, `storage/`, `plugins/`, `.env.example`, `Dockerfile`, `docker-compose.yml`, `Caddyfile`, `Makefile` | Clone or scaffold → customize → build |
 
 ---
 
@@ -137,11 +137,11 @@ All `core/` packages below have **zero** imports from `app/`, `routes/`, `http/`
 package cli
 
 import (
-    "github.com/RAiWorks/RapidGo/core/app"
-    "github.com/RAiWorks/RapidGo/core/container"
-    "github.com/RAiWorks/RapidGo/core/router"
-    "github.com/RAiWorks/RapidGo/core/scheduler"
-    "github.com/RAiWorks/RapidGo/core/service"
+    "github.com/raiworks/rapidgo/core/app"
+    "github.com/raiworks/rapidgo/core/container"
+    "github.com/raiworks/rapidgo/core/router"
+    "github.com/raiworks/rapidgo/core/scheduler"
+    "github.com/raiworks/rapidgo/core/service"
     "gorm.io/gorm"
 )
 
@@ -321,7 +321,7 @@ migrator.Run()
 
 ```go
 // BEFORE (v1 — core/audit/audit.go):
-import "github.com/RAiWorks/RapidGo/database/models"
+import "github.com/raiworks/rapidgo/database/models"
 record := models.AuditLog{...}           // hard import
 var logs []models.AuditLog               // hard import
 
@@ -355,13 +355,13 @@ After the split, the starter's entry point wires everything:
 package main
 
 import (
-    "github.com/RAiWorks/RapidGo/core/app"
-    "github.com/RAiWorks/RapidGo/core/cli"
-    "github.com/RAiWorks/RapidGo/core/container"
-    "github.com/RAiWorks/RapidGo/core/router"
-    "github.com/RAiWorks/RapidGo/core/scheduler"
-    "github.com/RAiWorks/RapidGo/core/service"
-    "github.com/RAiWorks/RapidGo/database/migrations"
+    "github.com/raiworks/rapidgo/core/app"
+    "github.com/raiworks/rapidgo/core/cli"
+    "github.com/raiworks/rapidgo/core/container"
+    "github.com/raiworks/rapidgo/core/router"
+    "github.com/raiworks/rapidgo/core/scheduler"
+    "github.com/raiworks/rapidgo/core/service"
+    "github.com/raiworks/rapidgo/database/migrations"
     "gorm.io/gorm"
 
     "myapp/app/jobs"
@@ -431,7 +431,7 @@ main ─────────────────────────
        ├── feature/v2-05-worker-decouple        Phase B: work.go + schedule_run.go use hooks
        ├── feature/v2-06-migrate-decouple       Phase B: migrate/seed use hooks
        ├── feature/v2-07-remove-app-code        Phase C: Delete app/, routes/, etc.
-       ├── feature/v2-08-starter-repo           Phase C: Create RapidGo-starter
+       ├── feature/v2-08-starter-repo           Phase C: Create rapidgo-starter
        ├── feature/v2-09-rapidgo-new-cmd        Phase D: CLI scaffolder
        ├── feature/v2-10-library-readme         Phase D: Documentation
        │
@@ -476,7 +476,7 @@ main ─────────────────────────
 | Step | Branch | Work | Files Changed | Tests |
 |------|--------|------|--------------|-------|
 | C1 | `feature/v2-07-remove-app-code` | Delete from library: `app/`, `routes/`, `http/`, `plugins/`, `resources/`, `storage/`, `database/models/` (except `base.go`, `scopes.go`), `database/migrations/2026*` files (keep `migrator.go`), `database/seeders/` (except `seeder.go` engine), `.env`, `Dockerfile`, `docker-compose.yml`, `Caddyfile`, `Makefile`, `tests/`. Clean up `go.mod` (remove unused deps). Update `cmd/main.go` to minimal library CLI. | Many deletions | `go build ./...` and `go test ./...` pass on library alone |
-| C2 | `feature/v2-08-starter-repo` | Create `RapidGo-starter` repo with all deleted code. New `go.mod` importing `github.com/RAiWorks/RapidGo`. New `cmd/main.go` with full wiring. `.env.example` (not `.env`). Verify builds and runs. | New repo | Starter builds and starts |
+| C2 | `feature/v2-08-starter-repo` | Create `rapidgo-starter` repo with all deleted code. New `go.mod` importing `github.com/raiworks/rapidgo`. New `cmd/main.go` with full wiring. `.env.example` (not `.env`). Verify builds and runs. | New repo | Starter builds and starts |
 
 ### Phase D — Polish
 
@@ -524,7 +524,7 @@ After each phase, these must pass:
 | `database/models/base.go` | `BaseModel` with common fields |
 | `database/models/scopes.go` | `WithTrashed()`, `OnlyTrashed()` — generic GORM scopes |
 | `testing/testutil/` | Test utilities for user apps |
-| `go.mod` | `module github.com/RAiWorks/RapidGo` |
+| `go.mod` | `module github.com/raiworks/rapidgo` |
 | `go.sum` | Auto-generated by Go toolchain |
 | `.gitignore` | Library-specific ignore rules |
 | `LICENSE` | MIT |
@@ -533,7 +533,7 @@ After each phase, these must pass:
 | `database/resolver_test.go` | Generic resolver tests |
 | `database/transaction_test.go` | Generic transaction tests |
 
-### Files That Move to Starter (RapidGo-starter)
+### Files That Move to Starter (rapidgo-starter)
 
 | File/Directory | Notes |
 |---------------|-------|
@@ -618,7 +618,7 @@ After the split, migration files live in the starter. The `init()` approach stil
 // Starter: database/migrations/20260307000001_create_jobs_tables.go
 package migrations
 
-import "github.com/RAiWorks/RapidGo/database/migrations"
+import "github.com/raiworks/rapidgo/database/migrations"
 
 func init() {
     migrations.Register(migrations.Migration{
@@ -664,7 +664,7 @@ func OnlyTrashed(db *gorm.DB) *gorm.DB { ... }
 // database/models/user.go
 package models
 
-import "github.com/RAiWorks/RapidGo/database/models"
+import "github.com/raiworks/rapidgo/database/models"
 
 type User struct {
     models.BaseModel  // embeds framework's BaseModel
@@ -684,7 +684,7 @@ func All() []interface{} {
 
 ```go
 import (
-    fwmodels "github.com/RAiWorks/RapidGo/database/models"
+    fwmodels "github.com/raiworks/rapidgo/database/models"
     "myapp/database/models"
 )
 ```
@@ -715,7 +715,7 @@ v2.0.0 is tagged when ALL of the following are true:
 - [ ] Library `go build ./...` and `go test ./...` pass standalone (all test files refactored to use test-only model structs)
 - [ ] Library has no `app/`, `routes/`, `http/`, `plugins/` directories
 - [ ] Starter repo builds and runs with `go run cmd/main.go serve`
-- [ ] Starter imports framework at `github.com/RAiWorks/RapidGo@v2.0.0`
+- [ ] Starter imports framework at `github.com/raiworks/rapidgo@v2.0.0`
 - [ ] `rapidgo new myapp` scaffolds a working project
 - [ ] Library README documents `go get` import path and package index
 - [ ] Starter README documents getting started + every `Set*()` hook
@@ -739,12 +739,12 @@ cmd/main.go → core/cli → app/providers → routes
 ### v2.0.0 (Target) — Clean Dependency Flow
 
 ```
-Library (github.com/RAiWorks/RapidGo):
+Library (github.com/raiworks/rapidgo):
   core/cli → core/*         (hooks.go provides callback types — no app imports)
   core/audit → core/audit   (AuditLog model is local)
   database/ → gorm          (connection, transaction, migrator — generic)
 
-Starter (github.com/RAiWorks/RapidGo-starter):
+Starter (github.com/raiworks/rapidgo-starter):
   cmd/main.go → cli.Set*()  (wires app code into framework)
               → app/providers, routes, jobs, schedule, models, etc.
 ```

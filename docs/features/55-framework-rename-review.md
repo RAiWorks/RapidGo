@@ -9,7 +9,7 @@
 
 ## What Was Done
 
-Renamed the framework from "RGo" to "RapidGo" across the entire codebase — 100 files changed (37 Go imports, 8 Go string changes, 49 docs, 5 config/infra, 1 template, 1 new LICENSE file). Module path changed from `github.com/RAiWorks/RGo` to `github.com/RAiWorks/RapidGo`. Version bumped from `0.1.0` to `0.2.0`. GitHub repository renamed.
+Renamed the framework from "RGo" to "RapidGo" across the entire codebase — 100 files changed (37 Go imports, 8 Go string changes, 49 docs, 5 config/infra, 1 template, 1 new LICENSE file). Module path changed from `github.com/raiworks/RGo` to `github.com/raiworks/rapidgo`. Version bumped from `0.1.0` to `0.2.0`. GitHub repository renamed.
 
 ## What Went Well
 
