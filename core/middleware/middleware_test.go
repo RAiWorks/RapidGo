@@ -545,6 +545,56 @@ func TestSessionMiddleware_SetsSessionData(t *testing.T) {
 	if w.Body.String() != "ok" {
 		t.Fatalf("expected 'ok', got %q", w.Body.String())
 	}
+
+	// Verify the session cookie is present in the response
+	cookies := w.Result().Cookies()
+	found := false
+	for _, c := range cookies {
+		if c.Name == "test_session" && c.Value != "" {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatal("expected Set-Cookie header with test_session cookie")
+	}
+}
+
+// Regression test: session cookie must be set even when handler writes HTML body
+func TestSessionMiddleware_CookieSetBeforeBody(t *testing.T) {
+	store := session.NewMemoryStore()
+	mgr := &session.Manager{
+		Store:      store,
+		CookieName: "test_session",
+		Lifetime:   120 * 60_000_000_000,
+		Path:       "/",
+		HTTPOnly:   true,
+		SameSite:   http.SameSiteLaxMode,
+	}
+
+	e := newTestEngine()
+	e.Use(SessionMiddleware(mgr))
+	e.GET("/html", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html")
+		c.String(200, "<html><body>Hello</body></html>")
+	})
+
+	w := doRequest(e, "GET", "/html")
+	if w.Code != 200 {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+
+	cookies := w.Result().Cookies()
+	found := false
+	for _, c := range cookies {
+		if c.Name == "test_session" && c.Value != "" {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatal("regression: Set-Cookie header missing when handler writes response body")
+	}
 }
 
 // --- Auth Middleware ---

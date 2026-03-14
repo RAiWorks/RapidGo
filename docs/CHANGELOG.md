@@ -5,6 +5,21 @@ All notable changes to the **RapidGo** framework will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-03-14
+
+### Fixed
+
+- **Critical**: `SessionMiddleware` now sets the session cookie **before** `c.Next()` so the `Set-Cookie` header is included even when handlers write the response body (e.g. `c.HTML()`). Previously the cookie was set after the body was written, causing it to be silently dropped — breaking CSRF protection, flash messages, and all session-dependent features. ([Bug #01](../../docs/bugs/01-session-cookie-bug.md))
+
+### Added
+
+- `session.Manager.SetCookie()` — sets the session cookie on the response without persisting data to the store, allowing cookie and store operations to be called independently
+- `TestSessionMiddleware_CookieSetBeforeBody` — regression test ensuring the session cookie is present even when the handler writes an HTML response body
+
+### Changed
+
+- `session.Manager.Save()` now delegates to `SetCookie()` internally (no behavior change for direct callers)
+
 ## [2.2.0] - 2026-03-13
 
 ### Changed

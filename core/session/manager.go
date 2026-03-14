@@ -77,11 +77,9 @@ func (m *Manager) Start(r *http.Request) (string, map[string]interface{}, error)
 	return id, make(map[string]interface{}), nil
 }
 
-// Save persists session data and writes the session cookie.
-func (m *Manager) Save(w http.ResponseWriter, id string, data map[string]interface{}) error {
-	if err := m.Store.Write(id, data, m.Lifetime); err != nil {
-		return err
-	}
+// SetCookie writes the session cookie to the response without persisting data.
+// Use this to set the cookie before the response body is written.
+func (m *Manager) SetCookie(w http.ResponseWriter, id string) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     m.CookieName,
 		Value:    id,
@@ -92,6 +90,14 @@ func (m *Manager) Save(w http.ResponseWriter, id string, data map[string]interfa
 		HttpOnly: m.HTTPOnly,
 		SameSite: m.SameSite,
 	})
+}
+
+// Save persists session data and writes the session cookie.
+func (m *Manager) Save(w http.ResponseWriter, id string, data map[string]interface{}) error {
+	if err := m.Store.Write(id, data, m.Lifetime); err != nil {
+		return err
+	}
+	m.SetCookie(w, id)
 	return nil
 }
 
