@@ -200,7 +200,7 @@ Every feature follows the [Mastery lifecycle](mastery.md): Discuss → Design �
 |---|---|---|---|---|
 | 55 | Framework Rename (RGo → RapidGo) | ✅ | — | Infrastructure (Shipped) |
 | 56 | Service Mode (Multi-Port Serving) | ✅ | #07 | Infrastructure (Shipped) |
-| 57 | Importable Library Split | 🟡 | All | Infrastructure (In Progress) |
+| 57 | Importable Library Split | ✅ | All | Infrastructure (Shipped) |
 | 58 | Documentation & AI Visibility | ✅ | All | Documentation (Shipped) |
 | 59 | v2.1.0 Release | ✅ | All | Release (Shipped) |
 | 60 | v2.4.0 Release (Bugs + Quick Wins) | ✅ | All | Release (Shipped) |

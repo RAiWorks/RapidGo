@@ -3,8 +3,11 @@
 > **Feature**: `57` — Importable Library Split
 > **Architecture**: [`57-importable-library-split-architecture.md`](57-importable-library-split-architecture.md)
 > **Branch**: `v2` (integration) with sub-branches per step
-> **Status**: 🔴 NOT STARTED
-> **Progress**: 0/60 tasks complete (across 10 steps in 4 phases)
+> **Status**: ✅ SHIPPED (v2.0.0)
+> **Progress**: 60/60 tasks complete (across 10 steps in 4 phases)
+>
+> *Note: Task checkboxes below were not individually checked during the original build.*
+> *All 10 steps (A1→D2) completed and verified — see changelog for full record.*
 
 ---
 

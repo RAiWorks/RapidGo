@@ -2,8 +2,8 @@
 
 > **Feature**: `57` — Importable Library Split
 > **Branch**: `v2` (integration) with sub-branches per step
-> **Started**: —
-> **Completed**: —
+> **Started**: 2026-03-07
+> **Completed**: 2026-03-08
 
 ---
 
@@ -64,6 +64,20 @@
 ### Step A1 — `feature/v2-01-hooks-foundation` → `v2` (commit `2e93063`)
 - Created `core/cli/hooks.go`: 6 callback types, 6 package-level vars, 6 `Set*()` functions
 - Created `core/cli/hooks_test.go`: 7 tests (nil defaults + setter storage)
+
+### Ship — 2026-03-08
+
+- All 10 steps (A1→D2) completed across Phases A–D
+- All 4 checkpoints verified (A, B, C, D)
+- `v2` branch merged to `main`, tagged `v2.0.0`, pushed
+- `rapidgo-starter` repo created, tagged `v1.0.0`
+- All feature branches preserved
+
+### Reflect — 2026-03-15 (retroactive)
+
+- Review doc created: `57-importable-library-split-review.md`
+- Tasks.md status updated to ✅ SHIPPED
+- Roadmap updated: 🟡 → ✅
 
 ---
 
