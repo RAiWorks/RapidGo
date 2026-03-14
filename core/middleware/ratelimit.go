@@ -1,7 +1,10 @@
 package middleware
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -98,4 +101,27 @@ func KeyByHeader(header string) func(c *gin.Context) string {
 // Returns an error if the format is invalid.
 func ParseRate(rate string) (limiter.Rate, error) {
 	return limiter.NewRateFromFormatted(rate)
+}
+
+// KeyByBodyField returns a KeyFunc that reads a JSON body field.
+// The request body is read and re-buffered so downstream handlers can still read it.
+// Falls back to client IP if the field is not present or the body is not JSON.
+func KeyByBodyField(field string) func(c *gin.Context) string {
+	return func(c *gin.Context) string {
+		body, err := io.ReadAll(c.Request.Body)
+		if err != nil {
+			return c.ClientIP()
+		}
+		// Re-buffer body for downstream handlers
+		c.Request.Body = io.NopCloser(bytes.NewReader(body))
+
+		var data map[string]any
+		if err := json.Unmarshal(body, &data); err != nil {
+			return c.ClientIP()
+		}
+		if v, ok := data[field]; ok {
+			return fmt.Sprintf("body:%s:%v", field, v)
+		}
+		return c.ClientIP()
+	}
 }

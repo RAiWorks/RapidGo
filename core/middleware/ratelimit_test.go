@@ -3,6 +3,7 @@ package middleware
 import (
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -98,5 +99,35 @@ func TestParseRate_InvalidFormat(t *testing.T) {
 	_, err := ParseRate("invalid")
 	if err == nil {
 		t.Fatal("ParseRate(\"invalid\") should return error")
+	}
+}
+
+// KeyByBodyField with JSON body containing field
+func TestKeyByBodyField_WithField(t *testing.T) {
+	fn := KeyByBodyField("email")
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Request = httptest.NewRequest(http.MethodPost, "/", strings.NewReader(`{"email":"test@example.com"}`))
+	c.Request.Header.Set("Content-Type", "application/json")
+	c.Request.RemoteAddr = "10.0.0.1:1234"
+
+	key := fn(c)
+	if key != "body:email:test@example.com" {
+		t.Errorf("KeyByBodyField() = %q, want %q", key, "body:email:test@example.com")
+	}
+}
+
+// KeyByBodyField without field falls back to IP
+func TestKeyByBodyField_FallsBackToIP(t *testing.T) {
+	fn := KeyByBodyField("email")
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Request = httptest.NewRequest(http.MethodPost, "/", strings.NewReader(`{"name":"test"}`))
+	c.Request.Header.Set("Content-Type", "application/json")
+	c.Request.RemoteAddr = "10.0.0.1:1234"
+
+	key := fn(c)
+	if key != "10.0.0.1" {
+		t.Errorf("KeyByBodyField() fallback = %q, want %q", key, "10.0.0.1")
 	}
 }
