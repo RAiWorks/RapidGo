@@ -3,6 +3,7 @@ package seeders
 
 import (
 	"fmt"
+	"log/slog"
 
 	"gorm.io/gorm"
 )
@@ -30,6 +31,10 @@ func ResetRegistry() {
 
 // RunAll executes all registered seeders in registration order.
 func RunAll(db *gorm.DB) error {
+	if len(registry) == 0 {
+		slog.Warn("no seeders registered — did you forget to import your seeder package?")
+		return nil
+	}
 	for _, s := range registry {
 		if err := s.Seed(db); err != nil {
 			return fmt.Errorf("seeder %s failed: %w", s.Name(), err)

@@ -2,6 +2,8 @@ package container
 
 import (
 	"fmt"
+	"log/slog"
+	"os"
 	"sync"
 )
 
@@ -123,4 +125,32 @@ func (c *Container) Has(name string) bool {
 	_, hasBinding := c.bindings[name]
 	_, hasInstance := c.instances[name]
 	return hasBinding || hasInstance
+}
+
+// SafeSingleton registers a singleton that catches panics during creation.
+// If the factory panics and the app is in local/development mode, the panic
+// is logged as a warning and the service is skipped (not registered).
+// In production, the panic propagates normally.
+func (c *Container) SafeSingleton(name string, factory Factory) {
+	c.Singleton(name, func(cont *Container) interface{} {
+		defer func() {
+			if r := recover(); r != nil {
+				if isLocalMode() {
+					slog.Warn("service unavailable in local mode, skipping",
+						"service", name,
+						"error", fmt.Sprint(r),
+					)
+				} else {
+					panic(r)
+				}
+			}
+		}()
+		return factory(cont)
+	})
+}
+
+// isLocalMode checks if APP_ENV is local or development.
+func isLocalMode() bool {
+	env := os.Getenv("APP_ENV")
+	return env == "local" || env == "development" || env == ""
 }

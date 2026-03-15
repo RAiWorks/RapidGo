@@ -121,3 +121,14 @@ func TestRunByName_NotFound(t *testing.T) {
 		t.Fatalf("expected 'not found' in error, got %q", err.Error())
 	}
 }
+
+// TC-06: RunAll with empty registry returns nil (and logs a warning).
+func TestRunAll_EmptyRegistry(t *testing.T) {
+	ResetRegistry()
+	defer ResetRegistry()
+
+	db := setupTestDB(t)
+	if err := RunAll(db); err != nil {
+		t.Fatalf("RunAll on empty registry should return nil, got: %v", err)
+	}
+}

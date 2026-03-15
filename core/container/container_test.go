@@ -268,3 +268,35 @@ func TestTryMakeGeneric_CorrectType(t *testing.T) {
 		t.Errorf("TryMake = %q, want %q", val, "rapidgo")
 	}
 }
+
+// TC-22: SafeSingleton catches panic in local mode
+func TestSafeSingleton_LocalModeCatchesPanic(t *testing.T) {
+	t.Setenv("APP_ENV", "local")
+	c := New()
+	c.SafeSingleton("boom", func(_ *Container) interface{} {
+		panic("connection refused")
+	})
+
+	// Resolving should NOT panic in local mode
+	result := c.Make("boom")
+	if result != nil {
+		t.Fatalf("expected nil from panicking SafeSingleton in local mode, got %v", result)
+	}
+}
+
+// TC-23: SafeSingleton re-panics in production mode
+func TestSafeSingleton_ProdModePanics(t *testing.T) {
+	t.Setenv("APP_ENV", "production")
+	c := New()
+	c.SafeSingleton("boom", func(_ *Container) interface{} {
+		panic("connection refused")
+	})
+
+	defer func() {
+		r := recover()
+		if r == nil {
+			t.Fatal("expected panic in production mode")
+		}
+	}()
+	c.Make("boom")
+}

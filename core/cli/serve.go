@@ -151,7 +151,9 @@ func resolvePortForMode(m service.Mode) string {
 
 // applyRoutesForMode registers routes on a router for a specific mode.
 func applyRoutesForMode(r *router.Router, c *container.Container, m service.Mode) {
-	if m.Has(service.ModeWeb) {
+	// Only set up templates/static if not already configured by a provider.
+	// This prevents overwriting custom FuncMaps and re-loading templates.
+	if !r.TemplatesLoaded() && m.Has(service.ModeWeb) {
 		r.SetFuncMap(router.DefaultFuncMap())
 		viewsDir := filepath.Join("resources", "views")
 		if info, err := os.Stat(viewsDir); err == nil && info.IsDir() {

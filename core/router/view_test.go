@@ -92,3 +92,54 @@ func TestStaticFile_ServesSingleFile(t *testing.T) {
 		t.Fatalf("expected 'User-agent: *', got: %s", w.Body.String())
 	}
 }
+
+// TC-06: TemplatesLoaded returns false before LoadTemplates, true after.
+func TestTemplatesLoaded(t *testing.T) {
+	r := newTestRouter()
+	if r.TemplatesLoaded() {
+		t.Fatal("expected TemplatesLoaded() == false on fresh router")
+	}
+
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, "index.html"), []byte("<p>ok</p>"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	r.LoadTemplates(dir)
+
+	if !r.TemplatesLoaded() {
+		t.Fatal("expected TemplatesLoaded() == true after LoadTemplates")
+	}
+}
+
+// TC-07: Custom FuncMap survives if TemplatesLoaded guards re-setup.
+func TestCustomFuncMap_NotOverwritten(t *testing.T) {
+	dir := t.TempDir()
+	tmpl := `<p>{{ upper "hello" }}</p>`
+	if err := os.WriteFile(filepath.Join(dir, "test.html"), []byte(tmpl), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	r := newTestRouter()
+	r.SetFuncMap(map[string]interface{}{
+		"upper": strings.ToUpper,
+	})
+	r.LoadTemplates(dir)
+
+	// Simulate what applyRoutesForMode now does: skip if already loaded.
+	if !r.TemplatesLoaded() {
+		r.SetFuncMap(DefaultFuncMap())
+		r.LoadTemplates(dir)
+	}
+
+	r.Get("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "test.html", nil)
+	})
+
+	w := doRequest(r, "GET", "/")
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+	if !strings.Contains(w.Body.String(), "<p>HELLO</p>") {
+		t.Fatalf("expected custom FuncMap to be used, got: %s", w.Body.String())
+	}
+}

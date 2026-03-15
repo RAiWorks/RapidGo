@@ -14,7 +14,8 @@ import (
 
 // Router wraps the Gin engine and provides framework-level route registration.
 type Router struct {
-	engine *gin.Engine
+	engine          *gin.Engine
+	templatesLoaded bool
 }
 
 // New creates a new Router with Gin mode set based on APP_ENV.
@@ -120,6 +121,12 @@ func (r *Router) LoadTemplates(dir string) {
 		return nil
 	})
 	r.engine.SetHTMLTemplate(tmpl)
+	r.templatesLoaded = true
+}
+
+// TemplatesLoaded returns true if LoadTemplates has been called on this router.
+func (r *Router) TemplatesLoaded() bool {
+	return r.templatesLoaded
 }
 
 // Static serves files from a local directory under the given URL path.
